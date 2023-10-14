@@ -11,16 +11,10 @@ import {
 const Header = () => {
   return (
     // Website Top Navigation Bar
-    <Navbar className="shadow-lg pt-lg-3" expand="lg">
+    <Navbar className="shadow-sm pt-lg-3" expand="lg">
       <Container>
-        <Navbar.Brand href="/home">
-          <img
-            src=""
-            width="80"
-            height="30"
-            className="d-inline-block align-top"
-            alt="React Bootstrap logo"
-          />
+        <Navbar.Brand className="fw-bold" href="/">
+          BREVEMOD.
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

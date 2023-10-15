@@ -19,7 +19,7 @@ import {
   faForward,
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "@/hooks/auth/useAuth";
-import ProfileIcon from "../../assets/images/profileIcon.png";
+import ProfileIcon from "../../assets/images/ProfileIcon.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -35,7 +35,6 @@ const Header = () => {
   const handleModalShow = () => setModalShow(true);
 
   return (
-    // Website Top Navigation Bar
     <Navbar className="shadow-sm pt-lg-3" expand="lg">
       <Container>
         <Navbar.Brand className="fw-bold" href="/">
@@ -79,7 +78,7 @@ const Header = () => {
             >
               <FontAwesomeIcon icon={faShoppingCart} />
               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                {currentUser?.cart.courses.length}
+                {currentUser?.cart.courses.length || 0}
                 <span className="visually-hidden">Course Cart</span>
               </span>
             </button>
@@ -116,8 +115,12 @@ const Header = () => {
                     <Button variant="secondary" onClick={handleModalClose}>
                       Close
                     </Button>
-                    <Button className="ms-2" variant="primary">
-                      Review Order <FontAwesomeIcon icon={faForward} />
+                    <Button
+                      onClick={() => router.push("/cart-review")}
+                      className="ms-2"
+                      variant="primary"
+                    >
+                      Review Cart <FontAwesomeIcon icon={faForward} />
                     </Button>
                   </div>
                 ) : (

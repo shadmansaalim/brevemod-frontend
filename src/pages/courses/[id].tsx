@@ -205,6 +205,6 @@ export const getServerSideProps = async (context: any) => {
   const { params } = context;
   const res = await fetch(`http://localhost:8080/api/v1/courses/${params.id}`);
   const data = await res.json();
-  const course = data.data;
+  const course = data?.data;
   return { props: { course } };
 };

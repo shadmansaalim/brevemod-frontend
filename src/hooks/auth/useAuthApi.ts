@@ -8,10 +8,11 @@ import {
 import { useRouter } from "next/router";
 import { ILoginUser, ISignUpUser } from "./IAuth";
 import swal from "sweetalert";
+import { IUser } from "@/interfaces/common";
 
 const useAuthApi = () => {
   // Current user states
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
 
   //Loading states
   const [isLoading, setIsLoading] = useState(false);

@@ -10,14 +10,50 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { ICourse } from "@/interfaces/common";
 import useAuth from "@/hooks/auth/useAuth";
+import { getTokenFromLocalStorage } from "@/utilities/common";
+import { useEffect } from "react";
 
 const CourseDetailsPage: NextPageWithLayout<{
   course: ICourse;
 }> = ({ course }) => {
-  console.log(course);
-  const { currentUser, isLoading, setIsLoading } = useAuth();
-  const [added, setAdded] = useState(false);
+  const { currentUser, setCurrentUser, isLoading, setIsLoading } = useAuth();
+
+  const isAddedToCart = currentUser?.cart.courses.find(
+    (cartCourse: ICourse) => cartCourse._id === course._id
+  );
+
+  const isPurchased = currentUser?.purchases.find(
+    (purchaseCourse: ICourse) => purchaseCourse._id === course._id
+  );
+
+  const [addedToCart, setAddedToCart] = useState(false);
   const [purchased, setPurchased] = useState(false);
+
+  useEffect(() => {
+    if (isAddedToCart) {
+      setAddedToCart(true);
+    }
+    if (isPurchased) {
+      setPurchased(true);
+    }
+  }, [currentUser]);
+
+  const handleAddToCart = async () => {
+    fetch(`http://localhost:8080/api/v1/cart/add-to-cart/${course._id}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: getTokenFromLocalStorage(),
+        "content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const userData = data.data;
+        setCurrentUser(userData);
+        setAddedToCart(true);
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
     <div style={{ overflowX: "hidden" }}>
@@ -67,8 +103,9 @@ const CourseDetailsPage: NextPageWithLayout<{
                   </small>
                   <br />
                   <button
+                    onClick={handleAddToCart}
                     className={
-                      added === false && purchased === false
+                      addedToCart === false && purchased === false
                         ? "btn btn-secondary text-white mt-3"
                         : "btn btn-success text-white mt-3 disabled"
                     }
@@ -77,7 +114,7 @@ const CourseDetailsPage: NextPageWithLayout<{
                       <p className="m-0">
                         Purchased <FontAwesomeIcon icon={faCheck} />
                       </p>
-                    ) : added === true ? (
+                    ) : addedToCart === true ? (
                       <p className="m-0">
                         Added to Cart <FontAwesomeIcon icon={faShoppingCart} />
                       </p>

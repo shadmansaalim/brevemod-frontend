@@ -1,5 +1,12 @@
 // Imports
-import { Navbar, NavDropdown, Container, Nav, Button } from "react-bootstrap";
+import {
+  Navbar,
+  NavDropdown,
+  Container,
+  Nav,
+  Button,
+  Modal,
+} from "react-bootstrap";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,15 +16,23 @@ import {
   faUser,
   faUserTie,
   faRightFromBracket,
+  faForward,
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "@/hooks/auth/useAuth";
 import ProfileIcon from "../../assets/images/profileIcon.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import Cart from "../Cart";
 
 const Header = () => {
   const { currentUser, logoutUser } = useAuth();
   const router = useRouter();
+
+  const [modalShow, setModalShow] = useState(false);
+
+  const handleModalClose = () => setModalShow(false);
+  const handleModalShow = () => setModalShow(true);
 
   return (
     // Website Top Navigation Bar
@@ -58,12 +73,66 @@ const Header = () => {
               About
             </Link>
 
-            <button className="btn btn-outline-dark mt-2 mt-lg-0 px-2 py-1 position-relative">
+            <button
+              onClick={handleModalShow}
+              className="btn btn-outline-dark mt-2 mt-lg-0 px-2 py-1 position-relative"
+            >
               <FontAwesomeIcon icon={faShoppingCart} />
               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                2<span className="visually-hidden">Course Cart</span>
+                {currentUser?.cart.courses.length}
+                <span className="visually-hidden">Course Cart</span>
               </span>
             </button>
+
+            <Modal show={modalShow} onHide={handleModalClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>Courses Added</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                {currentUser?.cart.courses.length > 0 ? (
+                  <Cart cart={currentUser?.cart} />
+                ) : (
+                  <div className="container-fluid my-5">
+                    <div className="offset-lg-3 col-12 text-center mx-auto">
+                      <img
+                        src="https://codescandy.com/coach/rtl/assets/images/bag.svg"
+                        alt=""
+                        className="img-fluid mb-4"
+                      />
+                      <h3 className="fw-bold">Your shopping cart is empty</h3>
+                      <p className="mb-4">
+                        Add some courses for your delivery slot. Before
+                        proceeding to checkout you must add some courses to your
+                        shopping cart. You will find a lot of amazing courses on
+                        our courses page with limited offers.
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </Modal.Body>
+              <Modal.Footer>
+                {currentUser?.cart.courses.length > 0 ? (
+                  <div>
+                    <Button variant="secondary" onClick={handleModalClose}>
+                      Close
+                    </Button>
+                    <Button className="ms-2" variant="primary">
+                      Review Order <FontAwesomeIcon icon={faForward} />
+                    </Button>
+                  </div>
+                ) : (
+                  <Button
+                    variant="primary"
+                    onClick={() => {
+                      handleModalClose();
+                      router.push("/courses");
+                    }}
+                  >
+                    Browse Courses
+                  </Button>
+                )}
+              </Modal.Footer>
+            </Modal>
           </Nav>
           <Nav className="ms-auto">
             {currentUser ? (

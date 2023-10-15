@@ -1,10 +1,12 @@
 import { createContext, ReactNode } from "react";
 import useAuthApi from "@/hooks/auth/useAuthApi";
 import { ILoginUser, ISignUpUser } from "@/hooks/auth/IAuth";
+import { IUser } from "@/interfaces/common";
 
 // Define the type for your context value
 type AuthContextType = {
   currentUser: any;
+  setCurrentUser: (user: IUser) => void;
   isLoading: boolean;
   setIsLoading: (state: boolean) => void;
   signUpUser: (payload: ISignUpUser) => void;
@@ -15,6 +17,7 @@ type AuthContextType = {
 // Define the default value for AuthContextType
 const authContextDefault: AuthContextType = {
   currentUser: null,
+  setCurrentUser: () => {},
   isLoading: false,
   setIsLoading: () => {},
   signUpUser: () => {},

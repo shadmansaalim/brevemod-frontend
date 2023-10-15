@@ -16,8 +16,10 @@
     "next": "13.5.4",
     "react": "^18",
     "react-bootstrap": "^2.9.0",
+    "react-countup": "^6.4.2",
     "react-dom": "^18",
     "react-rating": "^2.0.5",
+    "react-visibility-sensor": "^5.1.1",
     "sass": "^1.69.3",
     "sweetalert": "^2.1.2"
   },

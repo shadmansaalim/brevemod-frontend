@@ -1,7 +1,6 @@
 // Imports
 import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
-import type { NextPageWithLayout } from "./_app";
 import Course from "@/components/Course";
 import { Row, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
@@ -31,8 +30,6 @@ const CoursesPage = () => {
       .catch((error) => console.log(error))
       .finally(() => setIsLoading(false));
   }, [activePage]);
-
-  console.log(activePage);
 
   return (
     <>

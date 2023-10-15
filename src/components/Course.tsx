@@ -11,7 +11,7 @@ const Course = (props: { course: ICourse }) => {
   const router = useRouter();
 
   const goToCourseDetails = () => {
-    router.push(`/course/${course._id}`);
+    router.push(`/courses/${course._id}`);
   };
 
   return (

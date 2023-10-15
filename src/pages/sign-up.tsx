@@ -5,8 +5,32 @@ import Link from "next/link";
 import RootLayout from "../components/layouts/RootLayout";
 import type { ReactElement } from "react";
 import Image from "next/image";
+import useAuth from "@/hooks/auth/useAuth";
+import { ISignUpUser } from "@/hooks/auth/IAuth";
+import { useState } from "react";
 
 const SignUpPage = () => {
+  const [signUpData, setSignUpData] = useState<ISignUpUser | null>(null);
+  const { signUpUser } = useAuth();
+
+  const handleOnBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const field = e.target.name as keyof ISignUpUser;
+    const value = e.target.value;
+    const newSignUpData = { ...signUpData };
+    newSignUpData[field] = value;
+    setSignUpData(newSignUpData as ISignUpUser);
+  };
+
+  const handleSignUpSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    if (signUpData) {
+      signUpUser(signUpData);
+    }
+    const form = e.currentTarget as HTMLFormElement;
+    form.reset();
+
+    e.preventDefault();
+  };
+
   return (
     <section className="my-5">
       <div className="container h-100">
@@ -20,9 +44,13 @@ const SignUpPage = () => {
                       Sign Up and Start Learning from Today!
                     </p>
 
-                    <form className="mx-1 mx-md-4">
+                    <form
+                      className="mx-1 mx-md-4"
+                      onSubmit={handleSignUpSubmit}
+                    >
                       <div className="form-outline flex-fill mb-4">
                         <input
+                          onBlur={handleOnBlur}
                           name="firstName"
                           type="text"
                           className="form-control"
@@ -33,6 +61,7 @@ const SignUpPage = () => {
 
                       <div className="form-outline flex-fill mb-4">
                         <input
+                          onBlur={handleOnBlur}
                           name="middleName"
                           type="text"
                           className="form-control"
@@ -42,6 +71,7 @@ const SignUpPage = () => {
 
                       <div className="form-outline flex-fill mb-4">
                         <input
+                          onBlur={handleOnBlur}
                           name="lastName"
                           type="text"
                           className="form-control"
@@ -52,6 +82,7 @@ const SignUpPage = () => {
 
                       <div className="form-outline flex-fill mb-4">
                         <input
+                          onBlur={handleOnBlur}
                           name="email"
                           type="email"
                           className="form-control"
@@ -62,20 +93,11 @@ const SignUpPage = () => {
 
                       <div className="form-outline flex-fill mb-4">
                         <input
+                          onBlur={handleOnBlur}
                           name="password"
                           type="password"
                           className="form-control"
                           placeholder="Password"
-                          required
-                        />
-                      </div>
-
-                      <div className="form-outline flex-fill mb-4">
-                        <input
-                          name="password2"
-                          type="password"
-                          className="form-control"
-                          placeholder="Repeat your password"
                           required
                         />
                       </div>

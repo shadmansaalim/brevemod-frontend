@@ -6,18 +6,20 @@ import { ILoginUser, ISignUpUser } from "@/hooks/auth/IAuth";
 type AuthContextType = {
   currentUser: any;
   isLoading: boolean;
+  setIsLoading: (state: boolean) => void;
   signUpUser: (payload: ISignUpUser) => void;
   loginUser: (payload: ILoginUser) => void;
-  logout: () => void;
+  logoutUser: () => void;
 };
 
 // Define the default value for AuthContextType
 const authContextDefault: AuthContextType = {
   currentUser: null,
   isLoading: false,
+  setIsLoading: () => {},
   signUpUser: () => {},
   loginUser: () => {},
-  logout: () => {},
+  logoutUser: () => {},
 };
 
 // Create the context with an initial value of null

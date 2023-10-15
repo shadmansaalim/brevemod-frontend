@@ -100,7 +100,7 @@ const useAuthApi = () => {
   };
 
   // Function to logout current user
-  const logout = () => {
+  const logoutUser = () => {
     // Removing the current user from local storage
     removeTokenFromLocalStorage();
     setCurrentUser(null);
@@ -113,7 +113,7 @@ const useAuthApi = () => {
     setIsLoading,
     signUpUser,
     loginUser,
-    logout,
+    logoutUser,
   };
 };
 

@@ -2,7 +2,7 @@
 import { Card, Col, Button } from "react-bootstrap";
 import Rating from "react-rating";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDoubleRight, faStar } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { ICourse } from "@/interfaces/common";
 
@@ -20,18 +20,27 @@ const Course = (props: { course: ICourse }) => {
         <Card.Img variant="top" src={course.thumbnailLink} />
         <Card.Body className="d-flex flex-column justify-content-around">
           <Card.Title>{course.title}</Card.Title>
-          <Card.Text>
+          <Card.Text className="text-center">
             <small>{course.instructorName}</small>
-            <span className="d-flex justify-content-center mt-1">
-              <span className="me-1 rating">{course.avgRating}</span>
+            <div className="d-flex justify-content-center mt-1">
+              <span className="me-1 rating">{3.5}</span>
+              <Rating
+                className="me-1"
+                initialRating={3.5}
+                emptySymbol={
+                  <FontAwesomeIcon icon={faStar} color="whitesmoke" />
+                }
+                fullSymbol={<FontAwesomeIcon icon={faStar} color="gold" />}
+                readonly
+              ></Rating>
               <small>(34345345)</small>
-            </span>
-            <span className="d-flex justify-content-center mt-2">
+            </div>
+            <div className="d-flex justify-content-center mt-2">
               <span className="fw-bold fs-5">${course.price}</span>
-            </span>
+            </div>
           </Card.Text>
         </Card.Body>
-        <Card.Footer>
+        <Card.Footer className="d-flex justify-content-center">
           <Button onClick={goToCourseDetails} variant="primary">
             Preview Course <FontAwesomeIcon icon={faAngleDoubleRight} />
           </Button>

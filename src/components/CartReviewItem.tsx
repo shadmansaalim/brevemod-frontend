@@ -1,6 +1,6 @@
 // Imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faStar } from "@fortawesome/free-solid-svg-icons";
 import Rating from "react-rating";
 import { ICourse } from "@/interfaces/common";
 import { getTokenFromLocalStorage } from "@/utilities/common";
@@ -42,12 +42,19 @@ const CartReviewItem = (props: { course: ICourse }) => {
       </div>
       <div
         style={{ width: "70%" }}
-        className="mt-2 mt-lg-0 d-flex d-md-block flex-column justify-content-center"
+        className="mt-2 mt-lg-0 d-flex d-md-block flex-column justify-content-center text-center"
       >
         <h6 className="m-0">{course.title}</h6>
         <small>{course.instructorName}</small>
         <div className="d-flex justify-content-center mt-1">
-          <span className="me-1 rating">{course.avgRating}</span>
+          <span className="me-1 rating">{3.5}</span>
+          <Rating
+            className="me-1"
+            initialRating={3.5}
+            emptySymbol={<FontAwesomeIcon icon={faStar} color="whitesmoke" />}
+            fullSymbol={<FontAwesomeIcon icon={faStar} color="gold" />}
+            readonly
+          ></Rating>
           <small>(54,543)</small>
         </div>
         <div className="d-flex justify-content-center mt-2">

@@ -1,22 +1,22 @@
 // Imports
 import Image from "next/image";
+import Rating from "react-rating";
 import swal from "sweetalert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faStar } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ICourse } from "@/interfaces/common";
 import useAuth from "@/hooks/auth/useAuth";
 import CookingGif from "../assets/images/Cooking.gif";
+import { getTokenFromLocalStorage } from "@/utilities/common";
 
 const MyCourse = (props: { course: ICourse }) => {
   const { course } = props;
   const { currentUser } = useAuth();
-  const [value, setValue] = useState(0);
-  //   const [reviewData, setReviewData] = useState({
-  //     name: user?.displayName,
-  //     feedback: "",
-  //   });
+
+  const [rating, setRating] = useState<number>(0.0);
+  const [words, setWords] = useState<string>("");
 
   const [firstModalShow, setFirstModalShow] = useState(false);
   const [secondModalShow, setSecondModalShow] = useState(false);
@@ -27,17 +27,30 @@ const MyCourse = (props: { course: ICourse }) => {
   const handleSecondModalClose = () => setSecondModalShow(false);
   const handleSecondModalShow = () => setSecondModalShow(true);
 
-  const handleOnBlur = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    // const field = e.target.name;
-    // const value = e.target.value;
-    // const newReviewData = { ...reviewData };
-    // newReviewData[field] = value;
-    // setReviewData(newReviewData);
+  const handleAddReviewToCourse = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (rating === 0.0) {
+      swal("Please provide a rating", "", "warning");
+    } else {
+      fetch(`http://localhost:8080/api/v1/course-reviews/${course._id}`, {
+        method: "POST",
+        headers: {
+          Authorization: getTokenFromLocalStorage(),
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ rating, words }),
+      })
+        .then((res) => res.json())
+        .then((result) => {
+          if (result.success) {
+            console.log(result.data);
+            handleFirstModalClose();
+            handleSecondModalClose();
+            swal(result.message, "", "success");
+          }
+        });
+    }
   };
-
-  const handleAddReviewToCourse = (e: React.FormEvent<HTMLFormElement>) => {};
 
   return (
     <div className="col">
@@ -96,43 +109,34 @@ const MyCourse = (props: { course: ICourse }) => {
                   <Modal.Title>Drop a review about this course</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <p>Please enter your feedback here</p>
-                  <div className="form-floating mb-3">
-                    <input
-                      defaultValue=""
-                      className="form-control"
-                      id="floatingServiceName"
-                      required
-                      type="text"
-                      name="name"
-                      onBlur={handleOnBlur}
-                    />
-                    <label htmlFor="floatingServiceName">
-                      <small>Your Name</small>
-                    </label>
-                  </div>
+                  <p>Please write your review words here about this course.</p>
                   <div className="form-floating mb-3">
                     <textarea
                       className="form-control"
                       placeholder="Leave a comment here"
                       id="floatingServiceDescription"
                       style={{ height: "100px" }}
-                      name="feedback"
-                      onBlur={handleOnBlur}
+                      name="words"
+                      required
+                      onBlur={(e) => setWords(e.target.value)}
                     ></textarea>
-                    <label htmlFor="floatingServiceDescription">Feedback</label>
+                    <label htmlFor="floatingServiceDescription">Words</label>
                   </div>
                   <div className="text-start">
-                    {/* <Rating
+                    <Rating
                       className="fs-3"
-                      emptySymbol="far fa-star icon-color"
-                      fullSymbol="fas fa-star icon-color"
+                      emptySymbol={
+                        <FontAwesomeIcon icon={faStar} color="whitesmoke" />
+                      }
+                      fullSymbol={
+                        <FontAwesomeIcon icon={faStar} color="gold" />
+                      }
                       fractions={2}
-                      value={value}
-                      onChange={(value) => {
-                        setValue(value);
+                      value={rating}
+                      onChange={(value: number) => {
+                        setRating(value);
                       }}
-                    ></Rating> */}
+                    ></Rating>
                   </div>
                 </Modal.Body>
                 <Modal.Footer>

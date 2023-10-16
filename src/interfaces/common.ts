@@ -42,3 +42,11 @@ export type IUser = {
   };
   purchases: ICourse[];
 };
+
+export type ICourseReview = {
+  _id: string;
+  course: ICourse;
+  user: IUser;
+  rating: number;
+  words: string;
+};

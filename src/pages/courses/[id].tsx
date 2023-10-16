@@ -8,10 +8,11 @@ import CountUp from "react-countup";
 import VisibilitySensor from "react-visibility-sensor";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { ICourse } from "@/interfaces/common";
+import { ICourse, ICourseReview } from "@/interfaces/common";
 import useAuth from "@/hooks/auth/useAuth";
 import { getTokenFromLocalStorage } from "@/utilities/common";
 import { useEffect } from "react";
+import UserReviews from "../../components/UserReviews";
 
 const CourseDetailsPage: NextPageWithLayout<{
   course: ICourse;
@@ -29,6 +30,8 @@ const CourseDetailsPage: NextPageWithLayout<{
   const [addedToCart, setAddedToCart] = useState(false);
   const [purchased, setPurchased] = useState(false);
 
+  const [courseReviews, setCourseReviews] = useState<ICourseReview[]>([]);
+
   useEffect(() => {
     if (isAddedToCart) {
       setAddedToCart(true);
@@ -37,6 +40,15 @@ const CourseDetailsPage: NextPageWithLayout<{
       setPurchased(true);
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/api/v1/course-reviews/${course._id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setCourseReviews(data.data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const handleAddToCart = async () => {
     fetch(`http://localhost:8080/api/v1/cart/add-to-cart/${course._id}`, {
@@ -184,7 +196,18 @@ const CourseDetailsPage: NextPageWithLayout<{
               </div>
             </section>
           </div>
-          <></>
+          <div>
+            {courseReviews?.length && (
+              <div
+                className=""
+                style={{
+                  backgroundColor: "#f5f7ff",
+                }}
+              >
+                <UserReviews reviews={courseReviews} />
+              </div>
+            )}
+          </div>
         </section>
       ) : (
         <div className="vh-100 d-flex justify-content-center align-items-center">

@@ -1,10 +1,9 @@
 // Imports
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Footer = () => {
   return (
     <footer
-      className="text-center text-lg-start text-white mt-auto"
+      className="text-center text-lg-start text-white"
       style={{ backgroundColor: "#45526e" }}
     >
       <div className="container p-4 pb-0">

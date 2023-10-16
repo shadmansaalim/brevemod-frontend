@@ -115,3 +115,16 @@ input::-webkit-inner-spin-button {
   transform: translateX(-0px) translateY(-15px);
   font-size: 12px;
 }
+
+.slick-dots li button:before {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.slick-prev:before {
+  display: none;
+}
+.slick-next:before {
+  display: none;
+}

@@ -47,10 +47,10 @@ const CartReviewItem = (props: { course: ICourse }) => {
         <h6 className="m-0">{course.title}</h6>
         <small>{course.instructorName}</small>
         <div className="d-flex justify-content-center mt-1">
-          <span className="me-1 rating">{3.5}</span>
+          <span className="me-1 rating">{course.avgRating}</span>
           <Rating
             className="me-1"
-            initialRating={3.5}
+            initialRating={course.avgRating}
             emptySymbol={<FontAwesomeIcon icon={faStar} color="whitesmoke" />}
             fullSymbol={<FontAwesomeIcon icon={faStar} color="gold" />}
             readonly

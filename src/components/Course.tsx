@@ -23,10 +23,10 @@ const Course = (props: { course: ICourse }) => {
           <Card.Text className="text-center">
             <small>{course.instructorName}</small>
             <div className="d-flex justify-content-center mt-1">
-              <span className="me-1 rating">{3.5}</span>
+              <span className="me-1 rating">{course.avgRating}</span>
               <Rating
                 className="me-1"
-                initialRating={3.5}
+                initialRating={course.avgRating}
                 emptySymbol={
                   <FontAwesomeIcon icon={faStar} color="whitesmoke" />
                 }

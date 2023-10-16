@@ -122,7 +122,7 @@ const PaymentCheckoutForm = () => {
               const user = result.data;
               setCurrentUser(user);
               setProcessing(false);
-              router.push("/");
+              router.push("/purchase-confirm");
               reset();
             }
           });
@@ -241,7 +241,7 @@ const PaymentCheckoutForm = () => {
 
           <div className="mt-4 mb-4 d-flex justify-content-between">
             <button
-              onClick={() => router.push("/review")}
+              onClick={() => router.back()}
               className="btn btn-secondary px-3"
             >
               <FontAwesomeIcon icon={faBackward} /> Previous

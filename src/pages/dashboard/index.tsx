@@ -1,5 +1,5 @@
 // Imports
-import RootLayout from "../components/layouts/RootLayout";
+import DashboardLayout from "@/components/Layouts/DashboardLayout";
 import type { ReactElement } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,10 +8,10 @@ import { useRouter } from "next/router";
 import useAuth from "@/hooks/auth/useAuth";
 import MyCourse from "@/components/MyCourse";
 import { ICourse } from "@/interfaces/common";
-import EmptyCartImage from "../assets/images/EmptyCart.svg";
+import EmptyCartImage from "../../assets/images/EmptyCart.svg";
 import Image from "next/image";
 
-const MyClassesPage = () => {
+const DashboardHomePage = () => {
   const { currentUser } = useAuth();
   const router = useRouter();
 
@@ -20,13 +20,13 @@ const MyClassesPage = () => {
       <Container>
         {currentUser?.purchases.length ? (
           <section style={{ marginBottom: "150px" }}>
-            <div className="my-5">
+            <div className="my-4">
               <h3 className="fw-light mb-5">
                 Welcome back
                 <span className="fw-normal ms-1">{currentUser?.firstName}</span>
                 , ready for your next lesson?
               </h3>
-              <div className="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+              <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 {currentUser?.purchases.map((course: ICourse) => (
                   <MyCourse key={course._id} course={course} />
                 ))}
@@ -75,8 +75,8 @@ const MyClassesPage = () => {
   );
 };
 
-export default MyClassesPage;
+export default DashboardHomePage;
 
-MyClassesPage.getLayout = function getLayout(page: ReactElement) {
-  return <RootLayout>{page}</RootLayout>;
+DashboardHomePage.getLayout = function getLayout(page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
 };

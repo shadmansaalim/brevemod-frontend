@@ -19,7 +19,7 @@ const PurchaseConfirmationPage = () => {
         <strong className="ms-1">Course Purchased Successfully</strong> Please
         check your email for subscription details. Check carefully it might be
         on your spam folder. You will now be able to see course details on
-        <strong className="ms-1">My Classes</strong>
+        <strong className="ms-1">Dashboard</strong>
       </p>
       <hr></hr>
       <p>
@@ -35,10 +35,10 @@ const PurchaseConfirmationPage = () => {
       </p>
       <p className="lead">
         <button
-          onClick={() => router.push("/my-classes")}
+          onClick={() => router.push("/dashboard")}
           className="btn btn-outline-primary"
         >
-          My Classes
+          Dashboard
         </button>
       </p>
     </div>

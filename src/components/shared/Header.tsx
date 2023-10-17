@@ -14,7 +14,7 @@ import {
   faUserPlus,
   faShoppingCart,
   faUser,
-  faUserTie,
+  faDashboard,
   faRightFromBracket,
   faForward,
 } from "@fortawesome/free-solid-svg-icons";
@@ -56,13 +56,6 @@ const Header = () => {
               style={{ color: "#161c2d" }}
             >
               Courses
-            </Link>
-            <Link
-              className="text-decoration-none me-lg-3"
-              href="/my-classes"
-              style={{ color: "#161c2d" }}
-            >
-              My Classes
             </Link>
             <Link
               className="text-decoration-none me-lg-3"
@@ -154,12 +147,12 @@ const Header = () => {
                 <NavDropdown.Item eventKey="4.0" disabled>
                   {currentUser.firstName}
                 </NavDropdown.Item>
-                <NavDropdown.Item eventKey="4.1">
+                <NavDropdown.Item href="/profile" eventKey="4.1">
                   <FontAwesomeIcon className="me-2" icon={faUser} /> Profile
                 </NavDropdown.Item>
-                <NavDropdown.Item eventKey="4.3" href="/instructors">
-                  <FontAwesomeIcon className="me-2" icon={faUserTie} />{" "}
-                  Instructors
+                <NavDropdown.Item href="/dashboard" eventKey="4.3">
+                  <FontAwesomeIcon className="me-2" icon={faDashboard} />{" "}
+                  Dashboard
                 </NavDropdown.Item>
                 <NavDropdown.Item onClick={logoutUser} eventKey="4.2">
                   <FontAwesomeIcon className="me-2" icon={faRightFromBracket} />{" "}

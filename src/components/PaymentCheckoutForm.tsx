@@ -122,10 +122,13 @@ const PaymentCheckoutForm = () => {
               const user = result.data;
               setCurrentUser(user);
               setProcessing(false);
-              router.push("/purchase-confirm");
               reset();
             }
-          });
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => router.push("/purchase-confirm"));
       }
     }
   };

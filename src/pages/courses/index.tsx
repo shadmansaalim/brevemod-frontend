@@ -2,10 +2,12 @@
 import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
 import Course from "@/components/Course";
-import { Row, Container } from "react-bootstrap";
+import { Row, Container, InputGroup, Form } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { ICourse, IMetaData } from "@/interfaces/common";
 import useAuth from "@/hooks/auth/useAuth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const CoursesPage = () => {
   const { isLoading, setIsLoading } = useAuth();
@@ -17,10 +19,13 @@ const CoursesPage = () => {
     totalPage: 0,
   });
   const [activePage, setActivePage] = useState<number>(1);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`http://localhost:8080/api/v1/courses?page=${activePage}`)
+    fetch(
+      `http://localhost:8080/api/v1/courses?searchTerm=${searchTerm}&page=${activePage}`
+    )
       .then((res) => res.json())
       .then((data) => {
         setCourses(data.data);
@@ -29,17 +34,34 @@ const CoursesPage = () => {
       })
       .catch((error) => console.log(error))
       .finally(() => setIsLoading(false));
-  }, [activePage]);
+  }, [activePage, searchTerm]);
 
   return (
     <>
+      <div className="col-lg-6 mx-auto mt-5">
+        <InputGroup
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setSearchTerm(e.target.value)
+          }
+          className="mb-3"
+        >
+          <InputGroup.Text id="basic-addon1">
+            <FontAwesomeIcon icon={faSearch} />
+          </InputGroup.Text>
+          <Form.Control
+            placeholder="Search courses"
+            aria-label="Search courses"
+            aria-describedby="basic-addon1"
+          />
+        </InputGroup>
+      </div>
       {isLoading ? (
         <div className="vh-100 d-flex justify-content-center align-items-center">
           <div className="spinner"></div>
         </div>
       ) : (
         <Container>
-          <section className="mt-5">
+          <section>
             <div>
               <Row xs={1} md={2} lg={4} className="g-4 mt-3 mb-5">
                 {courses?.map((course) => (

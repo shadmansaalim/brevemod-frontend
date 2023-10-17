@@ -3,7 +3,12 @@ import Image from "next/image";
 import Rating from "react-rating";
 import swal from "sweetalert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faStar } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPen,
+  faStar,
+  faForward,
+  faBan,
+} from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ICourse } from "@/interfaces/common";
@@ -13,7 +18,7 @@ import { getTokenFromLocalStorage } from "@/utilities/common";
 
 const MyCourse = (props: { course: ICourse }) => {
   const { course } = props;
-  const { currentUser } = useAuth();
+  const { currentUser, setCurrentUser } = useAuth();
 
   const [rating, setRating] = useState<number>(0.0);
   const [words, setWords] = useState<string>("");
@@ -43,13 +48,42 @@ const MyCourse = (props: { course: ICourse }) => {
         .then((res) => res.json())
         .then((result) => {
           if (result.success) {
-            console.log(result.data);
             handleFirstModalClose();
             handleSecondModalClose();
             swal(result.message, "", "success");
           }
         });
     }
+  };
+
+  const handleCancelEnrollment = () => {
+    swal({
+      title: "Are you sure?",
+      text: "Once we cancel your enrollment, you will lose all your progress and not even get a refund for your course purchase.",
+      icon: "warning",
+      buttons: ["No", "Yes"],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        fetch(
+          `http://localhost:8080/api/v1/purchases/cancel-enrollment/${course._id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: getTokenFromLocalStorage(),
+              "content-type": "application/json",
+            },
+          }
+        )
+          .then((res) => res.json())
+          .then((result) => {
+            if (result.success) {
+              setCurrentUser(result.data);
+              swal(result.message, "", "success");
+            }
+          });
+      }
+    });
   };
 
   return (
@@ -148,12 +182,20 @@ const MyCourse = (props: { course: ICourse }) => {
             </Modal>
           </div>
         </div>
-        <div className="card-footer">
+        <div className="card-footer ">
           <button
-            className="btn btn-outline-dark rounded-pill"
+            className="btn btn-outline-dark w-100"
             onClick={handleFirstModalShow}
           >
             Continue Course
+            <FontAwesomeIcon className="ms-1" icon={faForward} />
+          </button>
+          <button
+            className="btn btn-outline-danger w-100 mt-2"
+            onClick={handleCancelEnrollment}
+          >
+            Cancel Enrollment
+            <FontAwesomeIcon className="ms-1" icon={faBan} />
           </button>
         </div>
       </div>

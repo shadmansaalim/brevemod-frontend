@@ -6,16 +6,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
   faSignOutAlt,
+  faImage,
   faPen,
   faTachometerAlt,
+  faBox,
+  faBlog,
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import ProfileIcon from "../../assets/images/ProfileIcon.png";
 import { useRouter } from "next/router";
+import useAuth from "@/hooks/auth/useAuth";
 import Image from "next/image";
 import Link from "next/link";
 
-const DashboardLayout = ({ children }: any) => {
+const AdminDashboardLayout = ({ children }: any) => {
   const [toggled, setToggled] = useState(true);
   const router = useRouter();
 
@@ -96,4 +100,4 @@ const DashboardLayout = ({ children }: any) => {
   );
 };
 
-export default DashboardLayout;
+export default AdminDashboardLayout;

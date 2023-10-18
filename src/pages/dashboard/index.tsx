@@ -15,6 +15,8 @@ const DashboardHomePage = () => {
   const { currentUser } = useAuth();
   const router = useRouter();
 
+  console.log(currentUser);
+
   return (
     <section className="text-center">
       <Container>
@@ -35,7 +37,7 @@ const DashboardHomePage = () => {
           </section>
         ) : (
           <>
-            {currentUser?.purchases === 0 ? (
+            {currentUser?.purchases?.length === 0 ? (
               <Row style={{ marginTop: "80px", marginBottom: "80px" }}>
                 <Col lg="6" className="mx-auto shadow-lg mb-5 p-5 rounded-3">
                   <Image

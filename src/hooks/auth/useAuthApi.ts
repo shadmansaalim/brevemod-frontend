@@ -102,9 +102,11 @@ const useAuthApi = () => {
 
   // Function to logout current user
   const logoutUser = () => {
+    console.log("fd");
+    setCurrentUser(null);
     // Removing the current user from local storage
     removeTokenFromLocalStorage();
-    setCurrentUser(null);
+    router.replace("/");
   };
 
   return {

@@ -51,3 +51,10 @@ export type ICourseReview = {
   rating: number;
   words: string;
 };
+
+export type IUserUpdateData = {
+  firstName: string;
+  middleName?: string;
+  lastName: string;
+  role: string;
+};

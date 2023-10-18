@@ -9,11 +9,14 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "react-bootstrap";
 import { getTokenFromLocalStorage } from "@/utilities/common";
 
-const UserRow = (props: { user: IUser; index: number }) => {
-  const { user, index } = props;
+const UserRow = (props: {
+  user: IUser;
+  index: number;
+  users: IUser[];
+  setUsers: (payload: IUser[]) => void;
+}) => {
+  const { user, index, users, setUsers } = props;
   const { currentUser } = useAuth();
-
-  const [userRole, setUserRole] = useState(user.role);
 
   const remainingUserRoles = Object.values(ENUM_USER_ROLES).filter(
     (role) => role !== user.role
@@ -28,7 +31,9 @@ const UserRow = (props: { user: IUser; index: number }) => {
   const handleModalClose = () => setModalShow(false);
   const handleModalShow = () => setModalShow(true);
 
-  const handleOnBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnBlur = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const field = e.target.name as keyof IUserUpdateData;
     const value = e.target.value;
     const newUserUpdateData = { ...userUpdateData };
@@ -38,7 +43,6 @@ const UserRow = (props: { user: IUser; index: number }) => {
 
   const handleUpdateUserData = (e: React.FormEvent<HTMLFormElement>) => {
     if (userUpdateData) {
-      console.log(userUpdateData);
       setUpdating(true);
       fetch(`http://localhost:8080/api/v1/users/${user._id}`, {
         method: "PATCH",
@@ -51,15 +55,55 @@ const UserRow = (props: { user: IUser; index: number }) => {
         .then((res) => res.json())
         .then((result) => {
           if (result.success) {
+            const updatedUsersData = users.map((elem) => {
+              if (elem._id === user._id) {
+                return result.data;
+              }
+              return elem;
+            });
+
+            setUsers(updatedUsersData);
+
             handleModalClose();
             swal(result.message, "", "success");
           }
         })
         .catch((error) => console.log(error))
-        .finally(() => setUpdating(true));
+        .finally(() => setUpdating(false));
     }
 
     e.preventDefault();
+  };
+
+  const handleDeleteUser = () => {
+    swal({
+      title: "Are you sure?",
+      text: "The user will be permanently removed from our system and cannot retrieve existing data.",
+      icon: "warning",
+      buttons: ["No", "Yes"],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        fetch(`http://localhost:8080/api/v1/users/${user._id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: getTokenFromLocalStorage(),
+            "content-type": "application/json",
+          },
+        })
+          .then((res) => res.json())
+          .then((result) => {
+            if (result.success) {
+              const newUsers = users.filter(
+                (elem: IUser) => elem._id !== user._id
+              );
+              setUsers(newUsers);
+              swal(result.message, "", "success");
+            }
+          })
+          .catch((error) => console.log(error));
+      }
+    });
   };
 
   return (
@@ -78,7 +122,10 @@ const UserRow = (props: { user: IUser; index: number }) => {
           <button onClick={handleModalShow} className="btn btn-outline-dark">
             <FontAwesomeIcon icon={faEdit} />
           </button>
-          <button className="btn btn-outline-danger ms-2">
+          <button
+            onClick={handleDeleteUser}
+            className="btn btn-outline-danger ms-2"
+          >
             <FontAwesomeIcon icon={faTrash} />
           </button>
         </td>
@@ -140,9 +187,11 @@ const UserRow = (props: { user: IUser; index: number }) => {
             <div className="form-outline flex-fill">
               <p className="mb-1">User Role</p>
               <select
+                onChange={handleOnBlur}
+                name="role"
                 aria-label="Default select example"
                 className={
-                  userRole === "admin"
+                  user.role === "admin"
                     ? "form-select btn btn-success w-100 text-uppercase"
                     : "form-select btn btn-warning w-100 text-uppercase"
                 }

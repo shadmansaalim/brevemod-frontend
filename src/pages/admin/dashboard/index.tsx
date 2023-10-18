@@ -12,14 +12,37 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import UserRow from "@/components/UserRow";
 import { getTokenFromLocalStorage } from "@/utilities/common";
-import { IUserUpdateData } from "@/interfaces/common";
+import swal from "sweetalert";
+import { IUser } from "@/interfaces/common";
+import useAuth from "@/hooks/auth/useAuth";
 
 const AdminDashboardHomePage = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [users, setUsers] = useState([]);
-  const [reviews, setReviews] = useState([]);
+  const { isLoading, setIsLoading } = useAuth();
+  const [users, setUsers] = useState<IUser[]>([]);
+  const [dashboardData, setDashboardData] = useState<{
+    coursesCount: number;
+    usersCount: number;
+    courseReviewsCount: number;
+    feedbacksCount: number;
+  } | null>(null);
 
   useEffect(() => {
+    setIsLoading(true);
+    fetch(`http://localhost:8080/api/v1/admin-dashboard`, {
+      method: "GET",
+      headers: {
+        Authorization: getTokenFromLocalStorage(),
+        "content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setDashboardData(data?.data))
+      .catch((error) => console.log(error.message))
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
     fetch(`http://localhost:8080/api/v1/users`, {
       method: "GET",
       headers: {
@@ -28,7 +51,9 @@ const AdminDashboardHomePage = () => {
       },
     })
       .then((res) => res.json())
-      .then((data) => setUsers(data?.data));
+      .then((data) => setUsers(data?.data))
+      .catch((error) => console.log(error.message))
+      .finally(() => setIsLoading(false));
   }, []);
 
   return (
@@ -46,7 +71,9 @@ const AdminDashboardHomePage = () => {
                 style={{ backgroundColor: "#3984ff" }}
               >
                 <div className="col-8">
-                  <h3 className="fw-bold fs-2 m-0">3</h3>
+                  <h3 className="fw-bold fs-2 m-0">
+                    {dashboardData?.coursesCount}
+                  </h3>
                   <p className="m-0">Courses</p>
                 </div>
                 <span className="col-4 text-start">
@@ -64,7 +91,9 @@ const AdminDashboardHomePage = () => {
                 style={{ backgroundColor: "#fa5649" }}
               >
                 <div className="col-8">
-                  <h3 className="fw-bold fs-2 m-0">6</h3>
+                  <h3 className="fw-bold fs-2 m-0">
+                    {dashboardData?.usersCount}
+                  </h3>
                   <p className="m-0">Users</p>
                 </div>
                 <span className="col-4 text-start">
@@ -81,8 +110,10 @@ const AdminDashboardHomePage = () => {
                 style={{ backgroundColor: "#ffa113" }}
               >
                 <div className="col-8">
-                  <h3 className="fw-bold fs-2 m-0">4645</h3>
-                  <p className="m-0">Reviews</p>
+                  <h3 className="fw-bold fs-2 m-0">
+                    {dashboardData?.courseReviewsCount}
+                  </h3>
+                  <p className="m-0">Course Reviews</p>
                 </div>
                 <span className="col-4 text-start">
                   <FontAwesomeIcon
@@ -99,7 +130,9 @@ const AdminDashboardHomePage = () => {
                 style={{ backgroundColor: "#5a00dd" }}
               >
                 <div className="col-8">
-                  <h3 className="fw-bold fs-2 m-0">65</h3>
+                  <h3 className="fw-bold fs-2 m-0">
+                    {dashboardData?.feedbacksCount}
+                  </h3>
                   <p className="m-0">Feedbacks</p>
                 </div>
                 <span className="col-4 text-start">
@@ -126,7 +159,13 @@ const AdminDashboardHomePage = () => {
               </thead>
               <tbody>
                 {users?.map((user, index) => (
-                  <UserRow key={index} index={index} user={user} />
+                  <UserRow
+                    key={index}
+                    index={index}
+                    user={user}
+                    users={users}
+                    setUsers={setUsers}
+                  />
                 ))}
               </tbody>
             </Table>

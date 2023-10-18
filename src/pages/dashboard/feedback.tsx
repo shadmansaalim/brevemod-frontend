@@ -8,10 +8,29 @@ import swal from "sweetalert";
 import useAuth from "@/hooks/auth/useAuth";
 import Image from "next/image";
 import FeedbackIcon from "../../assets/images/FeedbackIcon.svg";
+import { useEffect } from "react";
 
 const FeedbackPage = () => {
-  const { currentUser, setCurrentUser } = useAuth();
+  const { currentUser } = useAuth();
+  const [currentUserFeedback, setCurrentUserFeedback] = useState<string>("");
   const [feedback, setFeedback] = useState<string>("");
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/api/v1/feedbacks/current-user`, {
+      method: "GET",
+      headers: {
+        Authorization: getTokenFromLocalStorage(),
+        "content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.success) {
+          console.log(result);
+          setCurrentUserFeedback(result?.data?.feedback);
+        }
+      });
+  }, [currentUser]);
 
   const handleAddFeedback = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,7 +46,7 @@ const FeedbackPage = () => {
       .then((res) => res.json())
       .then((result) => {
         if (result.success) {
-          setCurrentUser(result.data);
+          setCurrentUserFeedback(result.data.feedback);
           swal(result.message, "", "success");
         }
       });
@@ -35,7 +54,7 @@ const FeedbackPage = () => {
 
   return (
     <Container className="mt-5">
-      {currentUser?.feedback ? (
+      {currentUserFeedback?.length ? (
         <div className="text-center my-5 col-9 col-md-8 col-lg-6 mx-auto">
           <Image
             src={FeedbackIcon}

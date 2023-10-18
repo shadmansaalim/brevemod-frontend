@@ -58,3 +58,9 @@ export type IUserUpdateData = {
   lastName: string;
   role: string;
 };
+
+export type IFeedback = {
+  _id: string;
+  user: Pick<IUser, "_id" | "firstName" | "middleName" | "lastName" | "email">;
+  feedback: string;
+};

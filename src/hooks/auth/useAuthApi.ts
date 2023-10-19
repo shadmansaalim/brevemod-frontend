@@ -44,12 +44,12 @@ const useAuthApi = () => {
   // Keeping the user stored even after reload
   useEffect(() => {
     const fetchUser = async () => {
+      setIsLoading(true);
       const token = getTokenFromLocalStorage();
 
       if (token) {
         const user = await getUserDataFromDb(token);
         if (user) {
-          console.log(user);
           setCurrentUser(user);
         } else {
           setCurrentUser(null);
@@ -58,7 +58,9 @@ const useAuthApi = () => {
         setCurrentUser(null);
       }
     };
-    fetchUser().catch(console.error);
+    fetchUser()
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
   }, []);
 
   // Function to sign-up user in DB

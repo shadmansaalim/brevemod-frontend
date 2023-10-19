@@ -63,3 +63,14 @@ export type IFeedback = {
   user: Pick<IUser, "_id" | "firstName" | "middleName" | "lastName" | "email">;
   feedback: string;
 };
+
+export type ICourseAddUpdateData = {
+  title: string;
+  description: string;
+  instructorName: string;
+  price: number;
+  thumbnailLink: string;
+  introVideoLink: string;
+  lecturesCount: number;
+  projectsCount: number;
+};

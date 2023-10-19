@@ -20,7 +20,7 @@ import { Modal } from "react-bootstrap";
 import { ISignUpUser } from "@/hooks/auth/IAuth";
 
 const AdminDashboardHomePage = () => {
-  const { isLoading, setIsLoading } = useAuth();
+  const { currentUser, isLoading, setIsLoading } = useAuth();
   const [users, setUsers] = useState<IUser[]>([]);
   const [dashboardData, setDashboardData] = useState<{
     coursesCount: number;
@@ -97,9 +97,10 @@ const AdminDashboardHomePage = () => {
       },
     })
       .then((res) => res.json())
-      .then((data) => setUsers(data?.data))
-      .catch((error) => console.log(error.message))
-      .finally(() => setIsLoading(false));
+      .then((data) => {
+        setUsers(data?.data);
+      })
+      .catch((error) => console.log(error.message));
   }, []);
 
   return (

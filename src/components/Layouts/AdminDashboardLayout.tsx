@@ -12,6 +12,7 @@ import {
   faBox,
   faBlog,
   faBars,
+  faFolder,
 } from "@fortawesome/free-solid-svg-icons";
 import ProfileIcon from "../../assets/images/ProfileIcon.png";
 import { useRouter } from "next/router";
@@ -53,7 +54,7 @@ const AdminDashboardLayout = ({ children }: any) => {
                   <span className="col-8 text-start">Home</span>
                 </Button>
               </Link>
-              <Link href="/dashboard" className="text-decoration-none">
+              <Link href="/admin/dashboard" className="text-decoration-none">
                 <Button className="btn btn-primary col-10 mb-3 d-flex justify-content-between align-items-center mx-auto">
                   <span className="col-3 text-end">
                     <FontAwesomeIcon icon={faTachometerAlt} />
@@ -61,7 +62,21 @@ const AdminDashboardLayout = ({ children }: any) => {
                   <span className="col-8 text-start">Dashboard</span>
                 </Button>
               </Link>
-              <Link href="/dashboard/feedback" className="text-decoration-none">
+              <Link
+                href="/admin/dashboard/courses"
+                className="text-decoration-none"
+              >
+                <Button className="btn btn-primary col-10 mb-3 d-flex justify-content-between align-items-center mx-auto">
+                  <span className="col-3 text-end">
+                    <FontAwesomeIcon icon={faFolder} />
+                  </span>
+                  <span className="col-8 text-start">Courses</span>
+                </Button>
+              </Link>
+              <Link
+                href="/admin/dashboard/feedback"
+                className="text-decoration-none"
+              >
                 <Button className="btn btn-primary col-10 mb-3 d-flex justify-content-between align-items-center mx-auto">
                   <span className="col-3 text-end">
                     <FontAwesomeIcon icon={faPen} />

@@ -15,8 +15,6 @@ const DashboardHomePage = () => {
   const { currentUser } = useAuth();
   const router = useRouter();
 
-  console.log(currentUser);
-
   return (
     <section className="text-center">
       <Container>

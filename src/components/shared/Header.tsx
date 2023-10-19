@@ -34,8 +34,6 @@ const Header = () => {
   const handleModalClose = () => setModalShow(false);
   const handleModalShow = () => setModalShow(true);
 
-  console.log(logoutUser);
-
   return (
     <Navbar className="shadow-sm pt-lg-3" expand="lg">
       <Container>

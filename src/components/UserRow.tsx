@@ -197,8 +197,10 @@ const UserRow = (props: {
                 }
               >
                 <option selected>{user.role}</option>
-                {remainingUserRoles.map((role) => (
-                  <option value={role}>{role}</option>
+                {remainingUserRoles.map((role, index: number) => (
+                  <option key={index} value={role}>
+                    {role}
+                  </option>
                 ))}
               </select>
             </div>

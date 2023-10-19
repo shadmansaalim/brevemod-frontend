@@ -1,3 +1,4 @@
+/* eslint no-use-before-define: 0 */
 // Imports
 import React from "react";
 import LoginImage from "../assets/images/SignUp.svg";

@@ -86,7 +86,7 @@ const Header = () => {
                 ) : (
                   <div className="container-fluid my-5">
                     <div className="offset-lg-3 col-12 text-center mx-auto">
-                      <img
+                      <Image
                         src="https://codescandy.com/coach/rtl/assets/images/bag.svg"
                         alt=""
                         className="img-fluid mb-4"

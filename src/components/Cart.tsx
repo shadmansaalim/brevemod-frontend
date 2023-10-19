@@ -15,7 +15,10 @@ const Cart = (props: {
   return (
     <ul className="list-group mb-3">
       {courses.map((course) => (
-        <li className="list-group-item d-flex justify-content-between lh-sm">
+        <li
+          key={course._id}
+          className="list-group-item d-flex justify-content-between lh-sm"
+        >
           <div>
             <p className="my-0">
               <small>{course.title}</small>

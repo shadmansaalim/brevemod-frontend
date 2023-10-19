@@ -7,6 +7,7 @@ import HeroSection from "@/components/HeroSection";
 import { useEffect, useState } from "react";
 import { ICourse } from "@/interfaces/common";
 import Course from "@/components/Course";
+import Image from "next/image";
 
 const HomePage: NextPageWithLayout = () => {
   const [courses, setCourses] = useState<ICourse[]>([]);
@@ -81,7 +82,7 @@ const HomePage: NextPageWithLayout = () => {
               </Accordion>
             </Col>
             <Col lg={5} className="mx-auto">
-              <img
+              <Image
                 className="img-fluid"
                 src="https://s.udemycdn.com/home/non-student-cta/instructor-2x-v3.jpg"
                 alt=""

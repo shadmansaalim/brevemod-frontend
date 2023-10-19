@@ -60,7 +60,7 @@ const UserReviews = (props: { reviews: ICourseReview[] }) => {
         }
       >
         {reviews.map((review) => (
-          <Col>
+          <Col key={review._id}>
             <Card
               style={{
                 minHeight: "300px",

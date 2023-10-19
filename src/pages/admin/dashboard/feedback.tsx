@@ -34,7 +34,7 @@ const AdminDashboardFeedbackPage = () => {
           <section className="my-5">
             <Row xs={1} lg={2} className="g-4">
               {feedbacks.map((feedback) => (
-                <Col>
+                <Col key={feedback._id}>
                   <Card
                     style={{
                       minHeight: "300px",

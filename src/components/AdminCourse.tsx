@@ -9,6 +9,7 @@ import useAuth from "@/hooks/auth/useAuth";
 import { getTokenFromLocalStorage } from "@/utilities/common";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 
 const AdminCourse = (props: {
   course: ICourse;
@@ -102,7 +103,7 @@ const AdminCourse = (props: {
   return (
     <div className="col">
       <div className="card h-100">
-        <img src={course.thumbnailLink} className="card-img-top" alt="..." />
+        <Image src={course.thumbnailLink} className="card-img-top" alt="..." />
         <div className="card-body course d-flex flex-column justify-content-around">
           <p className="card-title fw-bold">{course.title}</p>
           <div className="card-text">

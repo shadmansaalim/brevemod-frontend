@@ -89,7 +89,7 @@ const MyCourse = (props: { course: ICourse }) => {
   return (
     <div className="col">
       <div className="card h-100">
-        <img src={course.thumbnailLink} className="card-img-top" alt="..." />
+        <Image src={course.thumbnailLink} className="card-img-top" alt="..." />
         <div className="card-body course d-flex flex-column justify-content-around">
           <p className="card-title fw-bold">{course.title}</p>
           <div className="card-text">

@@ -20,7 +20,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "@/hooks/auth/useAuth";
 import ProfileIcon from "@/assets/images/ProfileIcon.png";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Cart from "../Cart";
@@ -86,7 +85,7 @@ const Header = () => {
                 ) : (
                   <div className="container-fluid my-5">
                     <div className="offset-lg-3 col-12 text-center mx-auto">
-                      <Image
+                      <img
                         src="https://codescandy.com/coach/rtl/assets/images/bag.svg"
                         alt=""
                         className="img-fluid mb-4"
@@ -134,8 +133,8 @@ const Header = () => {
             {currentUser ? (
               <NavDropdown
                 title={
-                  <Image
-                    src={ProfileIcon}
+                  <img
+                    src={`${ProfileIcon}`}
                     className="img-fluid"
                     width={40}
                     height={40}

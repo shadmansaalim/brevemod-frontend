@@ -51,7 +51,7 @@ const AdminDashboardHomePage = () => {
     e.preventDefault();
     if (userData) {
       setCreatingUser(true);
-      fetch(`${process.env.NEXT_SERVER_URL}/users/`, {
+      fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/`, {
         method: "POST",
         headers: {
           Authorization: getTokenFromLocalStorage(),
@@ -74,7 +74,7 @@ const AdminDashboardHomePage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`${process.env.NEXT_SERVER_URL}/admin-dashboard`, {
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin-dashboard`, {
       method: "GET",
       headers: {
         Authorization: getTokenFromLocalStorage(),
@@ -89,7 +89,7 @@ const AdminDashboardHomePage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`${process.env.NEXT_SERVER_URL}/users`, {
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/users`, {
       method: "GET",
       headers: {
         Authorization: getTokenFromLocalStorage(),

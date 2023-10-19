@@ -12,7 +12,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ProfileIcon from "@/assets/images/ProfileIcon.png";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import Link from "next/link";
 
 const AdminDashboardLayout = ({ children }: any) => {
@@ -29,8 +28,8 @@ const AdminDashboardLayout = ({ children }: any) => {
           }}
         >
           <div className="text-center pt-4 pb-2 border-bottom">
-            <Image
-              src={ProfileIcon}
+            <img
+              src={`${ProfileIcon}`}
               className="img-fluid mb-3"
               width={80}
               height={80}

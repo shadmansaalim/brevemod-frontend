@@ -21,10 +21,12 @@ const CoursesPage = () => {
   const [activePage, setActivePage] = useState<number>(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
+  console.log(process.env.NEXT_PUBLIC_SERVER_URL);
+
   useEffect(() => {
     setIsLoading(true);
     fetch(
-      `${process.env.NEXT_SERVER_URL}/courses?searchTerm=${searchTerm}&page=${activePage}`
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/courses?searchTerm=${searchTerm}&page=${activePage}`
     )
       .then((res) => res.json())
       .then((data) => {

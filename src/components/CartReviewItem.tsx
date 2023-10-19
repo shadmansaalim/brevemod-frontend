@@ -5,7 +5,6 @@ import Rating from "react-rating";
 import { ICourse } from "@/interfaces/common";
 import { getTokenFromLocalStorage } from "@/utilities/common";
 import useAuth from "@/hooks/auth/useAuth";
-import Image from "next/image";
 
 const CartReviewItem = (props: { course: ICourse }) => {
   const { setCurrentUser } = useAuth();
@@ -13,7 +12,7 @@ const CartReviewItem = (props: { course: ICourse }) => {
 
   const handleRemoveCourseFromCart = async () => {
     fetch(
-      `${process.env.NEXT_SERVER_URL}/cart/remove-from-cart/${course._id}`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/cart/remove-from-cart/${course._id}`,
       {
         method: "PATCH",
         headers: {
@@ -37,7 +36,7 @@ const CartReviewItem = (props: { course: ICourse }) => {
         flex-column flex-lg-row me-2 text-dark p-2 rounded-3 mb-1 justify-content-around align-items-center"
     >
       <div>
-        <Image
+        <img
           className="img-fluid rounded-3"
           src={course.thumbnailLink}
           alt=""

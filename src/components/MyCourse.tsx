@@ -1,5 +1,4 @@
 // Imports
-import Image from "next/image";
 import Rating from "react-rating";
 import swal from "sweetalert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -37,14 +36,17 @@ const MyCourse = (props: { course: ICourse }) => {
     if (rating === 0.0) {
       swal("Please provide a rating", "", "warning");
     } else {
-      fetch(`${process.env.NEXT_SERVER_URL}/course-reviews/${course._id}`, {
-        method: "POST",
-        headers: {
-          Authorization: getTokenFromLocalStorage(),
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ rating, words }),
-      })
+      fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/course-reviews/${course._id}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: getTokenFromLocalStorage(),
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ rating, words }),
+        }
+      )
         .then((res) => res.json())
         .then((result) => {
           if (result.success) {
@@ -66,7 +68,7 @@ const MyCourse = (props: { course: ICourse }) => {
     }).then((willDelete) => {
       if (willDelete) {
         fetch(
-          `${process.env.NEXT_SERVER_URL}/purchases/cancel-enrollment/${course._id}`,
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/purchases/cancel-enrollment/${course._id}`,
           {
             method: "DELETE",
             headers: {
@@ -89,7 +91,7 @@ const MyCourse = (props: { course: ICourse }) => {
   return (
     <div className="col">
       <div className="card h-100">
-        <Image src={course.thumbnailLink} className="card-img-top" alt="..." />
+        <img src={course.thumbnailLink} className="card-img-top" alt="..." />
         <div className="card-body course d-flex flex-column justify-content-around">
           <p className="card-title fw-bold">{course.title}</p>
           <div className="card-text">
@@ -113,8 +115,8 @@ const MyCourse = (props: { course: ICourse }) => {
                 <h6>{course.title}</h6>
               </Modal.Header>
               <Modal.Body className="d-flex flex-column justify-content-center align-items-center">
-                <Image
-                  src={CookingGif}
+                <img
+                  src={`${CookingGif}`}
                   className="img-fluid"
                   alt="Cooking Gif"
                 />

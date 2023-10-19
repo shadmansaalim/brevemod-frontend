@@ -4,7 +4,6 @@ import SignUpImage from "@/assets/images/SignUp.svg";
 import Link from "next/link";
 import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
-import Image from "next/image";
 import useAuth from "@/hooks/auth/useAuth";
 import { ISignUpUser } from "@/hooks/auth/IAuth";
 import { useState } from "react";
@@ -115,7 +114,7 @@ const SignUpPage = () => {
                     </form>
                   </div>
                   <div className="col-md-10 col-lg-6 col-xl-6 d-flex align-items-center order-1 order-lg-2 mx-auto">
-                    <Image
+                    <img
                       src={SignUpImage}
                       className="img-fluid"
                       alt="Sign Up Image"

@@ -42,7 +42,7 @@ const CourseDetailsPage: NextPageWithLayout<{
   }, [currentUser]);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_SERVER_URL}/course-reviews/${course._id}`)
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/course-reviews/${course._id}`)
       .then((res) => res.json())
       .then((data) => {
         setCourseReviews(data.data);
@@ -51,13 +51,16 @@ const CourseDetailsPage: NextPageWithLayout<{
   }, []);
 
   const handleAddToCart = async () => {
-    fetch(`${process.env.NEXT_SERVER_URL}/cart/add-to-cart/${course._id}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: getTokenFromLocalStorage(),
-        "content-type": "application/json",
-      },
-    })
+    fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/cart/add-to-cart/${course._id}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: getTokenFromLocalStorage(),
+          "content-type": "application/json",
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         const userData = data.data;
@@ -227,7 +230,7 @@ CourseDetailsPage.getLayout = function getLayout(page: ReactElement) {
 export const getServerSideProps = async (context: any) => {
   const { params } = context;
   const res = await fetch(
-    `${process.env.NEXT_SERVER_URL}/courses/${params.id}`
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/courses/${params.id}`
   );
   const data = await res.json();
   const course = data?.data;

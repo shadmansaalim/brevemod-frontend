@@ -9,7 +9,6 @@ import useAuth from "@/hooks/auth/useAuth";
 import MyCourse from "@/components/MyCourse";
 import { ICourse } from "@/interfaces/common";
 import EmptyCartImage from "@/assets/images/EmptyCart.svg";
-import Image from "next/image";
 
 const DashboardHomePage = () => {
   const { currentUser } = useAuth();
@@ -38,7 +37,7 @@ const DashboardHomePage = () => {
             {currentUser?.purchases?.length === 0 ? (
               <Row style={{ marginTop: "80px", marginBottom: "80px" }}>
                 <Col lg="6" className="mx-auto shadow-lg mb-5 p-5 rounded-3">
-                  <Image
+                  <img
                     src={EmptyCartImage}
                     className="img-fluid mb-3 col-6"
                     alt="Empty Cart Image"

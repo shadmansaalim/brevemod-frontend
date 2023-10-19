@@ -7,13 +7,12 @@ import HeroSection from "@/components/HeroSection";
 import { useEffect, useState } from "react";
 import { ICourse } from "@/interfaces/common";
 import Course from "@/components/Course";
-import Image from "next/image";
 
 const HomePage: NextPageWithLayout = () => {
   const [courses, setCourses] = useState<ICourse[]>([]);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_SERVER_URL}/courses?limit=${4}`)
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/courses?limit=${4}`)
       .then((res) => res.json())
       .then((data) => {
         setCourses(data.data);
@@ -82,7 +81,7 @@ const HomePage: NextPageWithLayout = () => {
               </Accordion>
             </Col>
             <Col lg={5} className="mx-auto">
-              <Image
+              <img
                 className="img-fluid"
                 src="https://s.udemycdn.com/home/non-student-cta/instructor-2x-v3.jpg"
                 alt=""

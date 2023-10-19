@@ -4,7 +4,6 @@ import type { ReactElement } from "react";
 import { Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import Image from "next/image";
 import ProfileIcon from "@/assets/images/ProfileIcon.png";
 import useAuth from "@/hooks/auth/useAuth";
 import { useState } from "react";
@@ -50,7 +49,7 @@ const ProfilePage = () => {
 
   const handleUpdateUserProfile = async () => {
     setUpdating(true);
-    fetch(`${process.env.NEXT_SERVER_URL}/profile`, {
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/profile`, {
       method: "PATCH",
       headers: {
         Authorization: getTokenFromLocalStorage(),
@@ -77,8 +76,8 @@ const ProfilePage = () => {
       <Container className="d-flex justify-content-center">
         <div className="mx-auto col-12 col-lg-9 profile-wrapper">
           <div className="text-center">
-            <Image
-              src={ProfileIcon}
+            <img
+              src={`${ProfileIcon}`}
               className="img-fluid"
               width={80}
               height={80}

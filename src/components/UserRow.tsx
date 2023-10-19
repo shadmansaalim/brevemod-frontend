@@ -44,7 +44,7 @@ const UserRow = (props: {
   const handleUpdateUserData = (e: React.FormEvent<HTMLFormElement>) => {
     if (userUpdateData) {
       setUpdating(true);
-      fetch(`${process.env.NEXT_SERVER_URL}/users/${user._id}`, {
+      fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/${user._id}`, {
         method: "PATCH",
         headers: {
           Authorization: getTokenFromLocalStorage(),
@@ -84,7 +84,7 @@ const UserRow = (props: {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        fetch(`${process.env.NEXT_SERVER_URL}/users/${user._id}`, {
+        fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/${user._id}`, {
           method: "DELETE",
           headers: {
             Authorization: getTokenFromLocalStorage(),

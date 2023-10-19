@@ -22,12 +22,15 @@ const useAuthApi = () => {
   // Function to get user profile from db
   const getUserDataFromDb = async (token: string) => {
     try {
-      const response = await fetch(`${process.env.NEXT_SERVER_URL}/profile`, {
-        headers: {
-          Authorization: token,
-          "content-type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/profile`,
+        {
+          headers: {
+            Authorization: token,
+            "content-type": "application/json",
+          },
+        }
+      );
       if (response.ok) {
         const data = await response.json();
         return data.data;
@@ -66,7 +69,7 @@ const useAuthApi = () => {
   // Function to sign-up user in DB
   const signUpUser = async (payload: ISignUpUser) => {
     // Creating the user
-    fetch(`${process.env.NEXT_SERVER_URL}/auth/signup`, {
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/signup`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -84,7 +87,7 @@ const useAuthApi = () => {
 
   // Function to login user
   const loginUser = async (payload: ILoginUser) => {
-    fetch(`${process.env.NEXT_SERVER_URL}/auth/login`, {
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/login`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

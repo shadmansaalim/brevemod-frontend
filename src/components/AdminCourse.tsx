@@ -9,7 +9,6 @@ import useAuth from "@/hooks/auth/useAuth";
 import { getTokenFromLocalStorage } from "@/utilities/common";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import Image from "next/image";
 
 const AdminCourse = (props: {
   course: ICourse;
@@ -43,7 +42,7 @@ const AdminCourse = (props: {
   const handleEditCourseDetails = (e: React.FormEvent<HTMLFormElement>) => {
     if (courseData) {
       setUpdatingCourseData(true);
-      fetch(`${process.env.NEXT_SERVER_URL}/courses/${course._id}`, {
+      fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/courses/${course._id}`, {
         method: "PATCH",
         headers: {
           Authorization: getTokenFromLocalStorage(),
@@ -83,7 +82,7 @@ const AdminCourse = (props: {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        fetch(`${process.env.NEXT_SERVER_URL}/courses/${course._id}`, {
+        fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/courses/${course._id}`, {
           method: "DELETE",
           headers: {
             Authorization: getTokenFromLocalStorage(),
@@ -103,7 +102,7 @@ const AdminCourse = (props: {
   return (
     <div className="col">
       <div className="card h-100">
-        <Image src={course.thumbnailLink} className="card-img-top" alt="..." />
+        <img src={course.thumbnailLink} className="card-img-top" alt="..." />
         <div className="card-body course d-flex flex-column justify-content-around">
           <p className="card-title fw-bold">{course.title}</p>
           <div className="card-text">

@@ -30,13 +30,16 @@ const PaymentCheckoutForm = () => {
   } = useForm();
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_SERVER_URL}/purchases/create-payment-intent`, {
-      method: "POST",
-      headers: {
-        Authorization: getTokenFromLocalStorage(),
-        "content-type": "application/json",
-      },
-    })
+    fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/purchases/create-payment-intent`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: getTokenFromLocalStorage(),
+          "content-type": "application/json",
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => setClientSecret(data?.data?.clientSecret));
   }, [currentUser]);
@@ -109,7 +112,7 @@ const PaymentCheckoutForm = () => {
 
         console.log(payment);
 
-        fetch(`${process.env.NEXT_SERVER_URL}/purchases`, {
+        fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/purchases`, {
           method: "POST",
           headers: {
             Authorization: getTokenFromLocalStorage(),

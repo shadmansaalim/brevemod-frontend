@@ -11,7 +11,6 @@ import {
 import CartReviewItem from "@/components/CartReviewItem";
 import { ICourse } from "@/interfaces/common";
 import Cart from "../components/Cart";
-import EmptyCartImage from "@/assets/images/EmptyCart.svg";
 import Image from "next/image";
 const CartReviewPage = () => {
   const { currentUser, setCurrentUser, isLoading, setIsLoading } = useAuth();
@@ -59,7 +58,7 @@ const CartReviewPage = () => {
                 <div className="card-body cart">
                   <div className="col-sm-12 empty-cart-cls text-center">
                     <Image
-                      src={EmptyCartImage}
+                      src="/EmptyCart.svg"
                       className="img-fluid mb-4 mr-3 col-6 col-lg-3"
                       alt=""
                     />

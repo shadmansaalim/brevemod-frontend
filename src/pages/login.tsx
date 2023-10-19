@@ -1,7 +1,6 @@
 /* eslint no-use-before-define: 0 */
 // Imports
 import React from "react";
-import LoginImage from "@/assets/images/SignUp.svg";
 import Link from "next/link";
 import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
@@ -39,7 +38,7 @@ const LoginPage = () => {
       <div className="container">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-md-8 col-lg-5 col-xl-5 mx-auto mb-4 mb-lg-0">
-            <img src={LoginImage} className="img-fluid" alt="Login Image" />
+            <img src="/SignUp.svg" className="img-fluid" alt="Login Image" />
           </div>
           <div className="col-md-8 col-lg-5 col-xl-4 offset-xl-1 shadow-lg p-5 rounded-3 mx-auto">
             <form onSubmit={handleLoginSubmit}>

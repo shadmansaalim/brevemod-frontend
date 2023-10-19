@@ -8,8 +8,6 @@ import { useRouter } from "next/router";
 import useAuth from "@/hooks/auth/useAuth";
 import MyCourse from "@/components/MyCourse";
 import { ICourse } from "@/interfaces/common";
-import EmptyCartImage from "@/assets/images/EmptyCart.svg";
-
 const DashboardHomePage = () => {
   const { currentUser } = useAuth();
   const router = useRouter();
@@ -38,7 +36,7 @@ const DashboardHomePage = () => {
               <Row style={{ marginTop: "80px", marginBottom: "80px" }}>
                 <Col lg="6" className="mx-auto shadow-lg mb-5 p-5 rounded-3">
                   <img
-                    src={EmptyCartImage}
+                    src="/EmptyCart.svg"
                     className="img-fluid mb-3 col-6"
                     alt="Empty Cart Image"
                   />

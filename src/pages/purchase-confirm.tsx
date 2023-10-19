@@ -1,14 +1,13 @@
 // Imports
 import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
-import PurchaseConfirmImage from "@/assets/images/PurchaseConfirm.svg";
 import { useRouter } from "next/router";
 const PurchaseConfirmationPage = () => {
   const router = useRouter();
   return (
     <div className="text-center my-5 col-9 col-md-8 col-lg-6 mx-auto">
       <img
-        src={PurchaseConfirmImage}
+        src="/PurchaseConfirm.svg"
         className="img-fluid col-8 col-md-6 mx-auto mb-4"
         alt="Payment Image"
       />

@@ -4,7 +4,6 @@ import type { ReactElement } from "react";
 import { Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import ProfileIcon from "@/assets/images/ProfileIcon.png";
 import useAuth from "@/hooks/auth/useAuth";
 import { useState } from "react";
 import { getTokenFromLocalStorage } from "@/utilities/common";
@@ -78,7 +77,7 @@ const ProfilePage = () => {
         <div className="mx-auto col-12 col-lg-9 profile-wrapper">
           <div className="text-center">
             <Image
-              src={ProfileIcon}
+              src="/ProfileIcon.png"
               className="img-fluid"
               width={80}
               height={80}

@@ -6,7 +6,6 @@ import { useState } from "react";
 import { getTokenFromLocalStorage } from "@/utilities/common";
 import swal from "sweetalert";
 import useAuth from "@/hooks/auth/useAuth";
-import FeedbackIcon from "@/assets/images/FeedbackIcon.svg";
 import { useEffect } from "react";
 
 const FeedbackPage = () => {
@@ -56,7 +55,7 @@ const FeedbackPage = () => {
       {currentUserFeedback?.length ? (
         <div className="text-center my-5 col-9 col-md-8 col-lg-6 mx-auto">
           <img
-            src={FeedbackIcon}
+            src="/FeedbackIcon.svg"
             className="img-fluid col-8 col-md-6 mx-auto mb-4"
             alt="Feedback Icon"
           />

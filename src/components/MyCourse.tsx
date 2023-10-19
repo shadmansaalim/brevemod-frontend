@@ -12,7 +12,6 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ICourse } from "@/interfaces/common";
 import useAuth from "@/hooks/auth/useAuth";
-import CookingGif from "@/assets/images/Cooking.gif";
 import { getTokenFromLocalStorage } from "@/utilities/common";
 import Image from "next/image";
 
@@ -117,7 +116,7 @@ const MyCourse = (props: { course: ICourse }) => {
               </Modal.Header>
               <Modal.Body className="d-flex flex-column justify-content-center align-items-center">
                 <Image
-                  src={CookingGif}
+                  src="/Cooking.gif"
                   className="img-fluid"
                   alt="Cooking Gif"
                 />

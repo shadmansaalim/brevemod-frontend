@@ -9,7 +9,6 @@ import {
   faTachometerAlt,
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
-import ProfileIcon from "@/assets/images/ProfileIcon.png";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
@@ -29,7 +28,7 @@ const DashboardLayout = ({ children }: any) => {
         >
           <div className="text-center pt-4 pb-2 border-bottom">
             <Image
-              src={ProfileIcon}
+              src="/ProfileIcon.png"
               className="img-fluid mb-3"
               width={80}
               height={80}

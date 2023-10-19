@@ -19,10 +19,9 @@ import {
   faForward,
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "@/hooks/auth/useAuth";
-import ProfileIcon from "@/assets/images/ProfileIcon.png";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Cart from "../Cart";
+import Cart from "../src/components/Cart";
 import Image from "next/image";
 
 const Header = () => {
@@ -135,7 +134,7 @@ const Header = () => {
               <NavDropdown
                 title={
                   <Image
-                    src={ProfileIcon}
+                    src="/ProfileIcon.png"
                     className="img-fluid"
                     width={40}
                     height={40}

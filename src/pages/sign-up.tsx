@@ -1,6 +1,5 @@
 // Imports
 import React from "react";
-import SignUpImage from "@/assets/images/SignUp.svg";
 import Link from "next/link";
 import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
@@ -115,7 +114,7 @@ const SignUpPage = () => {
                   </div>
                   <div className="col-md-10 col-lg-6 col-xl-6 d-flex align-items-center order-1 order-lg-2 mx-auto">
                     <img
-                      src={SignUpImage}
+                      src="/SignUp.svg"
                       className="img-fluid"
                       alt="Sign Up Image"
                     />

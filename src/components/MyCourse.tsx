@@ -14,6 +14,7 @@ import { ICourse } from "@/interfaces/common";
 import useAuth from "@/hooks/auth/useAuth";
 import CookingGif from "@/assets/images/Cooking.gif";
 import { getTokenFromLocalStorage } from "@/utilities/common";
+import Image from "next/image";
 
 const MyCourse = (props: { course: ICourse }) => {
   const { course } = props;
@@ -115,8 +116,8 @@ const MyCourse = (props: { course: ICourse }) => {
                 <h6>{course.title}</h6>
               </Modal.Header>
               <Modal.Body className="d-flex flex-column justify-content-center align-items-center">
-                <img
-                  src={`${CookingGif}`}
+                <Image
+                  src={CookingGif}
                   className="img-fluid"
                   alt="Cooking Gif"
                 />

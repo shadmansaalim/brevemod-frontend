@@ -8,6 +8,7 @@ import ProfileIcon from "@/assets/images/ProfileIcon.png";
 import useAuth from "@/hooks/auth/useAuth";
 import { useState } from "react";
 import { getTokenFromLocalStorage } from "@/utilities/common";
+import Image from "next/image";
 import swal from "sweetalert";
 
 type IUserProfileData = {
@@ -76,8 +77,8 @@ const ProfilePage = () => {
       <Container className="d-flex justify-content-center">
         <div className="mx-auto col-12 col-lg-9 profile-wrapper">
           <div className="text-center">
-            <img
-              src={`${ProfileIcon}`}
+            <Image
+              src={ProfileIcon}
               className="img-fluid"
               width={80}
               height={80}

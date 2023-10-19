@@ -23,6 +23,7 @@ import ProfileIcon from "@/assets/images/ProfileIcon.png";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Cart from "../Cart";
+import Image from "next/image";
 
 const Header = () => {
   const { currentUser, logoutUser } = useAuth();
@@ -133,8 +134,8 @@ const Header = () => {
             {currentUser ? (
               <NavDropdown
                 title={
-                  <img
-                    src={`${ProfileIcon}`}
+                  <Image
+                    src={ProfileIcon}
                     className="img-fluid"
                     width={40}
                     height={40}

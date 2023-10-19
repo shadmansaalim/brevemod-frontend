@@ -13,7 +13,7 @@ import {
 import ProfileIcon from "@/assets/images/ProfileIcon.png";
 import { useRouter } from "next/router";
 import Link from "next/link";
-
+import Image from "next/image";
 const AdminDashboardLayout = ({ children }: any) => {
   const [toggled, setToggled] = useState(true);
   const router = useRouter();
@@ -28,8 +28,8 @@ const AdminDashboardLayout = ({ children }: any) => {
           }}
         >
           <div className="text-center pt-4 pb-2 border-bottom">
-            <img
-              src={`${ProfileIcon}`}
+            <Image
+              src={ProfileIcon}
               className="img-fluid mb-3"
               width={80}
               height={80}

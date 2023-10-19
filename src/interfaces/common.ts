@@ -41,7 +41,6 @@ export type IUser = {
     };
   };
   purchases: ICourse[];
-  feedback?: string;
 };
 
 export type ICourseReview = {

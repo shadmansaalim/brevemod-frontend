@@ -4,6 +4,7 @@ export type ISignUpUser = {
   lastName: string;
   email: string;
   password: string;
+  role?: string;
 };
 
 export type ILoginUser = {

@@ -150,7 +150,14 @@ const Header = () => {
                 <NavDropdown.Item href="/profile" eventKey="4.1">
                   <FontAwesomeIcon className="me-2" icon={faUser} /> Profile
                 </NavDropdown.Item>
-                <NavDropdown.Item href="/dashboard" eventKey="4.3">
+                <NavDropdown.Item
+                  href={
+                    currentUser.role === "student"
+                      ? "/dashboard"
+                      : "/admin/dashboard"
+                  }
+                  eventKey="4.3"
+                >
                   <FontAwesomeIcon className="me-2" icon={faDashboard} />{" "}
                   Dashboard
                 </NavDropdown.Item>

@@ -5,18 +5,13 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
-  faSignOutAlt,
-  faImage,
   faPen,
   faTachometerAlt,
-  faBox,
-  faBlog,
   faBars,
   faFolder,
 } from "@fortawesome/free-solid-svg-icons";
 import ProfileIcon from "../../assets/images/ProfileIcon.png";
 import { useRouter } from "next/router";
-import useAuth from "@/hooks/auth/useAuth";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -84,13 +79,6 @@ const AdminDashboardLayout = ({ children }: any) => {
                   <span className="col-8 text-start">Feedback</span>
                 </Button>
               </Link>
-
-              <button className="btn btn-outline-warning col-10 d-flex justify-content-between align-items-center mx-auto">
-                <span className="col-3 text-end">
-                  <FontAwesomeIcon icon={faSignOutAlt} />
-                </span>
-                <span className="col-8 text-start">Log Out</span>
-              </button>
             </div>
           </div>
         </div>

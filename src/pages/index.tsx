@@ -2,8 +2,7 @@
 import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
 import type { NextPageWithLayout } from "./_app";
-import { Container } from "react-bootstrap";
-import { Row, Col, Accordion } from "react-bootstrap";
+import { Row, Col, Accordion, Container } from "react-bootstrap";
 import HeroSection from "@/components/HeroSection";
 import { useEffect, useState } from "react";
 import { ICourse } from "@/interfaces/common";
@@ -36,7 +35,7 @@ const HomePage: NextPageWithLayout = () => {
           </div>
         </div>
         <div className="mx-auto" style={{ marginTop: 120, marginBottom: 120 }}>
-          <h1 className="headline mb-3 text-start">Why Brevemod?</h1>
+          <h1 className="headline mb-3 text-start">FAQ</h1>
           <Row className="d-flex justfiy-content-around align-items-center">
             <Col lg={6} className="mx-auto">
               <Accordion defaultActiveKey="0" flush>

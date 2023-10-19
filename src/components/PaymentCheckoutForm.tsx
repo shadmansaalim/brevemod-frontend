@@ -87,16 +87,9 @@ const PaymentCheckoutForm = () => {
 
     if (paymentIntent) {
       if (intentError) {
-        if (intentError?.message) {
-          setError(intentError.message as string);
-          setSuccess("");
-          swal(intentError.message as string, "", "error");
-        } else {
-          // Handle the case where intentError has no 'message' property
-          setError("An unknown error occurred");
-          setSuccess("");
-          swal("An unknown error occurred", "", "error");
-        }
+        setError("Something went wrong!");
+        setSuccess("");
+        swal("Something went wrong!", "", "error");
       } else {
         setError("");
         setSuccess("Payment processed successfully");

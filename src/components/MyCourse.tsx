@@ -37,7 +37,7 @@ const MyCourse = (props: { course: ICourse }) => {
     if (rating === 0.0) {
       swal("Please provide a rating", "", "warning");
     } else {
-      fetch(`http://localhost:8080/api/v1/course-reviews/${course._id}`, {
+      fetch(`${process.env.NEXT_SERVER_URL}/course-reviews/${course._id}`, {
         method: "POST",
         headers: {
           Authorization: getTokenFromLocalStorage(),
@@ -66,7 +66,7 @@ const MyCourse = (props: { course: ICourse }) => {
     }).then((willDelete) => {
       if (willDelete) {
         fetch(
-          `http://localhost:8080/api/v1/purchases/cancel-enrollment/${course._id}`,
+          `${process.env.NEXT_SERVER_URL}/purchases/cancel-enrollment/${course._id}`,
           {
             method: "DELETE",
             headers: {

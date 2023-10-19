@@ -24,7 +24,7 @@ const CoursesPage = () => {
   useEffect(() => {
     setIsLoading(true);
     fetch(
-      `http://localhost:8080/api/v1/courses?searchTerm=${searchTerm}&page=${activePage}`
+      `${process.env.NEXT_SERVER_URL}/courses?searchTerm=${searchTerm}&page=${activePage}`
     )
       .then((res) => res.json())
       .then((data) => {

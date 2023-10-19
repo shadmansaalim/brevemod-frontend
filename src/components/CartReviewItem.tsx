@@ -11,13 +11,16 @@ const CartReviewItem = (props: { course: ICourse }) => {
   const { course } = props;
 
   const handleRemoveCourseFromCart = async () => {
-    fetch(`http://localhost:8080/api/v1/cart/remove-from-cart/${course._id}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: getTokenFromLocalStorage(),
-        "content-type": "application/json",
-      },
-    })
+    fetch(
+      `${process.env.NEXT_SERVER_URL}/cart/remove-from-cart/${course._id}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: getTokenFromLocalStorage(),
+          "content-type": "application/json",
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         const userData = data.data;

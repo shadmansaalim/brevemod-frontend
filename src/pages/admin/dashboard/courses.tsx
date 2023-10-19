@@ -27,7 +27,7 @@ const AdminDashboardCoursesPage = () => {
   useEffect(() => {
     setIsLoading(true);
     fetch(
-      `http://localhost:8080/api/v1/courses?searchTerm=${searchTerm}&page=${activePage}`
+      `${process.env.NEXT_SERVER_URL}/courses?searchTerm=${searchTerm}&page=${activePage}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -64,7 +64,7 @@ const AdminDashboardCoursesPage = () => {
   const handleAddNewCourse = (e: React.FormEvent<HTMLFormElement>) => {
     if (courseData) {
       setCreatingCourse(true);
-      fetch(`http://localhost:8080/api/v1/courses`, {
+      fetch(`${process.env.NEXT_SERVER_URL}/courses`, {
         method: "POST",
         headers: {
           Authorization: getTokenFromLocalStorage(),

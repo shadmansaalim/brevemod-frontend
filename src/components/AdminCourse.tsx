@@ -42,7 +42,7 @@ const AdminCourse = (props: {
   const handleEditCourseDetails = (e: React.FormEvent<HTMLFormElement>) => {
     if (courseData) {
       setUpdatingCourseData(true);
-      fetch(`http://localhost:8080/api/v1/courses/${course._id}`, {
+      fetch(`${process.env.NEXT_SERVER_URL}/courses/${course._id}`, {
         method: "PATCH",
         headers: {
           Authorization: getTokenFromLocalStorage(),
@@ -82,7 +82,7 @@ const AdminCourse = (props: {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        fetch(`http://localhost:8080/api/v1/courses/${course._id}`, {
+        fetch(`${process.env.NEXT_SERVER_URL}/courses/${course._id}`, {
           method: "DELETE",
           headers: {
             Authorization: getTokenFromLocalStorage(),

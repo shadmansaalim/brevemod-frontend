@@ -30,7 +30,7 @@ const PaymentCheckoutForm = () => {
   } = useForm();
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/v1/purchases/create-payment-intent`, {
+    fetch(`${process.env.NEXT_SERVER_URL}/purchases/create-payment-intent`, {
       method: "POST",
       headers: {
         Authorization: getTokenFromLocalStorage(),
@@ -109,7 +109,7 @@ const PaymentCheckoutForm = () => {
 
         console.log(payment);
 
-        fetch(`http://localhost:8080/api/v1/purchases`, {
+        fetch(`${process.env.NEXT_SERVER_URL}/purchases`, {
           method: "POST",
           headers: {
             Authorization: getTokenFromLocalStorage(),

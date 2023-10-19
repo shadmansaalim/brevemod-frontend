@@ -12,7 +12,7 @@ const HomePage: NextPageWithLayout = () => {
   const [courses, setCourses] = useState<ICourse[]>([]);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/v1/courses?limit=${4}`)
+    fetch(`${process.env.NEXT_SERVER_URL}/courses?limit=${4}`)
       .then((res) => res.json())
       .then((data) => {
         setCourses(data.data);

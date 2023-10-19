@@ -13,7 +13,7 @@ const AdminDashboardFeedbackPage = () => {
   const [feedbacks, setFeedbacks] = useState<IFeedback[]>([]);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/v1/feedbacks`, {
+    fetch(`${process.env.NEXT_SERVER_URL}/feedbacks`, {
       method: "GET",
       headers: {
         Authorization: getTokenFromLocalStorage(),

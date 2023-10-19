@@ -50,7 +50,7 @@ const ProfilePage = () => {
 
   const handleUpdateUserProfile = async () => {
     setUpdating(true);
-    fetch(`http://localhost:8080/api/v1/profile`, {
+    fetch(`${process.env.NEXT_SERVER_URL}/profile`, {
       method: "PATCH",
       headers: {
         Authorization: getTokenFromLocalStorage(),

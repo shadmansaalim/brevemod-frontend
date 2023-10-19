@@ -16,7 +16,7 @@ const FeedbackPage = () => {
   const [feedback, setFeedback] = useState<string>("");
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/v1/feedbacks/current-user`, {
+    fetch(`${process.env.NEXT_SERVER_URL}/feedbacks/current-user`, {
       method: "GET",
       headers: {
         Authorization: getTokenFromLocalStorage(),
@@ -35,7 +35,7 @@ const FeedbackPage = () => {
   const handleAddFeedback = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    fetch(`http://localhost:8080/api/v1/feedbacks`, {
+    fetch(`${process.env.NEXT_SERVER_URL}/feedbacks`, {
       method: "POST",
       headers: {
         Authorization: getTokenFromLocalStorage(),

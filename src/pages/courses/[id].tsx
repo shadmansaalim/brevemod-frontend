@@ -42,7 +42,7 @@ const CourseDetailsPage: NextPageWithLayout<{
   }, [currentUser]);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/v1/course-reviews/${course._id}`)
+    fetch(`${process.env.NEXT_SERVER_URL}/course-reviews/${course._id}`)
       .then((res) => res.json())
       .then((data) => {
         setCourseReviews(data.data);
@@ -51,7 +51,7 @@ const CourseDetailsPage: NextPageWithLayout<{
   }, []);
 
   const handleAddToCart = async () => {
-    fetch(`http://localhost:8080/api/v1/cart/add-to-cart/${course._id}`, {
+    fetch(`${process.env.NEXT_SERVER_URL}/cart/add-to-cart/${course._id}`, {
       method: "PATCH",
       headers: {
         Authorization: getTokenFromLocalStorage(),
@@ -226,7 +226,9 @@ CourseDetailsPage.getLayout = function getLayout(page: ReactElement) {
 
 export const getServerSideProps = async (context: any) => {
   const { params } = context;
-  const res = await fetch(`http://localhost:8080/api/v1/courses/${params.id}`);
+  const res = await fetch(
+    `${process.env.NEXT_SERVER_URL}/courses/${params.id}`
+  );
   const data = await res.json();
   const course = data?.data;
   return { props: { course } };

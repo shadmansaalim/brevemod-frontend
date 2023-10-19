@@ -3,7 +3,7 @@
 import React from "react";
 import LoginImage from "../assets/images/SignUp.svg";
 import Link from "next/link";
-import RootLayout from "../components/layouts/RootLayout";
+import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
 import Image from "next/image";
 import { Button } from "react-bootstrap";

@@ -1,5 +1,5 @@
 // Imports
-import RootLayout from "../components/layouts/RootLayout";
+import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
 import { useRouter } from "next/router";
 import useAuth from "../hooks/auth/useAuth";

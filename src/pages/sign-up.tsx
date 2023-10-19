@@ -2,7 +2,7 @@
 import React from "react";
 import SignUpImage from "../assets/images/SignUp.svg";
 import Link from "next/link";
-import RootLayout from "../components/layouts/RootLayout";
+import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
 import Image from "next/image";
 import useAuth from "@/hooks/auth/useAuth";

@@ -1,5 +1,5 @@
 // Imports
-import RootLayout from "../components/layouts/RootLayout";
+import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";

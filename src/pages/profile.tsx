@@ -1,5 +1,5 @@
 // Imports
-import RootLayout from "../components/layouts/RootLayout";
+import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
 import { Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

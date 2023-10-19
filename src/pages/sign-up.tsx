@@ -1,6 +1,6 @@
 // Imports
 import React from "react";
-import SignUpImage from "../assets/images/SignUp.svg";
+import SignUpImage from "@/assets/images/SignUp.svg";
 import Link from "next/link";
 import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";

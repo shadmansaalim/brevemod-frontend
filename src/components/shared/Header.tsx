@@ -19,7 +19,7 @@ import {
   faForward,
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "@/hooks/auth/useAuth";
-import ProfileIcon from "../../assets/images/ProfileIcon.png";
+import ProfileIcon from "@/assets/images/ProfileIcon.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";

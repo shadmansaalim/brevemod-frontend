@@ -13,7 +13,7 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ICourse } from "@/interfaces/common";
 import useAuth from "@/hooks/auth/useAuth";
-import CookingGif from "../assets/images/Cooking.gif";
+import CookingGif from "@/assets/images/Cooking.gif";
 import { getTokenFromLocalStorage } from "@/utilities/common";
 
 const MyCourse = (props: { course: ICourse }) => {

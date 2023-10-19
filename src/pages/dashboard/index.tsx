@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import useAuth from "@/hooks/auth/useAuth";
 import MyCourse from "@/components/MyCourse";
 import { ICourse } from "@/interfaces/common";
-import EmptyCartImage from "../../assets/images/EmptyCart.svg";
+import EmptyCartImage from "@/assets/images/EmptyCart.svg";
 import Image from "next/image";
 
 const DashboardHomePage = () => {

@@ -1,7 +1,7 @@
 // Imports
 import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
-import PurchaseConfirmImage from "../assets/images/PurchaseConfirm.svg";
+import PurchaseConfirmImage from "@/assets/images/PurchaseConfirm.svg";
 import { useRouter } from "next/router";
 import Image from "next/image";
 

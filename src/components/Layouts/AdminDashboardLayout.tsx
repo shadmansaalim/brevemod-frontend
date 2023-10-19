@@ -10,7 +10,7 @@ import {
   faBars,
   faFolder,
 } from "@fortawesome/free-solid-svg-icons";
-import ProfileIcon from "../../assets/images/ProfileIcon.png";
+import ProfileIcon from "@/assets/images/ProfileIcon.png";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";

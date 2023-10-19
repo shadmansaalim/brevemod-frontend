@@ -7,7 +7,7 @@ import { getTokenFromLocalStorage } from "@/utilities/common";
 import swal from "sweetalert";
 import useAuth from "@/hooks/auth/useAuth";
 import Image from "next/image";
-import FeedbackIcon from "../../assets/images/FeedbackIcon.svg";
+import FeedbackIcon from "@/assets/images/FeedbackIcon.svg";
 import { useEffect } from "react";
 
 const FeedbackPage = () => {

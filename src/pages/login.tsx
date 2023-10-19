@@ -1,7 +1,7 @@
 /* eslint no-use-before-define: 0 */
 // Imports
 import React from "react";
-import LoginImage from "../assets/images/SignUp.svg";
+import LoginImage from "@/assets/images/SignUp.svg";
 import Link from "next/link";
 import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";

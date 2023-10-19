@@ -11,7 +11,7 @@ import {
 import CartReviewItem from "@/components/CartReviewItem";
 import { ICourse } from "@/interfaces/common";
 import Cart from "../components/Cart";
-import EmptyCartImage from "../assets/images/EmptyCart.svg";
+import EmptyCartImage from "@/assets/images/EmptyCart.svg";
 import Image from "next/image";
 
 const CartReviewPage = () => {

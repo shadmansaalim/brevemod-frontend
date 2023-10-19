@@ -5,7 +5,7 @@ import { Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
-import ProfileIcon from "../assets/images/ProfileIcon.png";
+import ProfileIcon from "@/assets/images/ProfileIcon.png";
 import useAuth from "@/hooks/auth/useAuth";
 import { useState } from "react";
 import { getTokenFromLocalStorage } from "@/utilities/common";

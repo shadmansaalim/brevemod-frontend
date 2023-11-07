@@ -13,6 +13,8 @@ import { useUserLoginMutation } from "@/redux/api/authApi";
 import { storeUserInfo } from "@/services/auth.service";
 import { useRouter } from "next/router";
 import swal from "sweetalert";
+import { useAppDispatch } from "@/redux/hooks";
+import { setCurrentUser } from "@/redux/slices/user/userSlice";
 
 const LoginPage = () => {
   const [loginData, setLoginData] = useState<ILoginUser | null>(null);
@@ -27,6 +29,7 @@ const LoginPage = () => {
   };
 
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,13 +38,14 @@ const LoginPage = () => {
 
       // Redirecting to profile page
       if (res?.accessToken) {
-        console.log(res);
+        // Storing user access token in to keep user authenticated
+        storeUserInfo({ accessToken: res?.accessToken });
+
+        dispatch(setCurrentUser(res?.user));
+
         router.push("/");
         swal("Welcome back Brevemodian", "", "success");
       }
-
-      // Storing user access token in to keep user authenticated
-      storeUserInfo({ accessToken: res?.accessToken });
 
       e.currentTarget.reset();
     } catch (err) {

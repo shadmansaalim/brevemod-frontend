@@ -22,17 +22,27 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Cart from "../Cart";
 import Image from "next/image";
+import { removeUserInfo } from "@/services/auth.service";
+import { authKey } from "@/constants/storageKey";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setCurrentUser } from "@/redux/slices/user/userSlice";
 
 const Header = () => {
-  // Will remove this later
-  const currentUser = null;
+  const { currentUser } = useAppSelector((state) => state.user);
 
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
   const [modalShow, setModalShow] = useState(false);
 
   const handleModalClose = () => setModalShow(false);
   const handleModalShow = () => setModalShow(true);
+
+  const logoutUser = () => {
+    removeUserInfo(authKey);
+    dispatch(setCurrentUser(null));
+    router.push("/");
+  };
 
   return (
     <Navbar className="shadow-sm pt-lg-3" expand="lg">
@@ -88,7 +98,7 @@ const Header = () => {
                 <Modal.Title>Courses Added</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                {currentUser?.cart.courses.length > 0 ? (
+                {currentUser && currentUser?.cart.courses.length > 0 ? (
                   <Cart cart={currentUser?.cart} />
                 ) : (
                   <div className="container-fluid my-5">
@@ -110,7 +120,7 @@ const Header = () => {
                 )}
               </Modal.Body>
               <Modal.Footer>
-                {currentUser?.cart.courses.length > 0 ? (
+                {currentUser && currentUser?.cart.courses.length > 0 ? (
                   <div>
                     <Button variant="secondary" onClick={handleModalClose}>
                       Close

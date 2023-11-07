@@ -1,17 +1,9 @@
 // Imports
-import { ICourse } from "@/interfaces/common";
+import { ICart } from "@/types";
 
-const Cart = (props: {
-  cart: {
-    courses: ICourse[];
-    payment: {
-      subTotal: number;
-      tax: number;
-      grandTotal: number;
-    };
-  };
-}) => {
+const Cart = (props: { cart: ICart }) => {
   const { courses, payment } = props.cart;
+
   return (
     <ul className="list-group mb-3">
       {courses.map((course) => (

@@ -1,7 +1,7 @@
 // Imports
 import ContextProvider from "@/context/ContextProvider";
-import Footer from "../shared/Footer";
-import Header from "../../../public/Header";
+import Header from "../ui/Header";
+import Footer from "../ui/Footer";
 
 const RootLayout = ({ children }: any) => {
   return (

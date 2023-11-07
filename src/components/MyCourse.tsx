@@ -12,7 +12,7 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ICourse } from "@/interfaces/common";
 import useAuth from "@/hooks/auth/useAuth";
-import { getTokenFromLocalStorage } from "@/utilities/common";
+import { getTokenFromLocalStorage } from "@/utils/common";
 import Image from "next/image";
 
 const MyCourse = (props: { course: ICourse }) => {

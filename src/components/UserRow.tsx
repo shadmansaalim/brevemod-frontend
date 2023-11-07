@@ -7,7 +7,7 @@ import swal from "sweetalert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "react-bootstrap";
-import { getTokenFromLocalStorage } from "@/utilities/common";
+import { getTokenFromLocalStorage } from "@/utils/common";
 
 const UserRow = (props: {
   user: IUser;

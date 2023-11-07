@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBackward } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "@/hooks/auth/useAuth";
 import { useRouter } from "next/router";
-import { getTokenFromLocalStorage } from "@/utilities/common";
+import { getTokenFromLocalStorage } from "@/utils/common";
 import swal from "sweetalert";
 
 const PaymentCheckoutForm = () => {

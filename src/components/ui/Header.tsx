@@ -21,7 +21,7 @@ import {
 import useAuth from "@/hooks/auth/useAuth";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Cart from "../src/components/Cart";
+import Cart from "../Cart";
 import Image from "next/image";
 
 const Header = () => {
@@ -55,6 +55,13 @@ const Header = () => {
               style={{ color: "#161c2d" }}
             >
               Courses
+            </Link>
+            <Link
+              className="text-decoration-none me-lg-3"
+              href="/my-classes"
+              style={{ color: "#161c2d" }}
+            >
+              My Classes
             </Link>
             <Link
               className="text-decoration-none me-lg-3"

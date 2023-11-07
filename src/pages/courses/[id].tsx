@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { ICourse, ICourseReview } from "@/interfaces/common";
 import useAuth from "@/hooks/auth/useAuth";
-import { getTokenFromLocalStorage } from "@/utilities/common";
+import { getTokenFromLocalStorage } from "@/utils/common";
 import { useEffect } from "react";
 import UserReviews from "../../components/UserReviews";
 

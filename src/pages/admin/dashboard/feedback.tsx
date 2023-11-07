@@ -1,7 +1,7 @@
 // Imports
 import AdminDashboardLayout from "@/components/Layouts/AdminDashboardLayout";
 import { IFeedback } from "@/interfaces/common";
-import { getTokenFromLocalStorage } from "@/utilities/common";
+import { getTokenFromLocalStorage } from "@/utils/common";
 import type { ReactElement } from "react";
 import { useState } from "react";
 import { useEffect } from "react";

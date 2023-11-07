@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faStar } from "@fortawesome/free-solid-svg-icons";
 import Rating from "react-rating";
 import { ICourse } from "@/interfaces/common";
-import { getTokenFromLocalStorage } from "@/utilities/common";
+import { getTokenFromLocalStorage } from "@/utils/common";
 import useAuth from "@/hooks/auth/useAuth";
 
 const CartReviewItem = (props: { course: ICourse }) => {

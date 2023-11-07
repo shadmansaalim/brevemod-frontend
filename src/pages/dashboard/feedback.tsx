@@ -3,7 +3,7 @@ import DashboardLayout from "@/components/Layouts/DashboardLayout";
 import type { ReactElement } from "react";
 import { Container } from "react-bootstrap";
 import { useState } from "react";
-import { getTokenFromLocalStorage } from "@/utilities/common";
+import { getTokenFromLocalStorage } from "@/utils/common";
 import swal from "sweetalert";
 import useAuth from "@/hooks/auth/useAuth";
 import { useEffect } from "react";

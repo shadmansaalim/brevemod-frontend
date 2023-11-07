@@ -12,7 +12,7 @@ import {
   faForward,
 } from "@fortawesome/free-solid-svg-icons";
 import UserRow from "@/components/UserRow";
-import { getTokenFromLocalStorage } from "@/utilities/common";
+import { getTokenFromLocalStorage } from "@/utils/common";
 import swal from "sweetalert";
 import { IUser } from "@/interfaces/common";
 import useAuth from "@/hooks/auth/useAuth";

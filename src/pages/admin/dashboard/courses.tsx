@@ -8,7 +8,7 @@ import useAuth from "@/hooks/auth/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faSearch } from "@fortawesome/free-solid-svg-icons";
 import AdminCourse from "../../../components/AdminCourse";
-import { getTokenFromLocalStorage } from "@/utilities/common";
+import { getTokenFromLocalStorage } from "@/utils/common";
 import swal from "sweetalert";
 import { faForward } from "@fortawesome/free-solid-svg-icons";
 

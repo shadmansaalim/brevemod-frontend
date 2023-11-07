@@ -18,14 +18,15 @@ import {
   faRightFromBracket,
   faForward,
 } from "@fortawesome/free-solid-svg-icons";
-import useAuth from "@/hooks/auth/useAuth";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Cart from "../Cart";
 import Image from "next/image";
 
 const Header = () => {
-  const { currentUser, logoutUser } = useAuth();
+  // Will remove this later
+  const currentUser = null;
+
   const router = useRouter();
 
   const [modalShow, setModalShow] = useState(false);
@@ -151,14 +152,14 @@ const Header = () => {
                 }
               >
                 <NavDropdown.Item eventKey="4.0" disabled>
-                  {currentUser.firstName}
+                  {currentUser?.firstName}
                 </NavDropdown.Item>
                 <NavDropdown.Item href="/profile" eventKey="4.1">
                   <FontAwesomeIcon className="me-2" icon={faUser} /> Profile
                 </NavDropdown.Item>
                 <NavDropdown.Item
                   href={
-                    currentUser.role === "student"
+                    currentUser?.role === "student"
                       ? "/dashboard"
                       : "/admin/dashboard"
                   }

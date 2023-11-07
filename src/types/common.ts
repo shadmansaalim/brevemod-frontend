@@ -19,3 +19,24 @@ export type IGenericErrorResponse = {
   message: string;
   errorMessages: IGenericErrorMessage[];
 };
+
+export type ISignUpUser = {
+  firstName: string;
+  middleName?: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role?: string;
+};
+
+export type ILoginUser = {
+  email: string;
+  password: string;
+};
+
+export type IUserDecodedTokenData = {
+  id: string;
+  role: string;
+  iat: number;
+  exp: number;
+};

@@ -9,7 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
-import store from "@/redux/store";
+import { store } from "@/redux/store";
 import { Provider } from "react-redux";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {

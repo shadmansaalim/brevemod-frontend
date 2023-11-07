@@ -8,12 +8,15 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { ILoginUser } from "@/hooks/auth/IAuth";
-import useAuth from "../hooks/auth/useAuth";
+import { ILoginUser } from "@/types";
+import { useUserLoginMutation } from "@/redux/api/authApi";
+import { storeUserInfo } from "@/services/auth.service";
+import { useRouter } from "next/router";
+import swal from "sweetalert";
 
 const LoginPage = () => {
   const [loginData, setLoginData] = useState<ILoginUser | null>(null);
-  const { loginUser } = useAuth();
+  const [userLogin] = useUserLoginMutation();
 
   const handleOnBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
     const field = e.target.name as keyof ILoginUser;
@@ -23,14 +26,27 @@ const LoginPage = () => {
     setLoginData(newLoginData as ILoginUser);
   };
 
-  const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    if (loginData) {
-      loginUser(loginData);
-    }
-    const form = e.currentTarget as HTMLFormElement;
-    form.reset();
+  const router = useRouter();
 
+  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      const res = await userLogin({ ...loginData }).unwrap();
+
+      // Redirecting to profile page
+      if (res?.accessToken) {
+        console.log(res);
+        router.push("/");
+        swal("Welcome back Brevemodian", "", "success");
+      }
+
+      // Storing user access token in to keep user authenticated
+      storeUserInfo({ accessToken: res?.accessToken });
+
+      e.currentTarget.reset();
+    } catch (err) {
+      console.error(err.message);
+    }
   };
 
   return (
@@ -50,6 +66,7 @@ const LoginPage = () => {
                   className="form-control"
                   id="floatingLoginEmail"
                   placeholder="name@example.com"
+                  required
                 />
                 <label htmlFor="floatingLoginEmail">Email address</label>
               </div>
@@ -61,6 +78,7 @@ const LoginPage = () => {
                   className="form-control"
                   id="floatingLoginPassword"
                   placeholder="Password"
+                  required
                 />
                 <label htmlFor="floatingLoginPassword">Password</label>
               </div>

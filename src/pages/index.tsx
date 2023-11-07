@@ -4,22 +4,9 @@ import type { ReactElement } from "react";
 import type { NextPageWithLayout } from "./_app";
 import { Row, Col, Accordion, Container } from "react-bootstrap";
 import HeroSection from "@/components/HeroSection";
-import { useEffect, useState } from "react";
-import { ICourse } from "@/interfaces/common";
 import Course from "@/components/Course";
 
 const HomePage: NextPageWithLayout = () => {
-  const [courses, setCourses] = useState<ICourse[]>([]);
-
-  useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/courses?limit=${4}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setCourses(data.data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
   return (
     <Container>
       <section className="my-5">
@@ -27,11 +14,11 @@ const HomePage: NextPageWithLayout = () => {
         <div className="mx-auto" style={{ marginTop: 120, marginBottom: 120 }}>
           <div>
             <h1 className="mb-5 text-start">Explore Top Courses</h1>
-            <Row xs={1} md={2} lg={4} className="g-4">
+            {/* <Row xs={1} md={2} lg={4} className="g-4">
               {courses.map((course) => (
                 <Course key={course._id} course={course}></Course>
               ))}
-            </Row>
+            </Row> */}
           </div>
         </div>
         <div className="mx-auto" style={{ marginTop: 120, marginBottom: 120 }}>

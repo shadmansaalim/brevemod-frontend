@@ -10,14 +10,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
-import { ICourse } from "@/interfaces/common";
-import useAuth from "@/hooks/auth/useAuth";
-import { getTokenFromLocalStorage } from "@/utils/common";
 import Image from "next/image";
+import { ICourse } from "@/types";
 
-const MyCourse = (props: { course: ICourse }) => {
+const MyCourseCard = (props: { course: ICourse }) => {
   const { course } = props;
-  const { currentUser, setCurrentUser } = useAuth();
 
   const [rating, setRating] = useState<number>(0.0);
   const [words, setWords] = useState<string>("");
@@ -31,62 +28,7 @@ const MyCourse = (props: { course: ICourse }) => {
   const handleSecondModalClose = () => setSecondModalShow(false);
   const handleSecondModalShow = () => setSecondModalShow(true);
 
-  const handleAddReviewToCourse = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (rating === 0.0) {
-      swal("Please provide a rating", "", "warning");
-    } else {
-      fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/course-reviews/${course._id}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: getTokenFromLocalStorage(),
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({ rating, words }),
-        }
-      )
-        .then((res) => res.json())
-        .then((result) => {
-          if (result.success) {
-            handleFirstModalClose();
-            handleSecondModalClose();
-            swal(result.message, "", "success");
-          }
-        });
-    }
-  };
-
-  const handleCancelEnrollment = () => {
-    swal({
-      title: "Are you sure?",
-      text: "Once we cancel your enrollment, you will lose all your progress and not even get a refund for your course purchase.",
-      icon: "warning",
-      buttons: ["No", "Yes"],
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/purchases/cancel-enrollment/${course._id}`,
-          {
-            method: "DELETE",
-            headers: {
-              Authorization: getTokenFromLocalStorage(),
-              "content-type": "application/json",
-            },
-          }
-        )
-          .then((res) => res.json())
-          .then((result) => {
-            if (result.success) {
-              setCurrentUser(result.data);
-              swal(result.message, "", "success");
-            }
-          });
-      }
-    });
-  };
+  const handleAddReviewToCourse = (e: React.FormEvent<HTMLFormElement>) => {};
 
   return (
     <div className="col">
@@ -115,15 +57,15 @@ const MyCourse = (props: { course: ICourse }) => {
                 <h6>{course.title}</h6>
               </Modal.Header>
               <Modal.Body className="d-flex flex-column justify-content-center align-items-center">
-                <Image
+                <img
                   src="/Cooking.gif"
                   className="img-fluid"
                   alt="Cooking Gif"
                 />
                 <p className="mb-1 fw-bold">Course Module Not Cooked Yet</p>
                 <small>
-                  Pro Tips: You can do some practice until the new module is
-                  released.
+                  We will be uploading course module videos very soon. Stay
+                  tuned.
                 </small>
               </Modal.Body>
               <Modal.Footer>
@@ -186,18 +128,11 @@ const MyCourse = (props: { course: ICourse }) => {
         </div>
         <div className="card-footer ">
           <button
-            className="btn btn-outline-dark w-100"
+            className="btn btn-primary w-100"
             onClick={handleFirstModalShow}
           >
             Continue Course
             <FontAwesomeIcon className="ms-1" icon={faForward} />
-          </button>
-          <button
-            className="btn btn-outline-danger w-100 mt-2"
-            onClick={handleCancelEnrollment}
-          >
-            Cancel Enrollment
-            <FontAwesomeIcon className="ms-1" icon={faBan} />
           </button>
         </div>
       </div>
@@ -205,4 +140,4 @@ const MyCourse = (props: { course: ICourse }) => {
   );
 };
 
-export default MyCourse;
+export default MyCourseCard;

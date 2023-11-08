@@ -1,39 +1,32 @@
 // Imports
 import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Row, Col, Container, Button } from "react-bootstrap";
+import { ICourse } from "@/types";
+import { useAppSelector } from "@/redux/hooks";
+import CoursesPageSkeleton from "@/components/ui/course/CoursesPageSkeleton";
+import { useMyCoursesQuery } from "@/redux/api/purchaseApi";
+import MyCourseCard from "../components/ui/course/MyCourseCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
-import useAuth from "@/hooks/auth/useAuth";
-import MyCourse from "@/components/MyCourse";
-import { ICourse } from "@/interfaces/common";
 
 const MyClassesPage = () => {
-  const { currentUser } = useAuth();
+  const { currentUser } = useAppSelector((state) => state.user);
+
+  const { data, isLoading } = useMyCoursesQuery({});
+  const courses = data?.data as ICourse[];
+
   const router = useRouter();
 
   return (
-    <section className="text-center">
-      <Container>
-        {currentUser?.purchases.length ? (
-          <section style={{ marginBottom: "150px" }}>
-            <div className="my-4">
-              <h3 className="fw-light mb-5">
-                Welcome back
-                <span className="fw-normal ms-1">{currentUser?.firstName}</span>
-                , ready for your next lesson?
-              </h3>
-              <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                {currentUser?.purchases.map((course: ICourse) => (
-                  <MyCourse key={course._id} course={course} />
-                ))}
-              </div>
-            </div>
-          </section>
-        ) : (
-          <>
-            {currentUser?.purchases?.length === 0 ? (
+    <>
+      {isLoading ? (
+        <CoursesPageSkeleton />
+      ) : (
+        <div className="my-5 text-center">
+          <Container>
+            {courses.length !== 0 ? (
               <Row style={{ marginTop: "80px", marginBottom: "80px" }}>
                 <Col lg="6" className="mx-auto shadow-lg mb-5 p-5 rounded-3">
                   <img
@@ -42,10 +35,10 @@ const MyClassesPage = () => {
                     alt="Empty Cart Image"
                   />
 
-                  <h3>No Courses Added</h3>
+                  <h3>No Courses Purchased</h3>
                   <p>
-                    You have not added any course to your class. Please go back
-                    to home or courses and add a course to continue learning.
+                    You have not purchased any course. Please go back to home or
+                    courses and purchase a course to continue learning.
                   </p>
                   <Button
                     onClick={() => router.push("/")}
@@ -62,14 +55,27 @@ const MyClassesPage = () => {
                 </Col>
               </Row>
             ) : (
-              <div className="vh-100 d-flex justify-content-center align-items-center">
-                <div className="spinner"></div>
-              </div>
+              <section style={{ marginBottom: "150px" }}>
+                <div className="my-4">
+                  <h3 className="fw-light mb-5">
+                    Welcome back
+                    <span className="fw-normal ms-1">
+                      {currentUser?.firstName}
+                    </span>
+                    , ready for your next lesson?
+                  </h3>
+                  <Row xs={1} md={2} lg={4} className="g-4 mt-3 mb-5">
+                    {courses?.map((course: ICourse) => (
+                      <MyCourseCard key={course._id} course={course} />
+                    ))}
+                  </Row>
+                </div>
+              </section>
             )}
-          </>
-        )}
-      </Container>
-    </section>
+          </Container>
+        </div>
+      )}
+    </>
   );
 };
 

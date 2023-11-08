@@ -14,7 +14,7 @@ import { storeUserInfo } from "@/services/auth.service";
 import { useRouter } from "next/router";
 import swal from "sweetalert";
 import { useAppDispatch } from "@/redux/hooks";
-import { setCurrentUser } from "@/redux/slices/user/userSlice";
+import { setCurrentUser } from "@/redux/slices/userSlice";
 
 const LoginPage = () => {
   const [loginData, setLoginData] = useState<ILoginUser | null>(null);

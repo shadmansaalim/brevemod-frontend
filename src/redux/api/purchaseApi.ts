@@ -7,32 +7,33 @@ import { TAG_TYPES } from "../tag-types";
 import { baseApi } from "./baseApi";
 
 // Constant for this api routes
-const ENDPOINT_BASE_URL = "/courses";
+const ENDPOINT_BASE_URL = "/purchases";
 
-const courseApi = baseApi.injectEndpoints({
+const purchaseApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    courses: build.query({
-      query: (arg: Record<string, any>) => {
+    myCourses: build.query({
+      query: () => {
         return {
-          url: ENDPOINT_BASE_URL,
+          url: `${ENDPOINT_BASE_URL}/my-courses`,
           method: "GET",
-          params: arg,
         };
       },
       transformResponse: genericSuccessResponse,
       transformErrorResponse: genericErrorResponse,
-      providesTags: [TAG_TYPES.course],
+      providesTags: [TAG_TYPES.purchase],
     }),
-    course: build.query({
-      query: (id: string | string[] | undefined) => ({
-        url: `${ENDPOINT_BASE_URL}/${id}`,
-        method: "GET",
-      }),
+    isCoursePurchased: build.query({
+      query: (id) => {
+        return {
+          url: `${ENDPOINT_BASE_URL}/status/${id}`,
+          method: "GET",
+        };
+      },
       transformResponse: genericSuccessResponse,
       transformErrorResponse: genericErrorResponse,
-      providesTags: [TAG_TYPES.course],
+      providesTags: [TAG_TYPES.purchase],
     }),
   }),
 });
 
-export const { useCoursesQuery, useCourseQuery } = courseApi;
+export const { useMyCoursesQuery, useIsCoursePurchasedQuery } = purchaseApi;

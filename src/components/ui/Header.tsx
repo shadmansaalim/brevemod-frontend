@@ -25,12 +25,29 @@ import Image from "next/image";
 import { removeUserInfo } from "@/services/auth.service";
 import { authKey } from "@/constants/storageKey";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setCurrentUser } from "@/redux/slices/user/userSlice";
+import { setCurrentUser } from "@/redux/slices/userSlice";
+import { useCartQuery } from "@/redux/api/cartApi";
+import { useEffect } from "react";
+import { setCart } from "@/redux/slices/cartSlice";
 
 const Header = () => {
   const { currentUser } = useAppSelector((state) => state.user);
+  const { cart } = useAppSelector((state) => state.cart);
 
   const dispatch = useAppDispatch();
+
+  const { data, refetch, isLoading: cartLoading } = useCartQuery({});
+
+  useEffect(() => {
+    if (currentUser) {
+      refetch();
+      if (data && data.success) {
+        const cart = data.data;
+        dispatch(setCart(cart));
+      }
+    }
+  }, [cartLoading, currentUser]);
+
   const router = useRouter();
 
   const [modalShow, setModalShow] = useState(false);
@@ -41,6 +58,7 @@ const Header = () => {
   const logoutUser = () => {
     removeUserInfo(authKey);
     dispatch(setCurrentUser(null));
+    dispatch(setCart(null));
     router.push("/");
   };
 
@@ -88,7 +106,7 @@ const Header = () => {
             >
               <FontAwesomeIcon icon={faShoppingCart} />
               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                {currentUser?.cart.courses.length || 0}
+                {cart && cart?.courses.length}
                 <span className="visually-hidden">Course Cart</span>
               </span>
             </button>
@@ -98,8 +116,8 @@ const Header = () => {
                 <Modal.Title>Courses Added</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                {currentUser && currentUser?.cart.courses.length > 0 ? (
-                  <Cart cart={currentUser?.cart} />
+                {cart && cart?.courses.length > 0 ? (
+                  <Cart cart={cart} />
                 ) : (
                   <div className="container-fluid my-5">
                     <div className="offset-lg-3 col-12 text-center mx-auto">
@@ -120,7 +138,7 @@ const Header = () => {
                 )}
               </Modal.Body>
               <Modal.Footer>
-                {currentUser && currentUser?.cart.courses.length > 0 ? (
+                {cart && cart?.courses.length > 0 ? (
                   <div>
                     <Button variant="secondary" onClick={handleModalClose}>
                       Close

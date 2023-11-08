@@ -4,12 +4,10 @@ import { IUser } from "@/types";
 
 interface IUserState {
   currentUser: IUser | null;
-  isLoading: boolean;
 }
 
 const initialState: IUserState = {
   currentUser: null,
-  isLoading: false,
 };
 
 export const userSlice = createSlice({
@@ -19,12 +17,9 @@ export const userSlice = createSlice({
     setCurrentUser: (state, action: PayloadAction<IUser | null>) => {
       state.currentUser = action.payload;
     },
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.isLoading = action.payload;
-    },
   },
 });
 
-export const { setCurrentUser, setLoading } = userSlice.actions;
+export const { setCurrentUser } = userSlice.actions;
 
 export default userSlice.reducer;

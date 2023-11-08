@@ -65,12 +65,17 @@ export type ICourse = {
 };
 
 export type ICart = {
-  courses: ICourse[];
+  _id: string;
+  user: string;
+  courses: string[];
   payment: {
     subTotal: number;
     tax: number;
     grandTotal: number;
   };
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: number;
 };
 
 export type IUser = {
@@ -85,8 +90,6 @@ export type IUser = {
   updatedAt?: string;
   passwordChangedAt: string;
   __v?: number;
-  cart: ICart;
-  purchases: ICourse[];
 };
 
 export type ICourseReview = {

@@ -1,78 +1,53 @@
 // Imports
 import RootLayout from "@/components/Layouts/RootLayout";
-import type { NextPageWithLayout } from "../_app";
 import type { ReactElement } from "react";
-import { useState } from "react";
 import { Container } from "react-bootstrap";
 import CountUp from "react-countup";
 import VisibilitySensor from "react-visibility-sensor";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { ICourse, ICourseReview } from "@/interfaces/common";
-import useAuth from "@/hooks/auth/useAuth";
-import { getTokenFromLocalStorage } from "@/utils/common";
-import { useEffect } from "react";
-import UserReviews from "../../components/UserReviews";
+import { useCourseQuery } from "@/redux/api/courseApi";
+import { useRouter } from "next/router";
+import { ICourse, ResponseSuccessType } from "@/types";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useAddToCartMutation } from "@/redux/api/cartApi";
+import swal from "sweetalert";
+import { useIsCoursePurchasedQuery } from "@/redux/api/purchaseApi";
+import { setCart } from "@/redux/slices/cartSlice";
 
-const CourseDetailsPage: NextPageWithLayout<{
-  course: ICourse;
-}> = ({ course }) => {
-  const { currentUser, setCurrentUser, isLoading, setIsLoading } = useAuth();
+const CourseDetailsPage = () => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
 
-  const isAddedToCart = currentUser?.cart.courses.find(
-    (cartCourse: ICourse) => cartCourse._id === course._id
+  const [addToCart] = useAddToCartMutation();
+
+  const { data: courseData, isLoading: courseDataLoading } = useCourseQuery(
+    router.query.id
   );
+  const course = courseData?.data as ICourse;
 
-  const isPurchased = currentUser?.purchases.find(
-    (purchaseCourse: ICourse) => purchaseCourse._id === course._id
-  );
+  const { data: purchaseData, isLoading: purchaseDataLoading } =
+    useIsCoursePurchasedQuery(router.query.id);
 
-  const [addedToCart, setAddedToCart] = useState(false);
-  const [purchased, setPurchased] = useState(false);
-
-  const [courseReviews, setCourseReviews] = useState<ICourseReview[]>([]);
-
-  useEffect(() => {
-    if (isAddedToCart) {
-      setAddedToCart(true);
-    }
-    if (isPurchased) {
-      setPurchased(true);
-    }
-  }, [currentUser]);
-
-  useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/course-reviews/${course._id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setCourseReviews(data.data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+  const { cart } = useAppSelector((state) => state.cart);
 
   const handleAddToCart = async () => {
-    fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/cart/add-to-cart/${course._id}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: getTokenFromLocalStorage(),
-          "content-type": "application/json",
-        },
+    try {
+      const res: ResponseSuccessType = await addToCart(
+        router.query.id
+      ).unwrap();
+
+      if (res?.success) {
+        dispatch(setCart(res?.data));
       }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        const userData = data.data;
-        setCurrentUser(userData);
-        setAddedToCart(true);
-      })
-      .catch((error) => console.log(error));
+    } catch (err) {
+      swal(err.message, "", "error");
+    }
   };
 
   return (
     <div style={{ overflowX: "hidden" }}>
-      {!isLoading ? (
+      {!courseDataLoading && !purchaseDataLoading ? (
         <section>
           <div
             className="py-4 py-lg-5"
@@ -93,7 +68,7 @@ const CourseDetailsPage: NextPageWithLayout<{
                     }}
                   >
                     <iframe
-                      title={course.title}
+                      title={course?.title}
                       style={{
                         position: "absolute",
                         top: 0,
@@ -101,35 +76,36 @@ const CourseDetailsPage: NextPageWithLayout<{
                         width: "100%",
                         height: "100%",
                       }}
-                      src={`https://www.youtube.com/embed/${course.introVideoLink}`}
+                      src={`https://www.youtube.com/embed/${course?.introVideoLink}`}
                       frameBorder="0"
                     />
                   </div>
                 </div>
                 <div className="col-lg-5 col-xl-6 mx-auto text-start mt-3 mt-lg-0">
-                  <h3>{course.title}</h3>
+                  <h3>{course?.title}</h3>
                   <p className="mb-2">tagline</p>
                   <small>
                     <b>4.5</b>(53,134)
                   </small>
                   <br />
                   <small>
-                    Created by <a href="!#">{course.instructorName}</a>
+                    Created by <a href="!#">{course?.instructorName}</a>
                   </small>
                   <br />
                   <button
                     onClick={handleAddToCart}
                     className={
-                      addedToCart === false && purchased === false
+                      !cart?.courses.includes(router.query.id as string) &&
+                      !purchaseData?.data
                         ? "btn btn-secondary text-white mt-3"
                         : "btn btn-success text-white mt-3 disabled"
                     }
                   >
-                    {purchased ? (
+                    {purchaseData?.data ? (
                       <p className="m-0">
                         Purchased <FontAwesomeIcon icon={faCheck} />
                       </p>
-                    ) : addedToCart === true ? (
+                    ) : cart?.courses.includes(router.query.id as string) ? (
                       <p className="m-0">
                         Added to Cart <FontAwesomeIcon icon={faShoppingCart} />
                       </p>
@@ -146,13 +122,13 @@ const CourseDetailsPage: NextPageWithLayout<{
           <div className="p-3 px-lg-0 py-lg-5">
             <section className="col-lg-9 mb-5 mt-lg-4 mx-auto">
               <h3 className="text-start mb-3 fw-light">Description</h3>
-              <p className="text-start">{course.description}</p>
+              <p className="text-start">{course?.description}</p>
               <div className="mt-4 mt-md-5 mb-4 row d-flex align-items-center justify-content-center col-xl-8 mx-auto text-white">
                 <div className="shadow-lg p-5 rounded-3 bg-success col-7 col-md-3 mx-auto mb-3 mb-md-0">
                   <h5>
                     <CountUp
                       redraw={true}
-                      end={course.lecturesCount}
+                      end={course?.lecturesCount}
                       duration={2}
                     >
                       {({ countUpRef, start }) => (
@@ -168,7 +144,7 @@ const CourseDetailsPage: NextPageWithLayout<{
                   <h5>
                     <CountUp
                       redraw={true}
-                      end={course.studentsCount}
+                      end={course?.studentsCount}
                       duration={2}
                     >
                       {({ countUpRef, start }) => (
@@ -184,7 +160,7 @@ const CourseDetailsPage: NextPageWithLayout<{
                   <h5>
                     <CountUp
                       redraw={true}
-                      end={course.projectsCount}
+                      end={course?.projectsCount}
                       duration={2}
                     >
                       {({ countUpRef, start }) => (
@@ -200,7 +176,7 @@ const CourseDetailsPage: NextPageWithLayout<{
             </section>
           </div>
           <div>
-            {courseReviews?.length && (
+            {/* {courseReviews?.length && (
               <div
                 className=""
                 style={{
@@ -209,7 +185,7 @@ const CourseDetailsPage: NextPageWithLayout<{
               >
                 <UserReviews reviews={courseReviews} />
               </div>
-            )}
+            )} */}
           </div>
         </section>
       ) : (
@@ -227,12 +203,12 @@ CourseDetailsPage.getLayout = function getLayout(page: ReactElement) {
   return <RootLayout>{page}</RootLayout>;
 };
 
-export const getServerSideProps = async (context: any) => {
-  const { params } = context;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/courses/${params.id}`
-  );
-  const data = await res.json();
-  const course = data?.data;
-  return { props: { course } };
-};
+// export const getServerSideProps = async (context: any) => {
+//   const { params } = context;
+//   const res = await fetch(
+//     `${process.env.NEXT_PUBLIC_SERVER_URL}/courses/${params.id}`
+//   );
+//   const data = await res.json();
+//   const course = data?.data;
+//   return { props: { course } };
+// };

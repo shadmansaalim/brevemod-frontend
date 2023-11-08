@@ -33,7 +33,30 @@ const purchaseApi = baseApi.injectEndpoints({
       transformErrorResponse: genericErrorResponse,
       providesTags: [TAG_TYPES.purchase],
     }),
+    createPaymentIntent: build.mutation({
+      query: () => ({
+        url: `${ENDPOINT_BASE_URL}/create-payment-intent`,
+        method: "POST",
+      }),
+      invalidatesTags: [TAG_TYPES.purchase],
+      transformResponse: genericSuccessResponse,
+      transformErrorResponse: genericErrorResponse,
+    }),
+    purchaseCourses: build.mutation({
+      query: () => ({
+        url: ENDPOINT_BASE_URL,
+        method: "POST",
+      }),
+      invalidatesTags: [TAG_TYPES.purchase],
+      transformResponse: genericSuccessResponse,
+      transformErrorResponse: genericErrorResponse,
+    }),
   }),
 });
 
-export const { useMyCoursesQuery, useIsCoursePurchasedQuery } = purchaseApi;
+export const {
+  useMyCoursesQuery,
+  useIsCoursePurchasedQuery,
+  useCreatePaymentIntentMutation,
+  usePurchaseCoursesMutation,
+} = purchaseApi;

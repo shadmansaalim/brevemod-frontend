@@ -13,7 +13,6 @@ import Cart from "../components/ui/cart/Cart";
 import Image from "next/image";
 import { useAppSelector } from "@/redux/hooks";
 const CartReviewPage = () => {
-  const { currentUser } = useAppSelector((state) => state.user);
   const { cart } = useAppSelector((state) => state.cart);
 
   const router = useRouter();

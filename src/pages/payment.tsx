@@ -3,7 +3,7 @@ import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import PaymentCheckoutForm from "../components/PaymentCheckoutForm";
+import PaymentCheckoutForm from "../components/ui/payment/PaymentCheckoutForm";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string

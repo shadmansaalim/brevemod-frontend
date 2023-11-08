@@ -4,9 +4,15 @@ import type { ReactElement } from "react";
 import type { NextPageWithLayout } from "./_app";
 import { Row, Col, Accordion, Container } from "react-bootstrap";
 import HeroSection from "@/components/HeroSection";
-import Course from "@/components/Course";
+import { useCoursesQuery } from "@/redux/api/courseApi";
+import { ICourse } from "@/types";
+import Course from "@/components/ui/course/CourseCard";
+import CourseSkeleton from "@/components/ui/course/CourseCardSkeleton";
 
 const HomePage: NextPageWithLayout = () => {
+  const { data, isLoading } = useCoursesQuery({ limit: 4 });
+  const courses = data?.data as ICourse[];
+
   return (
     <Container>
       <section className="my-5">
@@ -14,11 +20,13 @@ const HomePage: NextPageWithLayout = () => {
         <div className="mx-auto" style={{ marginTop: 120, marginBottom: 120 }}>
           <div>
             <h1 className="mb-5 text-start">Explore Top Courses</h1>
-            {/* <Row xs={1} md={2} lg={4} className="g-4">
-              {courses.map((course) => (
-                <Course key={course._id} course={course}></Course>
-              ))}
-            </Row> */}
+            <Row xs={1} md={2} lg={4} className="g-4">
+              {isLoading
+                ? [...Array(4).keys()].map(() => <CourseSkeleton />)
+                : courses?.map((course) => (
+                    <Course key={course._id} course={course}></Course>
+                  ))}
+            </Row>
           </div>
         </div>
         <div className="mx-auto" style={{ marginTop: 120, marginBottom: 120 }}>

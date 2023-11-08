@@ -4,9 +4,9 @@ import Rating from "react-rating";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDoubleRight, faStar } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
-import { ICourse } from "@/interfaces/common";
+import { ICourse } from "@/types";
 
-const Course = (props: { course: ICourse }) => {
+const CourseCard = (props: { course: ICourse }) => {
   const { course } = props;
   const router = useRouter();
 
@@ -42,7 +42,8 @@ const Course = (props: { course: ICourse }) => {
         </Card.Body>
         <Card.Footer className="d-flex justify-content-center">
           <Button onClick={goToCourseDetails} variant="primary">
-            Preview Course <FontAwesomeIcon icon={faAngleDoubleRight} />
+            Preview Course
+            <FontAwesomeIcon icon={faAngleDoubleRight} className="ms-2" />
           </Button>
         </Card.Footer>
       </Card>
@@ -50,4 +51,4 @@ const Course = (props: { course: ICourse }) => {
   );
 };
 
-export default Course;
+export default CourseCard;

@@ -1,13 +1,15 @@
 // Imports
 import { configureStore } from "@reduxjs/toolkit";
-import { reducer } from "./rootReducer";
 import { baseApi } from "./api/baseApi";
+import { persistedReducer, serializableCheck } from "./persist";
 
 // Redux store
 export const store = configureStore({
-  reducer,
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(baseApi.middleware),
+    getDefaultMiddleware({
+      serializableCheck,
+    }).concat(baseApi.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

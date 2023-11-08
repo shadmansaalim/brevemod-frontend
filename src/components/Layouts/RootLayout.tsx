@@ -6,28 +6,33 @@ import { useAppDispatch } from "../../redux/hooks";
 import LoadingSpinner from "../ui/LoadingSpinner";
 import { useEffect } from "react";
 import { setCurrentUser } from "@/redux/slices/user/userSlice";
+import { isLoggedIn } from "../../services/auth.service";
 
 const RootLayout = ({ children }: any) => {
-  const { data, isLoading } = useUserProfileQuery({});
-  const dispatch = useAppDispatch();
+  // if (!isLoggedIn()) {
+  //   return (
+  //     <div>
+  //       <Header />
+  //       <div>{children}</div>
+  //       <Footer />
+  //     </div>
+  //   );
+  // }
 
-  useEffect(() => {
-    if (data) {
-      dispatch(setCurrentUser(data));
-    }
-  }, [isLoading]);
+  // const { data, isLoading } = useUserProfileQuery({});
+  // const dispatch = useAppDispatch();
+
+  // useEffect(() => {
+  //   if (data) {
+  //     dispatch(setCurrentUser(data));
+  //   }
+  // }, [isLoading]);
 
   return (
     <>
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <>
-          <Header />
-          <div>{children}</div>
-          <Footer />
-        </>
-      )}
+      <Header />
+      <div>{children}</div>
+      <Footer />
     </>
   );
 };

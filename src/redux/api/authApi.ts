@@ -1,4 +1,8 @@
 // Imports
+import {
+  genericErrorResponse,
+  genericSuccessResponse,
+} from "@/helpers/api/api-response";
 import { TAG_TYPES } from "../tag-types";
 import { baseApi } from "./baseApi";
 
@@ -14,6 +18,8 @@ const authApi = baseApi.injectEndpoints({
         data: signUpData,
       }),
       invalidatesTags: [TAG_TYPES.user],
+      transformResponse: genericSuccessResponse,
+      transformErrorResponse: genericErrorResponse,
     }),
     userLogin: build.mutation({
       query: (loginData) => ({
@@ -22,6 +28,8 @@ const authApi = baseApi.injectEndpoints({
         data: loginData,
       }),
       invalidatesTags: [TAG_TYPES.user],
+      transformResponse: genericSuccessResponse,
+      transformErrorResponse: genericErrorResponse,
     }),
   }),
 });

@@ -8,7 +8,7 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { ILoginUser } from "@/types";
+import { ILoginUser, ResponseSuccessType } from "@/types";
 import { useUserLoginMutation } from "@/redux/api/authApi";
 import { storeUserInfo } from "@/services/auth.service";
 import { useRouter } from "next/router";
@@ -34,22 +34,22 @@ const LoginPage = () => {
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await userLogin({ ...loginData }).unwrap();
+      const res: ResponseSuccessType = await userLogin({
+        ...loginData,
+      }).unwrap();
 
       // Redirecting to profile page
-      if (res?.accessToken) {
+      if (res?.success && res?.data?.accessToken) {
         // Storing user access token in to keep user authenticated
-        storeUserInfo({ accessToken: res?.accessToken });
+        storeUserInfo({ accessToken: res?.data?.accessToken });
 
-        dispatch(setCurrentUser(res?.user));
+        dispatch(setCurrentUser(res?.data?.user));
 
         router.push("/");
-        swal("Welcome back Brevemodian", "", "success");
+        swal(res.message, "", "success");
       }
-
-      e.currentTarget.reset();
     } catch (err) {
-      console.error(err.message);
+      swal(err.message, "", "error");
     }
   };
 

@@ -3,13 +3,17 @@ import React from "react";
 import Link from "next/link";
 import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
-import useAuth from "@/hooks/auth/useAuth";
-import { ISignUpUser } from "@/hooks/auth/IAuth";
 import { useState } from "react";
+import { useUserSignUpMutation } from "@/redux/api/authApi";
+import { ISignUpUser, ResponseSuccessType } from "@/types";
+import { useRouter } from "next/router";
+import swal from "sweetalert";
 
 const SignUpPage = () => {
   const [signUpData, setSignUpData] = useState<ISignUpUser | null>(null);
-  const { signUpUser } = useAuth();
+  const [userSignUp] = useUserSignUpMutation();
+
+  const router = useRouter();
 
   const handleOnBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
     const field = e.target.name as keyof ISignUpUser;
@@ -19,14 +23,20 @@ const SignUpPage = () => {
     setSignUpData(newSignUpData as ISignUpUser);
   };
 
-  const handleSignUpSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    if (signUpData) {
-      signUpUser(signUpData);
-    }
-    const form = e.currentTarget as HTMLFormElement;
-    form.reset();
-
+  const handleSignUpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      const res: ResponseSuccessType = await userSignUp({
+        ...signUpData,
+      }).unwrap();
+
+      if (res?.success) {
+        swal(res?.message, "Please login to continue", "success");
+        router.push("/");
+      }
+    } catch (err) {
+      swal(err.message, "", "error");
+    }
   };
 
   return (

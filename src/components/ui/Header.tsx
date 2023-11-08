@@ -20,7 +20,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Cart from "../Cart";
+import Cart from "./cart/Cart";
 import Image from "next/image";
 import { removeUserInfo } from "@/services/auth.service";
 import { authKey } from "@/constants/storageKey";
@@ -144,7 +144,10 @@ const Header = () => {
                       Close
                     </Button>
                     <Button
-                      onClick={() => router.push("/cart-review")}
+                      onClick={() => {
+                        handleModalClose();
+                        router.push("/cart-review");
+                      }}
                       className="ms-2"
                       variant="primary"
                     >

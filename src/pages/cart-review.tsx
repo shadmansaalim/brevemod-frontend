@@ -2,31 +2,33 @@
 import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
 import { useRouter } from "next/router";
-import useAuth from "../hooks/auth/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faShoppingBag,
   faAngleDoubleRight,
 } from "@fortawesome/free-solid-svg-icons";
-import CartReviewItem from "@/components/CartReviewItem";
-import { ICourse } from "@/interfaces/common";
-import Cart from "../components/Cart";
+import CartReviewItem from "@/components/ui/cart/CartReviewItem";
+
+import Cart from "../components/ui/cart/Cart";
 import Image from "next/image";
+import { useAppSelector } from "@/redux/hooks";
 const CartReviewPage = () => {
-  const { currentUser, setCurrentUser, isLoading, setIsLoading } = useAuth();
+  const { currentUser } = useAppSelector((state) => state.user);
+  const { cart } = useAppSelector((state) => state.cart);
+
   const router = useRouter();
 
   return (
     <div className="container my-5">
-      {currentUser && currentUser?.cart.courses.length ? (
+      {cart && cart.courses.length ? (
         <div className="row g-5 mt-3">
           <div className="col-md-7 col-lg-8">
             <p className="text-center bg-dark text-white p-2 rounded-3">
               You added the following courses
               <FontAwesomeIcon className="mx-1" icon={faShoppingBag} />
             </p>
-            {currentUser?.cart.courses.map((course: ICourse) => (
-              <CartReviewItem key={course._id} course={course} />
+            {cart.courses.map((id) => (
+              <CartReviewItem key={id} id={id} />
             ))}
           </div>
 
@@ -34,11 +36,11 @@ const CartReviewPage = () => {
             <h4 className="d-flex justify-content-between align-items-center mb-3">
               <span className="text-dark">Your cart</span>
               <span className="badge bg-dark rounded-pill">
-                {currentUser?.cart.length}
+                {cart?.courses?.length}
               </span>
             </h4>
 
-            <Cart cart={currentUser?.cart} />
+            <Cart cart={cart} />
 
             <div className="card p-2">
               <button

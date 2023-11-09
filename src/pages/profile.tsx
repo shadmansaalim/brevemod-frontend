@@ -4,11 +4,14 @@ import type { ReactElement } from "react";
 import { Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import useAuth from "@/hooks/auth/useAuth";
-import { useState } from "react";
-import { getTokenFromLocalStorage } from "@/utils/common";
 import Image from "next/image";
 import swal from "sweetalert";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useState } from "react";
+import AuthLayout from "@/components/Layouts/AuthLayout";
+import { useUpdateUserProfileMutation } from "@/redux/api/profileApi";
+import { ResponseSuccessType } from "@/types";
+import { setCurrentUser } from "@/redux/slices/userSlice";
 
 type IUserProfileData = {
   firstName: string;
@@ -17,13 +20,17 @@ type IUserProfileData = {
 };
 
 const ProfilePage = () => {
-  const { currentUser, setCurrentUser } = useAuth();
+  const { currentUser } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+
+  const [updateUserProfile] = useUpdateUserProfileMutation();
+
   const [editable, setEditable] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [profileData, setProfileData] = useState<IUserProfileData>({
-    firstName: currentUser?.firstName,
-    middleName: currentUser?.middleName,
-    lastName: currentUser?.lastName,
+    firstName: currentUser?.firstName || "",
+    middleName: currentUser?.middleName || "",
+    lastName: currentUser?.lastName || "",
   });
   const [errors, setErrors] = useState<IUserProfileData>({
     firstName: "",
@@ -49,26 +56,26 @@ const ProfilePage = () => {
 
   const handleUpdateUserProfile = async () => {
     setUpdating(true);
-    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/profile`, {
-      method: "PATCH",
-      headers: {
-        Authorization: getTokenFromLocalStorage(),
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(profileData),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.success) {
-          const user = result.data;
-          setCurrentUser(user);
-          swal(result.message, "", "success");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => setUpdating(false));
+    try {
+      const res: ResponseSuccessType = await updateUserProfile({
+        ...profileData,
+      }).unwrap();
+
+      if (res?.success) {
+        dispatch(setCurrentUser(res?.data));
+        setProfileData({
+          firstName: res?.data?.firstName || "",
+          middleName: res?.data?.middleName || "",
+          lastName: res?.data?.lastName || "",
+        });
+        swal(res?.message, "", "success");
+      }
+
+      setUpdating(false);
+    } catch (err) {
+      swal(err?.data?.message || err?.message, "", "error");
+      setUpdating(false);
+    }
   };
 
   return (
@@ -207,5 +214,9 @@ const ProfilePage = () => {
 export default ProfilePage;
 
 ProfilePage.getLayout = function getLayout(page: ReactElement) {
-  return <RootLayout>{page}</RootLayout>;
+  return (
+    <AuthLayout>
+      <RootLayout>{page}</RootLayout>
+    </AuthLayout>
+  );
 };

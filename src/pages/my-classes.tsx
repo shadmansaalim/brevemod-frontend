@@ -1,5 +1,6 @@
 // Imports
 import RootLayout from "@/components/Layouts/RootLayout";
+import AuthLayout from "@/components/Layouts/AuthLayout";
 import type { ReactElement } from "react";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import { ICourse } from "@/types";
@@ -10,14 +11,14 @@ import MyCourseCard from "../components/ui/course/MyCourseCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
+import swal from "sweetalert";
 
 const MyClassesPage = () => {
   const { currentUser } = useAppSelector((state) => state.user);
+  const router = useRouter();
 
   const { data, isLoading } = useMyCoursesQuery({});
   const courses = data?.data as ICourse[];
-
-  const router = useRouter();
 
   return (
     <>
@@ -26,7 +27,7 @@ const MyClassesPage = () => {
       ) : (
         <div className="my-5 text-center">
           <Container>
-            {courses.length !== 0 ? (
+            {courses?.length === 0 ? (
               <Row style={{ marginTop: "80px", marginBottom: "80px" }}>
                 <Col lg="6" className="mx-auto shadow-lg mb-5 p-5 rounded-3">
                   <img
@@ -82,5 +83,9 @@ const MyClassesPage = () => {
 export default MyClassesPage;
 
 MyClassesPage.getLayout = function getLayout(page: ReactElement) {
-  return <RootLayout>{page}</RootLayout>;
+  return (
+    <AuthLayout>
+      <RootLayout>{page}</RootLayout>
+    </AuthLayout>
+  );
 };

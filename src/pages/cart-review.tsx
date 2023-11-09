@@ -10,8 +10,8 @@ import {
 import CartReviewItem from "@/components/ui/cart/CartReviewItem";
 
 import Cart from "../components/ui/cart/Cart";
-import Image from "next/image";
 import { useAppSelector } from "@/redux/hooks";
+import AuthLayout from "@/components/Layouts/AuthLayout";
 const CartReviewPage = () => {
   const { cart } = useAppSelector((state) => state.cart);
 
@@ -58,7 +58,7 @@ const CartReviewPage = () => {
               <div className="shadow-sm p-4 rounded-3">
                 <div className="card-body cart">
                   <div className="col-sm-12 empty-cart-cls text-center">
-                    <Image
+                    <img
                       src="/EmptyCart.svg"
                       className="img-fluid mb-4 mr-3 col-6 col-lg-3"
                       alt=""
@@ -86,5 +86,9 @@ const CartReviewPage = () => {
 export default CartReviewPage;
 
 CartReviewPage.getLayout = function getLayout(page: ReactElement) {
-  return <RootLayout>{page}</RootLayout>;
+  return (
+    <AuthLayout>
+      <RootLayout>{page}</RootLayout>
+    </AuthLayout>
+  );
 };

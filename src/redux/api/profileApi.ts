@@ -22,7 +22,15 @@ const profileApi = baseApi.injectEndpoints({
       transformErrorResponse: genericErrorResponse,
       providesTags: [TAG_TYPES.user],
     }),
+    updateUserProfile: build.mutation({
+      query: (data) => ({
+        url: ENDPOINT_BASE_URL,
+        method: "PATCH",
+        data,
+      }),
+      invalidatesTags: [TAG_TYPES.user],
+    }),
   }),
 });
 
-export const { useUserProfileQuery } = profileApi;
+export const { useUserProfileQuery, useUpdateUserProfileMutation } = profileApi;

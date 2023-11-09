@@ -1,5 +1,6 @@
 // Imports
 import RootLayout from "@/components/Layouts/RootLayout";
+import AuthLayout from "@/components/Layouts/AuthLayout";
 import type { ReactElement } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
@@ -22,5 +23,9 @@ const PaymentPage = () => {
 export default PaymentPage;
 
 PaymentPage.getLayout = function getLayout(page: ReactElement) {
-  return <RootLayout>{page}</RootLayout>;
+  return (
+    <AuthLayout>
+      <RootLayout>{page}</RootLayout>
+    </AuthLayout>
+  );
 };

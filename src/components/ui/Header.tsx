@@ -106,7 +106,7 @@ const Header = () => {
             >
               <FontAwesomeIcon icon={faShoppingCart} />
               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                {cart && cart?.courses.length}
+                {(cart && cart?.courses.length) || 0}
                 <span className="visually-hidden">Course Cart</span>
               </span>
             </button>

@@ -14,6 +14,7 @@ import { useAddToCartMutation } from "@/redux/api/cartApi";
 import swal from "sweetalert";
 import { useIsCoursePurchasedQuery } from "@/redux/api/purchaseApi";
 import { setCart } from "@/redux/slices/cartSlice";
+import { isLoggedIn } from "@/services/auth.service";
 
 const CourseDetailsPage = () => {
   const router = useRouter();
@@ -33,12 +34,21 @@ const CourseDetailsPage = () => {
 
   const handleAddToCart = async () => {
     try {
-      const res: ResponseSuccessType = await addToCart(
-        router.query.id
-      ).unwrap();
+      if (isLoggedIn()) {
+        const res: ResponseSuccessType = await addToCart(
+          router.query.id
+        ).unwrap();
 
-      if (res?.success) {
-        dispatch(setCart(res?.data));
+        if (res?.success) {
+          dispatch(setCart(res?.data));
+        }
+      } else {
+        swal(
+          "Unauthorized User",
+          "Please login to add courses in cart.",
+          "warning"
+        );
+        router.push("/login");
       }
     } catch (err) {
       swal(err.message, "", "error");

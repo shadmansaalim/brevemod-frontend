@@ -29,6 +29,7 @@ import { setCurrentUser } from "@/redux/slices/userSlice";
 import { useCartQuery } from "@/redux/api/cartApi";
 import { useEffect } from "react";
 import { setCart } from "@/redux/slices/cartSlice";
+import { ENUM_USER_ROLES } from "@/enums/user";
 
 const Header = () => {
   const { currentUser } = useAppSelector((state) => state.user);
@@ -188,17 +189,12 @@ const Header = () => {
                 <NavDropdown.Item href="/profile" eventKey="4.1">
                   <FontAwesomeIcon className="me-2" icon={faUser} /> Profile
                 </NavDropdown.Item>
-                <NavDropdown.Item
-                  href={
-                    currentUser?.role === "student"
-                      ? "/dashboard"
-                      : "/admin/dashboard"
-                  }
-                  eventKey="4.3"
-                >
-                  <FontAwesomeIcon className="me-2" icon={faDashboard} />{" "}
-                  Dashboard
-                </NavDropdown.Item>
+                {currentUser.role === ENUM_USER_ROLES.ADMIN && (
+                  <NavDropdown.Item href="/dashboard" eventKey="4.3">
+                    <FontAwesomeIcon className="me-2" icon={faDashboard} />{" "}
+                    Dashboard
+                  </NavDropdown.Item>
+                )}
                 <NavDropdown.Item onClick={logoutUser} eventKey="4.2">
                   <FontAwesomeIcon className="me-2" icon={faRightFromBracket} />{" "}
                   Logout

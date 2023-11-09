@@ -1,73 +1,116 @@
 // Imports
 import DashboardLayout from "@/components/Layouts/DashboardLayout";
+import AuthLayout from "@/components/Layouts/AuthLayout";
 import type { ReactElement } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";
+import { faFolder, faUsers, faStar } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
-import useAuth from "@/hooks/auth/useAuth";
-import MyCourse from "@/components/MyCourse";
-import { ICourse } from "@/interfaces/common";
+
 const DashboardHomePage = () => {
-  const { currentUser } = useAuth();
-  const router = useRouter();
-
   return (
-    <section className="text-center">
-      <Container>
-        {currentUser?.purchases.length ? (
-          <section style={{ marginBottom: "150px" }}>
-            <div className="my-4">
-              <h3 className="fw-light mb-5">
-                Welcome back
-                <span className="fw-normal ms-1">{currentUser?.firstName}</span>
-                , ready for your next lesson?
-              </h3>
-              <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                {currentUser?.purchases.map((course: ICourse) => (
-                  <MyCourse key={course._id} course={course} />
-                ))}
+    <section>
+      <div>
+        <div className="row g-3 my-2 text-white">
+          <div className="col-lg-6 col-xl-3">
+            <div
+              className="p-4 shadow-sm d-flex justify-content-around align-items-center rounded"
+              style={{ backgroundColor: "#3984ff" }}
+            >
+              <div className="col-8">
+                <h3 className="fw-bold fs-2 m-0">24</h3>
+                <p className="m-0">Courses</p>
               </div>
+              <span className="col-4 text-start">
+                <FontAwesomeIcon
+                  icon={faFolder}
+                  className="primary-text border rounded-full secondary-bg p-3 m-0"
+                />
+              </span>
             </div>
-          </section>
-        ) : (
-          <>
-            {currentUser?.purchases?.length === 0 ? (
-              <Row style={{ marginTop: "80px", marginBottom: "80px" }}>
-                <Col lg="6" className="mx-auto shadow-lg mb-5 p-5 rounded-3">
-                  <img
-                    src="/EmptyCart.svg"
-                    className="img-fluid mb-3 col-6"
-                    alt="Empty Cart Image"
-                  />
+          </div>
 
-                  <h3>No Courses Added</h3>
-                  <p>
-                    You have not added any course to your class. Please go back
-                    to home or courses and add a course to continue learning.
-                  </p>
-                  <Button
-                    onClick={() => router.push("/")}
-                    variant="outline-primary me-3"
-                  >
-                    Home <FontAwesomeIcon icon={faHome} />
-                  </Button>
-                  <Button
-                    onClick={() => router.push("/courses")}
-                    variant="outline-primary"
-                  >
-                    Courses <FontAwesomeIcon icon={faAngleDoubleRight} />
-                  </Button>
-                </Col>
-              </Row>
-            ) : (
-              <div className="vh-100 d-flex justify-content-center align-items-center">
-                <div className="spinner"></div>
+          <div className="col-lg-6 col-xl-3">
+            <div
+              className="p-4 shadow-sm d-flex justify-content-around align-items-center rounded"
+              style={{ backgroundColor: "#fa5649" }}
+            >
+              <div className="col-8">
+                <h3 className="fw-bold fs-2 m-0">13</h3>
+                <p className="m-0">Users</p>
               </div>
-            )}
-          </>
-        )}
-      </Container>
+              <span className="col-4 text-start">
+                <FontAwesomeIcon
+                  icon={faUsers}
+                  className="primary-text border rounded-full secondary-bg p-3 m-0"
+                />
+              </span>
+            </div>
+          </div>
+          <div className="col-lg-6 col-xl-3">
+            <div
+              className="p-4  shadow-sm d-flex justify-content-around align-items-center rounded"
+              style={{ backgroundColor: "#ffa113" }}
+            >
+              <div className="col-8">
+                <h3 className="fw-bold fs-2 m-0">23</h3>
+                <p className="m-0">Course Reviews</p>
+              </div>
+              <span className="col-4 text-start">
+                <FontAwesomeIcon
+                  icon={faStar}
+                  className="primary-text border rounded-full secondary-bg p-3 m-0"
+                />
+              </span>
+            </div>
+          </div>
+
+          <div className="col-lg-6 col-xl-3">
+            <div
+              className="p-4  shadow-sm d-flex justify-content-around align-items-center rounded"
+              style={{ backgroundColor: "#5a00dd" }}
+            >
+              <div className="col-8">
+                <h3 className="fw-bold fs-2 m-0">33</h3>
+                <p className="m-0">Reviews</p>
+              </div>
+              <span className="col-4 text-start">
+                <FontAwesomeIcon
+                  icon={faStar}
+                  className="primary-text border rounded-full secondary-bg p-3 m-0"
+                />
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-5">
+          <div className="bg-dark p-3 text-end"></div>
+          {/* <Table bordered hover>
+            <thead>
+              <tr>
+                <th className="d-none d-md-table-cell">#</th>
+                <th className="d-none d-md-table-cell">First Name</th>
+                <th className="d-none d-md-table-cell">Middle Name</th>
+                <th className="d-none d-md-table-cell">Last Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users?.map((user, index) => (
+                <UserRow
+                  key={index}
+                  index={index}
+                  user={user}
+                  users={users}
+                  setUsers={setUsers}
+                />
+              ))}
+            </tbody>
+          </Table> */}
+        </div>
+      </div>
     </section>
   );
 };
@@ -75,5 +118,11 @@ const DashboardHomePage = () => {
 export default DashboardHomePage;
 
 DashboardHomePage.getLayout = function getLayout(page: ReactElement) {
-  return <DashboardLayout>{page}</DashboardLayout>;
+  return (
+    <AuthLayout
+    // onlyAdminAccess={true}
+    >
+      <DashboardLayout>{page}</DashboardLayout>
+    </AuthLayout>
+  );
 };

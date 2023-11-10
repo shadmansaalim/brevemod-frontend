@@ -123,3 +123,31 @@ export type ICourseAddUpdateData = {
   lecturesCount: number;
   projectsCount: number;
 };
+
+export type IModuleContent = {
+  _id: string;
+  title: string;
+  type: "video" | "quiz";
+  link: string;
+  duration?: number;
+};
+
+export type ICourseModule = {
+  _id: string;
+  courseId: string;
+  moduleNumber: number;
+  moduleName: string;
+  moduleContents: IModuleContent[];
+};
+
+export type IUserCourseProgress = {
+  _id: string;
+  user: string;
+  courseId: string;
+  currentProgress: {
+    moduleId?: string;
+    moduleNumber?: number;
+    contentId?: string;
+    percentage?: number;
+  };
+};

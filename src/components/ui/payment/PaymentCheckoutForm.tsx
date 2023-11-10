@@ -6,16 +6,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBackward } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import swal from "sweetalert";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   useCreatePaymentIntentMutation,
   usePurchaseCoursesMutation,
 } from "@/redux/api/purchaseApi";
 import LoadingSpinner from "../LoadingSpinner";
+import { setCart } from "@/redux/slices/cartSlice";
 
 const PaymentCheckoutForm = () => {
   const { currentUser } = useAppSelector((state) => state.user);
   const { cart } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
 
   const [createPaymentIntent] = useCreatePaymentIntentMutation();
   const [purchaseCourses] = usePurchaseCoursesMutation();
@@ -55,6 +57,7 @@ const PaymentCheckoutForm = () => {
     try {
       const res = await purchaseCourses({}).unwrap();
       if (res.success) {
+        dispatch(setCart(null));
         router.push("/purchase-confirm");
       }
       setIsLoading(false);

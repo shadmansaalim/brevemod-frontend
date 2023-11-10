@@ -23,12 +23,12 @@ const CourseDetailsPage = () => {
   const [addToCart] = useAddToCartMutation();
 
   const { data: courseData, isLoading: courseDataLoading } = useCourseQuery(
-    router.query.id
+    router.query.courseId
   );
   const course = courseData?.data as ICourse;
 
   const { data: purchaseData, isLoading: purchaseDataLoading } =
-    useIsCoursePurchasedQuery(router.query.id);
+    useIsCoursePurchasedQuery(router.query.courseId);
 
   const { cart } = useAppSelector((state) => state.cart);
 
@@ -36,7 +36,7 @@ const CourseDetailsPage = () => {
     try {
       if (isLoggedIn()) {
         const res: ResponseSuccessType = await addToCart(
-          router.query.id
+          router.query.courseId
         ).unwrap();
 
         if (res?.success) {
@@ -105,8 +105,9 @@ const CourseDetailsPage = () => {
                   <button
                     onClick={handleAddToCart}
                     className={
-                      !cart?.courses.includes(router.query.id as string) &&
-                      !purchaseData?.data
+                      !cart?.courses.includes(
+                        router.query.courseId as string
+                      ) && !purchaseData?.data
                         ? "btn btn-secondary text-white mt-3"
                         : "btn btn-success text-white mt-3 disabled"
                     }
@@ -115,7 +116,9 @@ const CourseDetailsPage = () => {
                       <p className="m-0">
                         Purchased <FontAwesomeIcon icon={faCheck} />
                       </p>
-                    ) : cart?.courses.includes(router.query.id as string) ? (
+                    ) : cart?.courses.includes(
+                        router.query.courseId as string
+                      ) ? (
                       <p className="m-0">
                         Added to Cart <FontAwesomeIcon icon={faShoppingCart} />
                       </p>

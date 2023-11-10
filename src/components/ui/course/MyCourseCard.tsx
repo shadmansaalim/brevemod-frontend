@@ -69,7 +69,7 @@ const MyCourseCard = (props: { course: ICourse }) => {
                 </small>
               </Modal.Body>
               <Modal.Footer>
-                <button
+                {/* <button
                   className="btn btn-primary"
                   onClick={() => {
                     handleFirstModalClose();
@@ -77,7 +77,7 @@ const MyCourseCard = (props: { course: ICourse }) => {
                   }}
                 >
                   <FontAwesomeIcon icon={faPen} /> Add Review
-                </button>
+                </button> */}
               </Modal.Footer>
             </Modal>
 

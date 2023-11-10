@@ -119,9 +119,7 @@ export default DashboardHomePage;
 
 DashboardHomePage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayout
-    // onlyAdminAccess={true}
-    >
+    <AuthLayout onlyAdminAccess={true}>
       <DashboardLayout>{page}</DashboardLayout>
     </AuthLayout>
   );

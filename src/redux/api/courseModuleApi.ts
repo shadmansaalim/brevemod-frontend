@@ -20,7 +20,17 @@ const courseModuleApi = baseApi.injectEndpoints({
       transformErrorResponse: genericErrorResponse,
       providesTags: [TAG_TYPES.courseModule],
     }),
+    isCourseContentPublished: build.query({
+      query: (courseId: string | string[] | undefined) => ({
+        url: `${ENDPOINT_BASE_URL}/content-published/${courseId}`,
+        method: "GET",
+      }),
+      transformResponse: genericSuccessResponse,
+      transformErrorResponse: genericErrorResponse,
+      providesTags: [TAG_TYPES.courseModule],
+    }),
   }),
 });
 
-export const { useCourseModulesQuery } = courseModuleApi;
+export const { useCourseModulesQuery, useIsCourseContentPublishedQuery } =
+  courseModuleApi;

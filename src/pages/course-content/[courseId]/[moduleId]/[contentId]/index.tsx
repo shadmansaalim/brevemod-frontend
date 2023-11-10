@@ -28,6 +28,8 @@ const CourseModulePage = () => {
     (content: IModuleContent) => content._id === contentId
   );
 
+  console.log(pageModule);
+
   const handleNextContentClick = () => {
     // const moduleContentRoute = `/course-modules?courseId=${courseId}&moduleId=${module._id}&contentKey=${contentKey}`;
     // router.push(moduleContentRoute);

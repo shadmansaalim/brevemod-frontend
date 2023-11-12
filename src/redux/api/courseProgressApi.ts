@@ -12,7 +12,7 @@ const ENDPOINT_BASE_URL = "/course-progress";
 const courseProgressApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     courseProgress: build.query({
-      query: (courseId: string) => ({
+      query: (courseId: string | string[] | undefined) => ({
         url: `${ENDPOINT_BASE_URL}/${courseId}`,
         method: "GET",
       }),
@@ -21,7 +21,7 @@ const courseProgressApi = baseApi.injectEndpoints({
       providesTags: [TAG_TYPES.courseProgress],
     }),
     startCourse: build.mutation({
-      query: (courseId: string) => ({
+      query: (courseId: string | string[] | undefined) => ({
         url: `${ENDPOINT_BASE_URL}/start-course/${courseId}`,
         method: "POST",
       }),
@@ -30,7 +30,7 @@ const courseProgressApi = baseApi.injectEndpoints({
       invalidatesTags: [TAG_TYPES.courseProgress],
     }),
     updateCourseProgress: build.mutation({
-      query: (courseId: string) => ({
+      query: (courseId: string | string[] | undefined) => ({
         url: `${ENDPOINT_BASE_URL}/${courseId}`,
         method: "PATCH",
       }),

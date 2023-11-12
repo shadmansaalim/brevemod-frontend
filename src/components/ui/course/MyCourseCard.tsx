@@ -79,12 +79,12 @@ const MyCourseCard = ({ course }: { course: ICourse }) => {
               <div
                 className="progress-bar "
                 role="progressbar"
-                style={{ width: "25%" }}
-                aria-valuenow={25}
+                style={{ width: `${courseProgress?.percentage || 0}%` }}
+                aria-valuenow={courseProgress?.percentage || 0}
                 aria-valuemin={0}
                 aria-valuemax={100}
               >
-                25%
+                {courseProgress?.percentage || 0}%
               </div>
             </div>
           </div>

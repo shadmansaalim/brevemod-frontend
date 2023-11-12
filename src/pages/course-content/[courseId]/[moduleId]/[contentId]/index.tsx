@@ -2,112 +2,181 @@
 import RootLayout from "@/components/Layouts/RootLayout";
 import AuthLayout from "@/components/Layouts/AuthLayout";
 import type { ReactElement } from "react";
-import { Row, Col, Container, ProgressBar, Accordion } from "react-bootstrap";
-import CourseModuleItem from "@/components/ui/course/CourseModuleItem";
+import { Row, Container } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useCourseModulesQuery } from "@/redux/api/courseModuleApi";
-import { useCourseProgressQuery } from "@/redux/api/courseProgressApi";
-import { ICourseModule, IModuleContent, IUserCourseProgress } from "@/types";
+import {
+  useCourseProgressQuery,
+  useUpdateCourseProgressMutation,
+} from "@/redux/api/courseProgressApi";
+import {
+  IContentRouteData,
+  ICourseModule,
+  IModuleContent,
+  IUserCourseProgress,
+  ResponseSuccessType,
+} from "@/types";
+import swal from "sweetalert";
+import { useState } from "react";
+import { useAppSelector } from "@/redux/hooks";
+import ContentView from "@/components/ui/course/course-content/ContentView";
+import ContentSidebar from "@/components/ui/course/course-content/ContentSidebar";
+import {
+  findNextContentRoute,
+  findPreviousContentRoute,
+  isUserProgressUpdateRequired,
+} from "@/utils/course-content";
+import CourseContentLayout from "@/components/Layouts/CourseContentLayout";
+import { ENUM_USER_ROLES } from "@/enums/user";
+import CourseModulePageSkeleton from "@/components/ui/course/course-content/skeletons/CourseModulePageSkeleton";
 
 const CourseModulePage = () => {
   const router = useRouter();
 
+  // Extracting courseId, moduleId and courseId
   const courseId = router?.query?.courseId;
   const moduleId = router?.query?.moduleId;
   const contentId = router?.query?.contentId;
 
-  const { data, isLoading } = useCourseModulesQuery(courseId);
-  const courseModules = data?.data as ICourseModule[];
+  // Current User
+  const { currentUser } = useAppSelector((state) => state.user);
 
-  const pageModule = courseModules?.find(
+  // States
+  const [nextContentRoute, setNextContentRoute] =
+    useState<IContentRouteData | null>(null);
+  const [previousContentRoute, setPreviousContentRoute] =
+    useState<IContentRouteData | null>(null);
+  const [userProgressUpdateRequired, setUserProgressUpdateRequired] =
+    useState(false);
+
+  // User Course Progress Data
+  const { data: courseProgressData, isLoading: courseProgressDataLoading } =
+    currentUser && currentUser.role === ENUM_USER_ROLES.STUDENT
+      ? useCourseProgressQuery(courseId)
+      : { data: null, isLoading: false };
+  const courseProgress = courseProgressData?.data as IUserCourseProgress;
+
+  // Course Modules
+  const { data: courseModulesData, isLoading: courseModulesDataLoading } =
+    useCourseModulesQuery(courseId);
+  const courseModules = courseModulesData?.data as ICourseModule[];
+
+  // Update Course Progress Hook
+  const [updateCourseProgress] = useUpdateCourseProgressMutation();
+
+  // Current Module
+  const currentModule = courseModules?.find(
     (module: ICourseModule) => module._id === moduleId
   );
 
-  const pageContent = pageModule?.moduleContents?.find(
+  // Current Content
+  const currentContent = currentModule?.moduleContents?.find(
     (content: IModuleContent) => content._id === contentId
   );
 
-  console.log(pageModule);
+  useEffect(() => {
+    if (courseId && currentModule && currentContent) {
+      setNextContentRoute(
+        findNextContentRoute(
+          courseModules,
+          currentModule,
+          courseId as string,
+          currentContent._id
+        )
+      );
+      setPreviousContentRoute(
+        findPreviousContentRoute(
+          courseModules,
+          currentModule,
+          courseId as string,
+          currentContent._id
+        )
+      );
+    }
+    if (courseProgress && currentModule && currentContent) {
+      setUserProgressUpdateRequired(
+        isUserProgressUpdateRequired(
+          courseProgress,
+          currentModule._id,
+          currentContent._id
+        )
+      );
+    }
+  }, [courseModulesData, courseProgressData]);
 
-  const handleNextContentClick = () => {
-    // const moduleContentRoute = `/course-modules?courseId=${courseId}&moduleId=${module._id}&contentKey=${contentKey}`;
-    // router.push(moduleContentRoute);
+  const handleNextContentClick = async () => {
+    if (nextContentRoute) {
+      // Route Pattern
+      const routePattern = `${nextContentRoute.initial}/${nextContentRoute.courseId}/[${nextContentRoute.moduleId}]/[${nextContentRoute.contentId}]`;
+      // Route actual URL
+      const routeUrl = `${nextContentRoute.initial}/${nextContentRoute.courseId}/${nextContentRoute.moduleId}/${nextContentRoute.contentId}`;
+
+      // Checking if user progress update is required
+      if (userProgressUpdateRequired) {
+        try {
+          const res: ResponseSuccessType = await updateCourseProgress(
+            courseId
+          ).unwrap();
+          if (res?.success) {
+            router.push(routePattern, routePattern);
+          }
+        } catch (err) {
+          swal(err.message, "", "error");
+        }
+      } else {
+        router.push(
+          `${nextContentRoute.initial}/${nextContentRoute.courseId}/[${nextContentRoute.moduleId}]/[${nextContentRoute.contentId}]`,
+          `${nextContentRoute.initial}/${nextContentRoute.courseId}/${nextContentRoute.moduleId}/${nextContentRoute.contentId}`
+        );
+      }
+    }
   };
 
   const handlePreviousContentClick = () => {
-    // const moduleContentRoute = `/course-modules?courseId=${courseId}&moduleId=${module._id}&contentKey=${contentKey}`;
-    // router.push(moduleContentRoute);
+    if (previousContentRoute) {
+      router.push(
+        `${previousContentRoute.initial}/${previousContentRoute.courseId}/[${previousContentRoute.moduleId}]/[${previousContentRoute.contentId}]`,
+        `${previousContentRoute.initial}/${previousContentRoute.courseId}/${previousContentRoute.moduleId}/${previousContentRoute.contentId}`
+      );
+    }
   };
 
   return (
     <div>
-      <div>
-        <div className="text-start my-5">
-          <Container>
-            <div className="d-flex flex-column flex-md-row justify-content-between align-items-start mb-4">
-              <h2 className="fw-bold my-0">Backend Development Course</h2>
-            </div>
-            <Row>
-              <Col className="col-12 col-lg-8 mb-4 mb-lg-0">
-                <iframe
-                  width="100%"
-                  height="414"
-                  src={pageContent?.link}
-                  title="YouTube video player"
+      {courseModulesDataLoading || courseProgressDataLoading ? (
+        <CourseModulePageSkeleton />
+      ) : (
+        <div>
+          <div className="text-start my-5">
+            <Container>
+              <div className="d-flex flex-column flex-md-row justify-content-between align-items-start mb-4">
+                <h2 className="fw-bold my-0">Backend Development Course</h2>
+              </div>
+              <Row>
+                <ContentView
+                  currentContent={currentContent as IModuleContent}
+                  isPreviousButtonDisabled={
+                    previousContentRoute === null ? true : false
+                  }
+                  handlePreviousContentClick={handlePreviousContentClick}
+                  isNextButtonDisabled={
+                    nextContentRoute === null ? true : false
+                  }
+                  handleNextContentClick={handleNextContentClick}
                 />
-                <div className="mt-3 d-flex flex-lg-row flex-column justify-content-between align-items-start">
-                  <h4 className=" mb-0">{pageContent?.title}</h4>
-                  <div className="mt-2 mt-lg-0">
-                    <button
-                      onClick={handlePreviousContentClick}
-                      className="btn btn-outline-success rounded-pill me-2 moduleContentControlButtons"
-                    >
-                      Previous
-                    </button>
-                    <button
-                      onClick={handleNextContentClick}
-                      className="btn btn-success rounded-pill moduleContentControlButtons"
-                    >
-                      Next
-                    </button>
-                  </div>
-                </div>
-              </Col>
-
-              <Col className="col-12 col-lg-4">
-                <div className="d-flex justify-content-between align-items-start mb-3">
-                  <h5 className="mb-0 fw-bold">Course Progress</h5>
-                  <ProgressBar
-                    className="w-50 mb-0"
-                    variant="success"
-                    now={50}
-                    label={`${50}%`}
-                  />
-                </div>
-                <div className="moduleList">
-                  <input
-                    className="moduleSearchBar"
-                    placeholder="Search for module"
-                  ></input>
-
-                  <div className="modules">
-                    <Accordion defaultActiveKey="1">
-                      {courseModules?.map((module: any) => (
-                        <CourseModuleItem
-                          key={module._id}
-                          courseId={courseId as string}
-                          module={module}
-                        />
-                      ))}
-                    </Accordion>
-                  </div>
-                </div>
-              </Col>
-            </Row>
-          </Container>
+                <ContentSidebar
+                  courseProgress={courseProgress}
+                  modules={courseModules}
+                  userRole={currentUser?.role as ENUM_USER_ROLES}
+                  courseId={courseId as string}
+                  defaultActiveKey={currentModule?._id as string}
+                />
+              </Row>
+            </Container>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
@@ -117,7 +186,9 @@ export default CourseModulePage;
 CourseModulePage.getLayout = function getLayout(page: ReactElement) {
   return (
     <AuthLayout>
-      <RootLayout>{page}</RootLayout>
+      <RootLayout>
+        <CourseContentLayout>{page}</CourseContentLayout>
+      </RootLayout>
     </AuthLayout>
   );
 };

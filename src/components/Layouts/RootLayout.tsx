@@ -2,7 +2,7 @@
 import Header from "../ui/Header";
 import Footer from "../ui/Footer";
 
-const RootLayout = ({ children }: any) => {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Header />

@@ -37,10 +37,16 @@ const Header = () => {
 
   const dispatch = useAppDispatch();
 
-  const { data, refetch, isLoading: cartLoading } = useCartQuery({});
+  const {
+    data,
+    refetch,
+    isLoading: cartLoading,
+  } = currentUser && currentUser.role === ENUM_USER_ROLES.STUDENT
+    ? useCartQuery({})
+    : { data: null, refetch: () => {}, isLoading: false };
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && currentUser.role === ENUM_USER_ROLES.STUDENT) {
       refetch();
       if (data && data.success) {
         const cart = data.data;
@@ -86,13 +92,15 @@ const Header = () => {
             >
               Courses
             </Link>
-            <Link
-              className="text-decoration-none me-lg-3"
-              href="/my-classes"
-              style={{ color: "#161c2d" }}
-            >
-              My Classes
-            </Link>
+            {currentUser && currentUser.role === ENUM_USER_ROLES.STUDENT && (
+              <Link
+                className="text-decoration-none me-lg-3"
+                href="/my-classes"
+                style={{ color: "#161c2d" }}
+              >
+                My Classes
+              </Link>
+            )}
             <Link
               className="text-decoration-none me-lg-3"
               href="/about"
@@ -101,73 +109,79 @@ const Header = () => {
               About
             </Link>
 
-            <button
-              onClick={handleModalShow}
-              className="btn btn-outline-dark mt-2 mt-lg-0 px-2 py-1 position-relative"
-            >
-              <FontAwesomeIcon icon={faShoppingCart} />
-              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                {(cart && cart?.courses.length) || 0}
-                <span className="visually-hidden">Course Cart</span>
-              </span>
-            </button>
+            {currentUser && currentUser.role === ENUM_USER_ROLES.STUDENT && (
+              <>
+                <button
+                  onClick={handleModalShow}
+                  className="btn btn-outline-dark mt-2 mt-lg-0 px-2 py-1 position-relative"
+                >
+                  <FontAwesomeIcon icon={faShoppingCart} />
+                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                    {(cart && cart?.courses?.length) || 0}
+                    <span className="visually-hidden">Course Cart</span>
+                  </span>
+                </button>
 
-            <Modal show={modalShow} onHide={handleModalClose}>
-              <Modal.Header closeButton>
-                <Modal.Title>Courses Added</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                {cart && cart?.courses.length > 0 ? (
-                  <Cart cart={cart} />
-                ) : (
-                  <div className="container-fluid my-5">
-                    <div className="offset-lg-3 col-12 text-center mx-auto">
-                      <img
-                        src="https://codescandy.com/coach/rtl/assets/images/bag.svg"
-                        alt=""
-                        className="img-fluid mb-4"
-                      />
-                      <h3 className="fw-bold">Your shopping cart is empty</h3>
-                      <p className="mb-4">
-                        Add some courses for your delivery slot. Before
-                        proceeding to checkout you must add some courses to your
-                        shopping cart. You will find a lot of amazing courses on
-                        our courses page with limited offers.
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </Modal.Body>
-              <Modal.Footer>
-                {cart && cart?.courses.length > 0 ? (
-                  <div>
-                    <Button variant="secondary" onClick={handleModalClose}>
-                      Close
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        handleModalClose();
-                        router.push("/cart-review");
-                      }}
-                      className="ms-2"
-                      variant="primary"
-                    >
-                      Review Cart <FontAwesomeIcon icon={faForward} />
-                    </Button>
-                  </div>
-                ) : (
-                  <Button
-                    variant="primary"
-                    onClick={() => {
-                      handleModalClose();
-                      router.push("/courses");
-                    }}
-                  >
-                    Browse Courses
-                  </Button>
-                )}
-              </Modal.Footer>
-            </Modal>
+                <Modal show={modalShow} onHide={handleModalClose}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Courses Added</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    {cart && cart?.courses?.length > 0 ? (
+                      <Cart cart={cart} />
+                    ) : (
+                      <div className="container-fluid my-5">
+                        <div className="offset-lg-3 col-12 text-center mx-auto">
+                          <img
+                            src="https://codescandy.com/coach/rtl/assets/images/bag.svg"
+                            alt=""
+                            className="img-fluid mb-4"
+                          />
+                          <h3 className="fw-bold">
+                            Your shopping cart is empty
+                          </h3>
+                          <p className="mb-4">
+                            Add some courses for your delivery slot. Before
+                            proceeding to checkout you must add some courses to
+                            your shopping cart. You will find a lot of amazing
+                            courses on our courses page with limited offers.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </Modal.Body>
+                  <Modal.Footer>
+                    {cart && cart?.courses?.length > 0 ? (
+                      <div>
+                        <Button variant="secondary" onClick={handleModalClose}>
+                          Close
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            handleModalClose();
+                            router.push("/cart-review");
+                          }}
+                          className="ms-2"
+                          variant="primary"
+                        >
+                          Review Cart <FontAwesomeIcon icon={faForward} />
+                        </Button>
+                      </div>
+                    ) : (
+                      <Button
+                        variant="primary"
+                        onClick={() => {
+                          handleModalClose();
+                          router.push("/courses");
+                        }}
+                      >
+                        Browse Courses
+                      </Button>
+                    )}
+                  </Modal.Footer>
+                </Modal>
+              </>
+            )}
           </Nav>
           <Nav className="ms-auto">
             {currentUser ? (

@@ -6,7 +6,7 @@ import { Row, Col, Accordion, Container } from "react-bootstrap";
 import HeroSection from "@/components/HeroSection";
 import { useCoursesQuery } from "@/redux/api/courseApi";
 import { ICourse } from "@/types";
-import Course from "@/components/ui/course/CourseCard";
+import CourseCard from "@/components/ui/course/CourseCard";
 import CourseSkeleton from "@/components/ui/course/CourseCardSkeleton";
 
 const HomePage: NextPageWithLayout = () => {
@@ -24,7 +24,7 @@ const HomePage: NextPageWithLayout = () => {
               {isLoading
                 ? [...Array(4).keys()].map(() => <CourseSkeleton />)
                 : courses?.map((course) => (
-                    <Course key={course._id} course={course}></Course>
+                    <CourseCard key={course._id} course={course} />
                   ))}
             </Row>
           </div>

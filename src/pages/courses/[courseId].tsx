@@ -8,36 +8,48 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useCourseQuery } from "@/redux/api/courseApi";
 import { useRouter } from "next/router";
-import { ICourse, ResponseSuccessType } from "@/types";
+import { ICourse, ICourseModule, ResponseSuccessType } from "@/types";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useAddToCartMutation } from "@/redux/api/cartApi";
 import swal from "sweetalert";
 import { useIsCoursePurchasedQuery } from "@/redux/api/purchaseApi";
 import { setCart } from "@/redux/slices/cartSlice";
 import { isLoggedIn } from "@/services/auth.service";
+import { ENUM_USER_ROLES } from "@/enums/user";
+import { faForward } from "@fortawesome/free-solid-svg-icons";
+import { useCourseModulesQuery } from "@/redux/api/courseModuleApi";
 
 const CourseDetailsPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
+  const { courseId } = router?.query;
+
+  const { currentUser } = useAppSelector((state) => state.user);
+
   const [addToCart] = useAddToCartMutation();
 
-  const { data: courseData, isLoading: courseDataLoading } = useCourseQuery(
-    router.query.courseId
-  );
+  const { data: courseData, isLoading: courseDataLoading } =
+    useCourseQuery(courseId);
   const course = courseData?.data as ICourse;
 
   const { data: purchaseData, isLoading: purchaseDataLoading } =
-    useIsCoursePurchasedQuery(router.query.courseId);
+    currentUser && currentUser.role === ENUM_USER_ROLES.STUDENT
+      ? useIsCoursePurchasedQuery(courseId)
+      : { data: null, isLoading: false };
+
+  const { data: courseModulesData, isLoading: courseModulesDataLoading } =
+    currentUser && currentUser.role === ENUM_USER_ROLES.ADMIN
+      ? useCourseModulesQuery(courseId)
+      : { data: null, isLoading: false };
+  const courseModules = courseModulesData?.data as ICourseModule[];
 
   const { cart } = useAppSelector((state) => state.cart);
 
   const handleAddToCart = async () => {
     try {
       if (isLoggedIn()) {
-        const res: ResponseSuccessType = await addToCart(
-          router.query.courseId
-        ).unwrap();
+        const res: ResponseSuccessType = await addToCart(courseId).unwrap();
 
         if (res?.success) {
           dispatch(setCart(res?.data));
@@ -53,6 +65,10 @@ const CourseDetailsPage = () => {
     } catch (err) {
       swal(err.message, "", "error");
     }
+  };
+
+  const handleMoveToCourseModulesPage = () => {
+    router.push(`/course-content/${courseId}/admin`);
   };
 
   return (
@@ -102,32 +118,39 @@ const CourseDetailsPage = () => {
                     Created by <a href="!#">{course?.instructorName}</a>
                   </small>
                   <br />
-                  <button
-                    onClick={handleAddToCart}
-                    className={
-                      !cart?.courses.includes(
-                        router.query.courseId as string
-                      ) && !purchaseData?.data
-                        ? "btn btn-secondary text-white mt-3"
-                        : "btn btn-success text-white mt-3 disabled"
-                    }
-                  >
-                    {purchaseData?.data ? (
-                      <p className="m-0">
-                        Purchased <FontAwesomeIcon icon={faCheck} />
-                      </p>
-                    ) : cart?.courses.includes(
-                        router.query.courseId as string
-                      ) ? (
-                      <p className="m-0">
-                        Added to Cart <FontAwesomeIcon icon={faShoppingCart} />
-                      </p>
-                    ) : (
-                      <p className="m-0">
-                        Add to Cart <FontAwesomeIcon icon={faShoppingCart} />
-                      </p>
-                    )}
-                  </button>
+                  {currentUser && currentUser.role === ENUM_USER_ROLES.ADMIN ? (
+                    <button
+                      onClick={handleMoveToCourseModulesPage}
+                      className="btn btn-success text-white mt-3"
+                    >
+                      Course Modules <FontAwesomeIcon icon={faForward} />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleAddToCart}
+                      className={
+                        !cart?.courses.includes(courseId as string) &&
+                        !purchaseData?.data
+                          ? "btn btn-secondary text-white mt-3"
+                          : "btn btn-success text-white mt-3 disabled"
+                      }
+                    >
+                      {purchaseData?.data ? (
+                        <p className="m-0">
+                          Purchased <FontAwesomeIcon icon={faCheck} />
+                        </p>
+                      ) : cart?.courses.includes(courseId as string) ? (
+                        <p className="m-0">
+                          Added to Cart{" "}
+                          <FontAwesomeIcon icon={faShoppingCart} />
+                        </p>
+                      ) : (
+                        <p className="m-0">
+                          Add to Cart <FontAwesomeIcon icon={faShoppingCart} />
+                        </p>
+                      )}
+                    </button>
+                  )}
                 </div>
               </section>
             </Container>

@@ -13,7 +13,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Sidebar from "../ui/Sidebar";
 
-const DashboardLayout = ({ children }: any) => {
+const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const [toggled, setToggled] = useState(true);
   const router = useRouter();
 

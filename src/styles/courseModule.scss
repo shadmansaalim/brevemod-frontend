@@ -70,6 +70,17 @@
       #fafdfa;
     outline: none !important;
   }
+  .currentModuleContentBtn {
+    border: none;
+    border-radius: 14px;
+    display: flex;
+    padding: 1.2em;
+    justify-content: space-between;
+    align-items: center;
+    background: #198754;
+    color: white;
+    outline: none !important;
+  }
 }
 
 .moduleContentControlButtons {

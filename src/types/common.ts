@@ -144,10 +144,23 @@ export type IUserCourseProgress = {
   _id: string;
   user: string;
   courseId: string;
-  currentProgress: {
-    moduleId?: string;
-    moduleNumber?: number;
-    contentId?: string;
-    percentage?: number;
+  completed: {
+    moduleId: string;
+    moduleNumber: number;
+    contentId: string;
+  }[];
+  current: {
+    moduleId: string;
+    moduleNumber: number;
+    contentId: string;
   };
+  completedContentCount: number;
+  percentage: number;
+};
+
+export type IContentRouteData = {
+  initial: string;
+  courseId: string;
+  moduleId: string;
+  contentId: string;
 };

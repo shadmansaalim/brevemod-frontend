@@ -29,8 +29,42 @@ const courseModuleApi = baseApi.injectEndpoints({
       transformErrorResponse: genericErrorResponse,
       providesTags: [TAG_TYPES.courseModule],
     }),
+    isCourseContentValid: build.query({
+      query: (arg) => ({
+        url: `${ENDPOINT_BASE_URL}/content-valid/${arg.courseId}/${arg.moduleId}/${arg.contentId}`,
+        method: "GET",
+      }),
+      transformResponse: genericSuccessResponse,
+      transformErrorResponse: genericErrorResponse,
+      providesTags: [TAG_TYPES.courseModule],
+    }),
+    createModule: build.mutation({
+      query: (moduleData) => ({
+        url: ENDPOINT_BASE_URL,
+        method: "POST",
+        data: moduleData,
+      }),
+      transformResponse: genericSuccessResponse,
+      transformErrorResponse: genericErrorResponse,
+      invalidatesTags: [TAG_TYPES.courseModule],
+    }),
+    addContentToModule: build.mutation({
+      query: (payload) => ({
+        url: `${ENDPOINT_BASE_URL}/add-content/${payload.moduleId}`,
+        method: "PATCH",
+        data: payload.contentData,
+      }),
+      transformResponse: genericSuccessResponse,
+      transformErrorResponse: genericErrorResponse,
+      invalidatesTags: [TAG_TYPES.courseModule],
+    }),
   }),
 });
 
-export const { useCourseModulesQuery, useIsCourseContentPublishedQuery } =
-  courseModuleApi;
+export const {
+  useCourseModulesQuery,
+  useIsCourseContentPublishedQuery,
+  useIsCourseContentValidQuery,
+  useCreateModuleMutation,
+  useAddContentToModuleMutation,
+} = courseModuleApi;

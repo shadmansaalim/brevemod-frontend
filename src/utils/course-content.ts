@@ -14,7 +14,7 @@ export const findNextContentRoute = (
     initial:
       userRole === ENUM_USER_ROLES.STUDENT
         ? "/course-content"
-        : "/course-content/ADMIN",
+        : "/course-content/admin",
     courseId: courseId,
     moduleId: "",
     contentId: "",
@@ -58,7 +58,10 @@ export const findPreviousContentRoute = (
   contentId: string
 ) => {
   let route: IContentRouteData | null = {
-    initial: "/course-content",
+    initial:
+      userRole === ENUM_USER_ROLES.STUDENT
+        ? "/course-content"
+        : "/course-content/admin",
     courseId: courseId,
     moduleId: "",
     contentId: "",

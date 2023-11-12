@@ -4,7 +4,7 @@ import type { ReactElement } from "react";
 import { Row, Col, Container, InputGroup, Form } from "react-bootstrap";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { ICourse } from "@/types";
 import { useCoursesQuery } from "@/redux/api/courseApi";
 import { useDebounced } from "@/redux/hooks";
@@ -46,14 +46,21 @@ const CoursesPage = () => {
               }
               className="mb-3"
             >
-              <InputGroup.Text id="basic-addon1">
-                <FontAwesomeIcon icon={faSearch} />
-              </InputGroup.Text>
               <Form.Control
+                value={searchTerm}
                 placeholder="Search courses"
                 aria-label="Search courses"
                 aria-describedby="basic-addon1"
               />
+              {searchTerm.length > 0 && (
+                <InputGroup.Text
+                  id="basic-addon1"
+                  onClick={() => setSearchTerm("")}
+                  style={{ cursor: "pointer" }}
+                >
+                  Reset <FontAwesomeIcon icon={faRotateLeft} className="ms-2" />
+                </InputGroup.Text>
+              )}
             </InputGroup>
           </div>
 

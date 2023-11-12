@@ -116,8 +116,7 @@ const MyCourseCard = ({ course }: { course: ICourse }) => {
               ) : (
                 <>
                   <button disabled className="btn btn-secondary w-100">
-                    Content Unavailable
-                    <FontAwesomeIcon className="ms-1" icon={faForward} />
+                    Content Not Uploaded
                   </button>
                 </>
               )}

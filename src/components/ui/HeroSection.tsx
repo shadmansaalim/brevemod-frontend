@@ -7,31 +7,30 @@ const HeroSection = () => {
   const router = useRouter();
 
   return (
-    <section className="mb-5">
+    <section className="my-3 py-3 my-xl-5 py-xl-5">
       <Row className="d-flex align-items-center">
-        <Col md="7" lg="7" xl="5" className="mx-auto">
+        <Col
+          xl="6"
+          className="text-center text-xl-start mx-auto order-2 order-xl-1 mt-4 mt-xl-0"
+        >
           <div>
-            <h1>What Will You Discover?</h1>
+            <h1>Want to learn consistently?</h1>
             <p>
-              Explore new skills, deepen existing passions, and get lost in
-              creativity. What you find just might surprise and inspire you.
+              Explore our courses and get into our module based ecosystem where
+              we will take care of your consistency in learning.
             </p>
             <Button
               onClick={() => router.push("/courses")}
-              variant="success"
+              variant="outline-success"
               size="lg"
             >
               Browse Courses
             </Button>
           </div>
         </Col>
-        <Col md="5" lg="5" xl="4" className="mx-auto">
-          <div>
-            <img
-              className="img-fluid mt-4 mt-md-0 pe-3 pe-md-0"
-              src="https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://images.ctfassets.net/wp1lcwdav1p1/6JVJEaAT8FWwiBfVl1vECY/eccd28d76369194c1bae181bdef80140/hero-b.png?auto=format%2Ccompress&dpr=2&w=459&h=497&q=40"
-              alt=""
-            />
+        <Col xl="6" className="mx-auto order-1 order-xl-2">
+          <div className="text-center">
+            <img className="img-fluid" src="./HeroSection.svg" alt="" />
           </div>
         </Col>
       </Row>

@@ -3,10 +3,10 @@ import styles from "@/styles/InfoSection.module.css";
 
 const InfoSection = () => {
   return (
-    <div className="mb-5">
-      <div className="col-md-11 mx-auto row">
-        <div className="text-start col-xl-5">
-          <div className="mb-5">
+    <div className="my-3 py-3 my-xl-5 py-xl-5">
+      <div className="mx-auto row">
+        <div className="text-start col-xl-5 p-0">
+          <div className="mb-4">
             <h3 className="fw-bold">Learning something just got easier</h3>
             <p>
               No more asking around when it comes to learn new skills. Brevemod
@@ -18,7 +18,7 @@ const InfoSection = () => {
             <div className="mb-3">
               <span className="d-flex align-items-center mb-2">
                 <span className="fs-3">📚</span>
-                <h5 className="fw-bold mb-0 ms-2">Find a course</h5>
+                <h5 className="fw-bold mb-0 ms-3 ms-xl-2">Find a course</h5>
               </span>
               <p>
                 We've introduced top courses based on market research that are
@@ -29,7 +29,7 @@ const InfoSection = () => {
             <div className="mb-3">
               <span className="d-flex align-items-center mb-2">
                 <span className="fs-3">💳</span>
-                <h5 className="fw-bold mb-0 ms-2">Purchase a course</h5>
+                <h5 className="fw-bold mb-0 ms-3 ms-xl-2">Purchase a course</h5>
               </span>
               <p>
                 We are giving the biggest sale of the year so don't forget to
@@ -39,7 +39,9 @@ const InfoSection = () => {
             <div>
               <span className="d-flex align-items-center mb-2">
                 <span className="fs-3">👨‍💻</span>
-                <h5 className="fw-bold mb-0 ms-2">Learn something daily</h5>
+                <h5 className="fw-bold mb-0 ms-3 ms-xl-2">
+                  Learn something daily
+                </h5>
               </span>
               <p>
                 Keep on completing short modules daily and get one step closer
@@ -49,7 +51,7 @@ const InfoSection = () => {
             <div>
               <span className="d-flex align-items-center mb-2">
                 <span className="fs-3">😎</span>
-                <h5 className="fw-bold mb-0 ms-2">Become a pro</h5>
+                <h5 className="fw-bold mb-0 ms-3 ms-xl-2">Become a pro</h5>
               </span>
               <p>
                 After being consistent with strong dedication for some months

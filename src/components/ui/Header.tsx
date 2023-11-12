@@ -72,7 +72,7 @@ const Header = () => {
   };
 
   return (
-    <Navbar className="shadow-sm pt-lg-3" expand="lg">
+    <Navbar className="shadow-sm w-100" expand="lg">
       <Container>
         <Navbar.Brand className="fw-bold" href="/">
           BREVEMOD.

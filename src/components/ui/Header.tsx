@@ -128,18 +128,15 @@ const Header = () => {
                       <div className="container-fluid my-5">
                         <div className="offset-lg-3 col-12 text-center mx-auto">
                           <img
-                            src="https://codescandy.com/coach/rtl/assets/images/bag.svg"
+                            src="/EmptyCart.svg"
                             alt=""
-                            className="img-fluid mb-4"
+                            className="img-fluid mb-4 col-9"
                           />
-                          <h3 className="fw-bold">
-                            Your shopping cart is empty
-                          </h3>
+                          <h3 className="fw-bold">Your cart is empty 🛒</h3>
                           <p className="mb-4">
-                            Add some courses for your delivery slot. Before
-                            proceeding to checkout you must add some courses to
-                            your shopping cart. You will find a lot of amazing
-                            courses on our courses page with limited offers.
+                            Add some courses to your cart and then proceed to
+                            checkout. You will find a lot of amazing courses on
+                            our courses page with limited offers.
                           </p>
                         </div>
                       </div>

@@ -8,7 +8,7 @@ const PurchaseConfirmationPage = () => {
     <div className="text-center my-5 col-9 col-md-8 col-lg-6 mx-auto">
       <img
         src="/PurchaseConfirm.svg"
-        className="img-fluid col-8 col-md-6 mx-auto mb-4"
+        className="img-fluid col-8 col-md-6 col-lg-4 mx-auto mb-4"
         alt="Payment Image"
       />
       <h1 className="display-3"> Thank You!</h1>

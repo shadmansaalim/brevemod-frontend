@@ -20,10 +20,10 @@ const NotFoundPage = () => {
       <p>
         Having trouble?
         <a
-          className="ms-1"
+          className="ms-1 text-success"
           target="_blank"
           rel="noreferrer"
-          href="https://github.com/shadmansaalim"
+          href="https://saalim-shadman.web.app/"
         >
           Contact us
         </a>

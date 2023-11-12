@@ -14,6 +14,7 @@ import {
 import { useIsCourseContentPublishedQuery } from "@/redux/api/courseModuleApi";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { ProgressBar } from "react-bootstrap";
 
 const MyCourseCard = ({ course }: { course: ICourse }) => {
   const {
@@ -76,16 +77,12 @@ const MyCourseCard = ({ course }: { course: ICourse }) => {
             <small>{course.instructorName}</small>
             <br />
             <div className="progress col-10 mx-auto mt-2">
-              <div
-                className="progress-bar "
-                role="progressbar"
-                style={{ width: `${courseProgress?.percentage || 0}%` }}
-                aria-valuenow={courseProgress?.percentage || 0}
-                aria-valuemin={0}
-                aria-valuemax={100}
-              >
-                {courseProgress?.percentage || 0}%
-              </div>
+              <ProgressBar
+                className="w-100 mb-0"
+                variant="success"
+                now={courseProgress?.percentage || 0}
+                label={`${courseProgress?.percentage || 0}%`}
+              />
             </div>
           </div>
         </div>
@@ -95,7 +92,7 @@ const MyCourseCard = ({ course }: { course: ICourse }) => {
               {isCourseStarted ? (
                 <button
                   onClick={handleContinueCourse}
-                  className="btn btn-primary w-100"
+                  className="btn btn-success w-100"
                 >
                   Continue Course
                   <FontAwesomeIcon className="ms-1" icon={faForward} />
@@ -103,7 +100,7 @@ const MyCourseCard = ({ course }: { course: ICourse }) => {
               ) : (
                 <button
                   onClick={handleStartCourse}
-                  className="btn btn-outline-primary w-100"
+                  className="btn btn-outline-success w-100"
                 >
                   Start Course
                   <FontAwesomeIcon className="ms-1" icon={faCirclePlay} />

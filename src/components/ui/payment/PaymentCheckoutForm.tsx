@@ -271,7 +271,7 @@ const PaymentCheckoutForm = () => {
                   <FontAwesomeIcon icon={faBackward} /> Previous
                 </button>
                 {processing && !error ? (
-                  <button className="btn btn-primary" type="button" disabled>
+                  <button className="btn btn-success" type="button" disabled>
                     <span
                       className="spinner-border spinner-border-sm me-2"
                       role="status"
@@ -283,7 +283,7 @@ const PaymentCheckoutForm = () => {
                   <button
                     type="submit"
                     disabled={!stripe || success ? true : false}
-                    className="btn btn-primary px-3"
+                    className="btn btn-success px-3"
                   >
                     Pay ${cart.payment.grandTotal}
                   </button>

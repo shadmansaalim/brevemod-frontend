@@ -66,7 +66,7 @@ const CartReviewPage = () => {
                     <h3 className="fw-light">Your Cart is Empty</h3>
                     <p className="m-0">Add a course to continue</p>
                     <button
-                      className="btn btn-outline-primary mt-3"
+                      className="btn btn-outline-success mt-3"
                       data-abc="true"
                       onClick={() => router.push("/courses")}
                     >

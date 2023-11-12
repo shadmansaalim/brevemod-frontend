@@ -111,14 +111,16 @@ const SignUpPage = () => {
                       </div>
 
                       <div className="d-flex justify-content-center mb-3 mb-lg-4">
-                        <button type="submit" className="btn btn-primary w-100">
+                        <button type="submit" className="btn btn-success w-100">
                           Sign Up
                         </button>
                       </div>
 
                       <div className="text-center">
                         <span className="me-1">Already a member?</span>
-                        <Link href="/login">Login</Link>
+                        <Link href="/login" className="text-success">
+                          Login
+                        </Link>
                       </div>
                     </form>
                   </div>

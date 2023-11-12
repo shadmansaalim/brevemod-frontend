@@ -41,7 +41,7 @@ const DashboardCourseCard = (props: { course: ICourse }) => {
           </Card.Text>
         </Card.Body>
         <Card.Footer className="d-flex justify-content-center">
-          <Button onClick={goToCourseDetails} variant="primary">
+          <Button onClick={goToCourseDetails} variant="success">
             Preview Course
             <FontAwesomeIcon icon={faAngleDoubleRight} className="ms-2" />
           </Button>

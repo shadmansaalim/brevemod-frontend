@@ -25,16 +25,15 @@ const ContentSidebar = ({
 
   return (
     <Col className="col-12 col-lg-4">
-      <div className="d-flex justify-content-between align-items-start mb-3">
-        <h5 className="mb-0 fw-bold">Course Progress</h5>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h5 className="m-0 fw-bold w-100">Course Progress</h5>
         <ProgressBar
-          className="w-50 mb-0"
+          className="w-100 m-0"
           variant="success"
           now={progressPercentage}
           label={`${progressPercentage}%`}
         />
       </div>
-
       <div className="moduleList">
         {/* <input
           className="moduleSearchBar"

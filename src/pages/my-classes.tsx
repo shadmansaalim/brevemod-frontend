@@ -43,13 +43,13 @@ const MyClassesPage = () => {
                   </p>
                   <Button
                     onClick={() => router.push("/")}
-                    variant="outline-primary me-3"
+                    variant="outline-success me-3"
                   >
                     Home <FontAwesomeIcon icon={faHome} />
                   </Button>
                   <Button
                     onClick={() => router.push("/courses")}
-                    variant="outline-primary"
+                    variant="outline-success"
                   >
                     Courses <FontAwesomeIcon icon={faAngleDoubleRight} />
                   </Button>

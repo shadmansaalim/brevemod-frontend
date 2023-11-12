@@ -3,7 +3,7 @@ import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
 import type { NextPageWithLayout } from "./_app";
 import { Row, Col, Accordion, Container } from "react-bootstrap";
-import HeroSection from "@/components/HeroSection";
+import HeroSection from "@/components/ui/HeroSection";
 import { useCoursesQuery } from "@/redux/api/courseApi";
 import { ICourse } from "@/types";
 import CourseCard from "@/components/ui/course/CourseCard";

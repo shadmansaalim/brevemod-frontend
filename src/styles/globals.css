@@ -8,6 +8,26 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Modifying bootstrap success color */
+.btn-success {
+  background-color: #006b5a !important;
+}
+.btn-success:hover {
+  background-color: #014d40 !important;
+}
+.btn-outline-success {
+  border-color: #006b5a !important;
+}
+.btn-outline-success:hover {
+  background-color: #006b5a !important;
+}
+.text-success {
+  color: #006b5a !important;
+}
+.bg-success {
+  background-color: #006b5a !important;
+}
+
 /* Color For Stars */
 .icon-color {
   color: gold;
@@ -55,67 +75,6 @@ body {
   }
 }
 
-.error {
-  color: red;
-}
-
-.pay-card {
-  border: none;
-}
-
-.pay-control {
-  border-bottom: 2px solid #eee !important;
-  border: none;
-  font-weight: 600;
-}
-
-.pay-control:focus {
-  color: #495057;
-  background-color: #fff;
-  border-color: #8bbafe;
-  outline: 0;
-  box-shadow: none;
-  border-radius: 0px;
-  border-bottom: 2px solid blue !important;
-}
-
-.inputbox {
-  position: relative;
-  margin-bottom: 20px;
-  width: 100%;
-}
-
-.inputbox span {
-  position: absolute;
-  top: 7px;
-  left: 11px;
-  transition: 0.5s;
-}
-
-.inputbox i {
-  position: absolute;
-  top: 13px;
-  right: 8px;
-  transition: 0.5s;
-  color: #3f51b5;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.inputbox input:focus ~ span {
-  transform: translateX(-0px) translateY(-15px);
-  font-size: 12px;
-}
-
-.inputbox input:valid ~ span {
-  transform: translateX(-0px) translateY(-15px);
-  font-size: 12px;
-}
-
 .slick-dots li button:before {
   margin-top: 10px;
   font-size: 12px;
@@ -127,160 +86,4 @@ input::-webkit-inner-spin-button {
 }
 .slick-next:before {
   display: none;
-}
-
-.profile-wrapper {
-  border-radius: 8px;
-  background-color: #e9e9ed;
-  padding: 28px;
-
-  min-height: 450px;
-}
-
-.profile-wrapper input {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-  outline: none;
-  background: #ffffff;
-  border: 1px solid black;
-  border-radius: 4px;
-  height: 40px;
-  color: #404d61;
-  padding-left: 8px;
-}
-
-.profile-wrapper .user-details {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-  outline: none;
-  background: whitesmoke;
-  border: 1px solid #e9e9ed;
-  border-radius: 4px;
-  height: 40px;
-  color: #404d61;
-  padding-left: 8px;
-  cursor: pointer;
-}
-
-:root {
-  --main-bg-color: #007cc2;
-  --main-text-color: white;
-  --second-text-color: white;
-  --second-bg-color: #292b2c;
-}
-
-.primary-text {
-  color: var(--main-text-color);
-}
-
-.second-text {
-  color: var(--second-text-color);
-}
-
-.primary-bg {
-  background-color: var(--main-bg-color);
-}
-
-.secondary-bg {
-  background-color: var(--second-bg-color);
-}
-
-.rounded-full {
-  border-radius: 100%;
-}
-
-#wrapper {
-  overflow-x: hidden;
-}
-
-#sidebar-wrapper {
-  min-height: 100vh;
-  margin-left: -25rem;
-  -webkit-transition: margin 0.25s ease-out;
-  -moz-transition: margin 0.25s ease-out;
-  -o-transition: margin 0.25s ease-out;
-  transition: margin 0.25s ease-out;
-}
-
-#sidebar-wrapper .sidebar-heading {
-  padding: 0.875rem 1.25rem;
-}
-
-#sidebar-wrapper .list-group {
-  width: 25rem;
-}
-
-#page-content-wrapper {
-  min-width: 100vw;
-}
-
-#wrapper.toggled #sidebar-wrapper {
-  margin-left: 0;
-}
-
-#menu-toggle {
-  cursor: pointer;
-}
-
-.list-group-item {
-  border: none;
-  padding: 20px 30px;
-}
-
-.list-group-item.active {
-  background-color: transparent;
-  color: var(--main-text-color);
-  font-weight: bold;
-  border: none;
-}
-
-.box {
-  width: 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.box:hover {
-  background-color: whitesmoke;
-  cursor: pointer;
-}
-
-.logo {
-  width: 40px !important;
-  height: 25px !important;
-}
-
-@media (min-width: 768px) {
-  #sidebar-wrapper {
-    margin-left: -20rem;
-  }
-
-  #page-content-wrapper {
-    min-width: 0;
-    width: 100%;
-  }
-
-  #sidebar-wrapper .list-group {
-    width: 20rem;
-  }
-
-  #wrapper.toggled #sidebar-wrapper {
-    margin-left: 0rem;
-  }
-}
-
-@media only screen and (max-width: 688px) {
-  #sidebar-wrapper {
-    margin-left: -15rem;
-  }
-  #sidebar-wrapper .list-group {
-    width: 15rem;
-  }
-  #wrapper.toggled #sidebar-wrapper {
-    margin-left: 0rem;
-  }
 }

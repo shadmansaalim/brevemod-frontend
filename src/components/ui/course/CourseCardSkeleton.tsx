@@ -28,10 +28,12 @@ const CourseCardSkeleton = () => {
             <span className="placeholder col-6"></span>
             <span className="placeholder col-8"></span>
           </p>
-          <a
-            href="#"
-            className="btn btn-primary disabled placeholder col-6"
-          ></a>
+          <div className="text-center w-100">
+            <a
+              href="#"
+              className="btn btn-success disabled placeholder col-12"
+            ></a>
+          </div>
         </div>
       </div>
     </Col>

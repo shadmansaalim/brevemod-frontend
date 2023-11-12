@@ -36,26 +36,28 @@ const Header = () => {
   const { cart } = useAppSelector((state) => state.cart);
 
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const {
-    data,
+    data: cartData,
     refetch,
-    isLoading: cartLoading,
-  } = currentUser && currentUser.role === ENUM_USER_ROLES.STUDENT
-    ? useCartQuery({})
-    : { data: null, refetch: () => {}, isLoading: false };
+    isLoading: cartDataLoading,
+  } = useCartQuery({});
 
   useEffect(() => {
     if (currentUser && currentUser.role === ENUM_USER_ROLES.STUDENT) {
       refetch();
-      if (data && data.success) {
-        const cart = data.data;
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (currentUser) {
+      if (cartData && cartData.success) {
+        const cart = cartData.data;
         dispatch(setCart(cart));
       }
     }
-  }, [cartLoading, currentUser]);
-
-  const router = useRouter();
+  }, [currentUser, cartData]);
 
   const [modalShow, setModalShow] = useState(false);
 
@@ -109,7 +111,7 @@ const Header = () => {
                   className="btn btn-outline-dark mt-2 mt-lg-0 px-2 py-1 position-relative"
                 >
                   <FontAwesomeIcon icon={faShoppingCart} />
-                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
                     {(cart && cart?.courses?.length) || 0}
                     <span className="visually-hidden">Course Cart</span>
                   </span>
@@ -155,14 +157,14 @@ const Header = () => {
                             router.push("/cart-review");
                           }}
                           className="ms-2"
-                          variant="primary"
+                          variant="success"
                         >
                           Review Cart <FontAwesomeIcon icon={faForward} />
                         </Button>
                       </div>
                     ) : (
                       <Button
-                        variant="primary"
+                        variant="success"
                         onClick={() => {
                           handleModalClose();
                           router.push("/courses");
@@ -196,7 +198,7 @@ const Header = () => {
                 <NavDropdown.Item href="/profile" eventKey="4.1">
                   <FontAwesomeIcon className="me-2" icon={faUser} /> Profile
                 </NavDropdown.Item>
-                {currentUser.role === ENUM_USER_ROLES.ADMIN && (
+                {currentUser && currentUser.role === ENUM_USER_ROLES.ADMIN && (
                   <NavDropdown.Item href="/dashboard" eventKey="4.3">
                     <FontAwesomeIcon className="me-2" icon={faDashboard} />{" "}
                     Dashboard
@@ -212,14 +214,14 @@ const Header = () => {
                 <Button
                   onClick={() => router.push("/sign-up")}
                   className="me-lg-3"
-                  variant="outline-primary"
+                  variant="outline-success"
                 >
                   Sign Up <FontAwesomeIcon icon={faUserPlus} />
                 </Button>
                 <Button
                   onClick={() => router.push("/login")}
                   className="mt-1 mt-lg-0"
-                  variant="primary"
+                  variant="success"
                 >
                   Login <FontAwesomeIcon icon={faSignInAlt} />
                 </Button>

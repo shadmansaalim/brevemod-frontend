@@ -18,7 +18,7 @@ const HeroSection = () => {
             </p>
             <Button
               onClick={() => router.push("/courses")}
-              variant="outline-primary"
+              variant="success"
               size="lg"
             >
               Browse Courses

@@ -31,7 +31,7 @@ const PurchaseConfirmationPage = () => {
       <p className="lead">
         <button
           onClick={() => router.push("/my-classes")}
-          className="btn btn-outline-primary"
+          className="btn btn-outline-success"
         >
           My Classes
         </button>

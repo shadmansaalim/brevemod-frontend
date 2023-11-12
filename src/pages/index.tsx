@@ -8,6 +8,7 @@ import { useCoursesQuery } from "@/redux/api/courseApi";
 import { ICourse } from "@/types";
 import CourseCard from "@/components/ui/course/CourseCard";
 import CourseSkeleton from "@/components/ui/course/CourseCardSkeleton";
+import InfoSection from "@/components/ui/InfoSection";
 
 const HomePage: NextPageWithLayout = () => {
   const { data, isLoading } = useCoursesQuery({ limit: 4 });
@@ -17,6 +18,7 @@ const HomePage: NextPageWithLayout = () => {
     <Container>
       <section className="my-5">
         <HeroSection />
+        <InfoSection />
         <div className="mx-auto" style={{ marginTop: 120, marginBottom: 120 }}>
           <div>
             <h1 className="mb-5 text-start">Explore Top Courses</h1>

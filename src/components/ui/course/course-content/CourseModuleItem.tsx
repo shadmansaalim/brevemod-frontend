@@ -14,7 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { ICourseModule } from "@/types";
-import CourseContent from "./CourseContent";
+import CourseContentButton from "./CourseContentButton";
 import AddContentModal from "./AddContentModal";
 import { ENUM_USER_ROLES } from "@/enums/user";
 import { useContext } from "react";
@@ -66,7 +66,7 @@ const CourseModuleItem = ({
       <Accordion.Collapse eventKey={module._id}>
         <Card.Body>
           {module?.moduleContents?.map((content: any) => (
-            <CourseContent
+            <CourseContentButton
               key={content._id}
               courseProgress={courseProgress}
               userRole={userRole}

@@ -71,14 +71,19 @@
     outline: none !important;
   }
   .currentModuleContentBtn {
-    border: none;
+    border: 1.5px solid #198754;
     border-radius: 14px;
     display: flex;
     padding: 1.2em;
     justify-content: space-between;
     align-items: center;
-    background: #198754;
-    color: white;
+    background: linear-gradient(
+        0deg,
+        rgba(0, 107, 90, 0.05),
+        rgba(0, 107, 90, 0.05)
+      ),
+      #fafdfa;
+
     outline: none !important;
   }
 }

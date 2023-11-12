@@ -1,19 +1,16 @@
 // Imports
 import React, { useState } from "react";
-import { Card, Accordion, useAccordionButton } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
-import { ICourseModule, IModuleContent } from "@/types";
-import { useCourseProgressQuery } from "@/redux/api/courseProgressApi";
+import { IModuleContent } from "@/types";
 import { useEffect } from "react";
-import { useAppSelector } from "@/redux/hooks";
 import { ENUM_USER_ROLES } from "@/enums/user";
 import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
 import { IUserCourseProgress } from "@/types";
 
 // Props Type
-type ICourseContentProps = {
+type ICourseContentButtonProps = {
   courseProgress?: IUserCourseProgress;
   userRole: ENUM_USER_ROLES;
   courseId: string;
@@ -22,14 +19,14 @@ type ICourseContentProps = {
   handleContentClick: (contentId: string) => void;
 };
 
-const CourseContent = ({
+const CourseContentButton = ({
   courseProgress,
   userRole,
   courseId,
   moduleId,
   content,
   handleContentClick,
-}: ICourseContentProps) => {
+}: ICourseContentButtonProps) => {
   const router = useRouter();
 
   const currentCourseId = router?.query?.courseId;
@@ -71,7 +68,11 @@ const CourseContent = ({
     return (
       <button className="currentModuleContentBtn">
         <span className="d-flex align-items-center">
-          <FontAwesomeIcon color="white" className="me-1" icon={faCirclePlay} />
+          <FontAwesomeIcon
+            color="#006B5A"
+            className="me-1"
+            icon={faCirclePlay}
+          />
           <p className="mb-0">{content?.title}</p>
         </span>
         <span>{content.duration}m</span>
@@ -107,4 +108,4 @@ const CourseContent = ({
   }
 };
 
-export default CourseContent;
+export default CourseContentButton;

@@ -62,7 +62,7 @@ const courseModuleApi = baseApi.injectEndpoints({
     }),
     removeContentFromModule: build.mutation({
       query: (payload) => ({
-        url: `${ENDPOINT_BASE_URL}/update-content/${payload.moduleId}/${payload.contentId}`,
+        url: `${ENDPOINT_BASE_URL}/remove-content/${payload.moduleId}/${payload.contentId}`,
         method: "DELETE",
       }),
       transformResponse: genericSuccessResponse,

@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import { IModuleContent } from "@/types";
 import { useEffect } from "react";
 import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 // Props Type
 type IAdminCourseContentButtonProps = {
@@ -13,6 +15,7 @@ type IAdminCourseContentButtonProps = {
   moduleId: string;
   content: IModuleContent;
   handleContentClick: (contentId: string) => void;
+  handleRemoveContent: (contentId: string, title: string) => void;
 };
 
 const AdminCourseContentButton = ({
@@ -20,6 +23,7 @@ const AdminCourseContentButton = ({
   moduleId,
   content,
   handleContentClick,
+  handleRemoveContent,
 }: IAdminCourseContentButtonProps) => {
   const router = useRouter();
 
@@ -66,7 +70,25 @@ const AdminCourseContentButton = ({
             />
             <p className="mb-0">{content?.title}</p>
           </span>
-          <span>{content.duration}m</span>
+          <div className="d-flex align-items-center">
+            <span
+              onClick={(event) => {
+                event.stopPropagation();
+                console.log("edit");
+              }}
+            >
+              <FontAwesomeIcon color="#6c757d" icon={faEdit} />
+            </span>
+            <span
+              className="ms-2"
+              onClick={(event) => {
+                event.stopPropagation();
+                handleRemoveContent(content._id, content?.title);
+              }}
+            >
+              <FontAwesomeIcon color="#dc3545" icon={faTrash} />
+            </span>
+          </div>
         </button>
       )}
     </>

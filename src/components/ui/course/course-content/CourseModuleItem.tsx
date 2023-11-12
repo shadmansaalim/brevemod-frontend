@@ -1,5 +1,5 @@
 // Imports
-import React, { useState } from "react";
+import React from "react";
 import {
   Card,
   Accordion,
@@ -25,9 +25,6 @@ const CourseModuleItem = ({
 }) => {
   // Router
   const router = useRouter();
-
-  //States
-  const [addContentModalShow, setAddContentModalShow] = useState(false);
 
   const handleModuleClick = useAccordionButton(module._id);
   const { activeEventKey } = useContext(AccordionContext);

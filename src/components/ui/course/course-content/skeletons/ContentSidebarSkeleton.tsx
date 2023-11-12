@@ -10,11 +10,11 @@ const ContentSidebarSkeleton = () => {
         </h5>
       </div>
       <div className="moduleList">
-        <a
+        {/* <a
           href="#"
           className="btn disabled placeholder col-12"
           style={{ height: "60px", color: "#dae5e0" }}
-        ></a>
+        ></a> */}
 
         <div className="modules">
           <Accordion defaultActiveKey="1">

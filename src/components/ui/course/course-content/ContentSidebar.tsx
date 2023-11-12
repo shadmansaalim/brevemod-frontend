@@ -36,10 +36,10 @@ const ContentSidebar = ({
       </div>
 
       <div className="moduleList">
-        <input
+        {/* <input
           className="moduleSearchBar"
           placeholder="Search for module"
-        ></input>
+        ></input> */}
 
         <div className="modules">
           <Accordion defaultActiveKey={defaultActiveKey || ""}>

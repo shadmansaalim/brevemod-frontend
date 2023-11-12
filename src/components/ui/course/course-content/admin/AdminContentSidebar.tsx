@@ -25,11 +25,10 @@ const AdminContentSidebar = ({
   return (
     <Col className="col-12 col-lg-4">
       <div className="moduleList">
-        <input
+        {/* <input
           className="moduleSearchBar"
           placeholder="Search for module"
-        ></input>
-
+        ></input> */}
         <div className="modules">
           <Accordion defaultActiveKey={defaultActiveKey || ""}>
             {modules?.map((module: any) => (

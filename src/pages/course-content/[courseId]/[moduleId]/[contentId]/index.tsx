@@ -183,7 +183,7 @@ export default CourseModulePage;
 
 CourseModulePage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayout>
+    <AuthLayout onlyStudentAccess={true}>
       <RootLayout>
         <CourseContentLayout>{page}</CourseContentLayout>
       </RootLayout>

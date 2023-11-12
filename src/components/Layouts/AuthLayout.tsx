@@ -5,13 +5,14 @@ import { useRouter } from "next/navigation";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { useAppSelector } from "@/redux/hooks";
 import { ENUM_USER_ROLES } from "@/enums/user";
-import { redirect } from "next/dist/server/api-utils";
 
 const AuthLayout = ({
   onlyAdminAccess,
+  onlyStudentAccess,
   children,
 }: {
   onlyAdminAccess?: boolean;
+  onlyStudentAccess?: boolean;
   children: React.ReactNode;
 }) => {
   // Getting whether user is logged in or not
@@ -36,6 +37,12 @@ const AuthLayout = ({
 
   if (onlyAdminAccess) {
     if (!currentUser || currentUser.role !== ENUM_USER_ROLES.ADMIN) {
+      router.push("/");
+    }
+  }
+
+  if (onlyStudentAccess) {
+    if (!currentUser || currentUser.role !== ENUM_USER_ROLES.STUDENT) {
       router.push("/");
     }
   }

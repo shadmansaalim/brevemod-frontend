@@ -84,7 +84,7 @@ export default MyClassesPage;
 
 MyClassesPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayout>
+    <AuthLayout onlyStudentAccess={true}>
       <RootLayout>{page}</RootLayout>
     </AuthLayout>
   );

@@ -23,7 +23,7 @@ const courseModuleApi = baseApi.injectEndpoints({
     }),
     updateModule: build.mutation({
       query: (moduleData) => ({
-        url: ENDPOINT_BASE_URL,
+        url: `${ENDPOINT_BASE_URL}/${moduleData.moduleId}`,
         method: "PATCH",
         data: moduleData,
       }),

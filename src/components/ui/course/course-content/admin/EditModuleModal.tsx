@@ -1,44 +1,54 @@
 // Imports
-import { useCreateModuleMutation } from "@/redux/api/courseModuleApi";
-import { ResponseSuccessType } from "@/types";
+import {
+  useCreateModuleMutation,
+  useUpdateModuleMutation,
+} from "@/redux/api/courseModuleApi";
+import { ICourseModule, ResponseSuccessType } from "@/types";
 import { Modal, Form, FloatingLabel } from "react-bootstrap";
 import { useState } from "react";
 import swal from "sweetalert";
 
-type IAddModuleModalProps = {
+type IEditModuleModalProps = {
+  module: ICourseModule;
   courseId: string;
   modalShow: boolean;
   setModalShow: (state: boolean) => void;
 };
 
-const AddModuleModal = ({
+const EditModuleModal = ({
+  module,
   courseId,
   modalShow,
   setModalShow,
-}: IAddModuleModalProps) => {
+}: IEditModuleModalProps) => {
   // Create Module hook
-  const [createModule] = useCreateModuleMutation();
+  const [updateModule] = useUpdateModuleMutation();
   // States
-  const [moduleName, setModuleName] = useState<string>("");
-  const [moduleCreating, setModuleCreating] = useState<boolean>(false);
+  const [moduleName, setModuleName] = useState<string>(
+    module?.moduleName || ""
+  );
+  const [moduleUpdating, setModuleUpdating] = useState<boolean>(false);
 
   const handleCreateModule = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setModuleCreating(true);
+    setModuleUpdating(true);
     try {
-      const moduleCreateData = { courseId, moduleName };
-      const res: ResponseSuccessType = await createModule({
-        ...moduleCreateData,
+      const payload = {
+        moduleName,
+        moduleId: module._id,
+      };
+      const res: ResponseSuccessType = await updateModule({
+        ...payload,
       }).unwrap();
 
       if (res?.success) {
         swal(res.message, "", "success");
-        setModuleCreating(false);
+        setModuleUpdating(false);
         setModuleName("");
         setModalShow(false);
       }
     } catch (err) {
-      setModuleCreating(false);
+      setModuleUpdating(false);
       swal(err.message, "", "error");
     }
   };
@@ -47,7 +57,7 @@ const AddModuleModal = ({
     <>
       <Modal show={modalShow} onHide={() => setModalShow(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Create New Module</Modal.Title>
+          <Modal.Title>Edit Module {module?.moduleNumber}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleCreateModule}>
@@ -61,21 +71,26 @@ const AddModuleModal = ({
                 name="moduleName"
                 type="text"
                 onChange={(e) => setModuleName(e.target.value)}
+                defaultValue={module?.moduleName}
               />
             </FloatingLabel>
 
-            {moduleCreating ? (
+            {moduleUpdating ? (
               <button className="btn btn-success w-100 mt-3" disabled>
                 <span
                   className="spinner-border spinner-border-sm me-2"
                   role="status"
                   aria-hidden="true"
                 ></span>
-                Creating...
+                Updating...
               </button>
             ) : (
-              <button className="btn btn-success mt-3 w-100" type="submit">
-                Create Module
+              <button
+                disabled={moduleName === module?.moduleName}
+                className="btn btn-success mt-3 w-100"
+                type="submit"
+              >
+                Update Module
               </button>
             )}
           </Form>
@@ -85,4 +100,4 @@ const AddModuleModal = ({
   );
 };
 
-export default AddModuleModal;
+export default EditModuleModal;

@@ -43,7 +43,9 @@ const CourseModuleItem = ({
         onClick={handleModuleClick}
         className="d-flex justify-content-between align-items-center"
       >
-        <p className="mb-0 module-title">{module?.moduleName}</p>
+        <p className="m-0 module-title">
+          Module {module?.moduleNumber}: {module?.moduleName}
+        </p>
         <button className="btn btn-dark">
           {isCurrentEventKey ? (
             <FontAwesomeIcon icon={faMinus} />

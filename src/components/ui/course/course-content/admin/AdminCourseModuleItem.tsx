@@ -11,6 +11,8 @@ import {
   faPlus,
   faMinus,
   faFileArrowUp,
+  faPencil,
+  faFilePen,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { ICourseModule, ResponseSuccessType } from "@/types";
@@ -19,6 +21,7 @@ import AdminCourseContentButton from "./AdminCourseContentButton";
 import AddContentModal from "./AddContentModal";
 import { useRemoveContentFromModuleMutation } from "@/redux/api/courseModuleApi";
 import swal from "sweetalert";
+import EditModuleModal from "./EditModuleModal";
 
 const AdminCourseModuleItem = ({
   courseId,
@@ -34,7 +37,10 @@ const AdminCourseModuleItem = ({
   const [removeContent] = useRemoveContentFromModuleMutation();
 
   //States
-  const [addContentModalShow, setAddContentModalShow] = useState(false);
+  const [addContentModalShow, setAddContentModalShow] =
+    useState<boolean>(false);
+  const [editModuleModalShow, setEditModuleModalShow] =
+    useState<boolean>(false);
 
   const handleModuleClick = useAccordionButton(module._id);
   const { activeEventKey } = useContext(AccordionContext);
@@ -78,7 +84,21 @@ const AdminCourseModuleItem = ({
         onClick={handleModuleClick}
         className="d-flex justify-content-between align-items-center"
       >
-        <p className="mb-0 module-title">{module?.moduleName}</p>
+        <div className="d-flex align-items-start">
+          <span
+            className="my-0 me-1"
+            onClick={(event) => {
+              event.stopPropagation();
+              setEditModuleModalShow(true);
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            <FontAwesomeIcon color="#6c757d" icon={faFilePen} />
+          </span>
+          <p className="m-0 module-title">
+            Module {module?.moduleNumber}: {module?.moduleName}
+          </p>
+        </div>
         <button className="btn btn-dark">
           {isCurrentEventKey ? (
             <FontAwesomeIcon icon={faMinus} />
@@ -114,6 +134,13 @@ const AdminCourseModuleItem = ({
           />
         </Card.Body>
       </Accordion.Collapse>
+
+      <EditModuleModal
+        module={module}
+        courseId={courseId}
+        modalShow={editModuleModalShow}
+        setModalShow={setEditModuleModalShow}
+      />
     </Card>
   );
 };

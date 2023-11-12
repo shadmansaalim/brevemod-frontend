@@ -100,7 +100,7 @@ const CoursesPage = () => {
                           >
                             <button
                               onClick={() => setActivePage(activePage - 1)}
-                              className="page-link"
+                              className="page-link text-success"
                               aria-label="Previous"
                             >
                               Previous
@@ -118,7 +118,11 @@ const CoursesPage = () => {
                           >
                             <button
                               onClick={() => setActivePage(number + 1)}
-                              className="page-link"
+                              className={
+                                number === activePage - 1
+                                  ? "page-link bg-success text-white border-success"
+                                  : "page-link text-success"
+                              }
                             >
                               {number + 1}
                             </button>
@@ -134,7 +138,7 @@ const CoursesPage = () => {
                           >
                             <button
                               onClick={() => setActivePage(activePage + 1)}
-                              className="page-link"
+                              className="page-link text-success"
                               aria-label="Next"
                             >
                               Next

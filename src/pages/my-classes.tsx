@@ -11,18 +11,20 @@ import MyCourseCard from "../components/ui/course/MyCourseCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
-import swal from "sweetalert";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const MyClassesPage = () => {
   const { currentUser } = useAppSelector((state) => state.user);
   const router = useRouter();
 
-  const { data, isLoading } = useMyCoursesQuery({});
-  const courses = data?.data as ICourse[];
+  const { data: myCoursesData, isLoading: myCoursesDataLoading } =
+    useMyCoursesQuery({});
+  const courses = myCoursesData?.data as ICourse[];
 
   return (
     <>
-      {isLoading ? (
+      {myCoursesDataLoading ? (
         <CoursesPageSkeleton />
       ) : (
         <div className="my-5 text-center">

@@ -1,11 +1,8 @@
 // Imports
-import Rating from "react-rating";
 import swal from "sweetalert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay, faForward } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { Modal } from "react-bootstrap";
-import Image from "next/image";
 import { ICourse, ResponseSuccessType } from "@/types";
 import {
   useCourseProgressQuery,
@@ -15,6 +12,7 @@ import { useIsCourseContentPublishedQuery } from "@/redux/api/courseModuleApi";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { ProgressBar } from "react-bootstrap";
+import CourseCardSkeleton from "./CourseCardSkeleton";
 
 const MyCourseCard = ({ course }: { course: ICourse }) => {
   const {
@@ -22,8 +20,6 @@ const MyCourseCard = ({ course }: { course: ICourse }) => {
     isLoading: courseContentPublishDataLoading,
   } = useIsCourseContentPublishedQuery(course._id);
   const isCourseContentPublished = courseContentPublishData?.data;
-
-  const [startCourse] = useStartCourseMutation();
 
   const {
     data: courseProgressData,
@@ -35,6 +31,8 @@ const MyCourseCard = ({ course }: { course: ICourse }) => {
   const [isCourseStarted, setIsCourseStarted] = useState<boolean>(
     courseProgress ? true : false
   );
+
+  const [startCourse] = useStartCourseMutation();
 
   const router = useRouter();
 
@@ -68,57 +66,67 @@ const MyCourseCard = ({ course }: { course: ICourse }) => {
   };
 
   return (
-    <div className="col">
-      <div className="card h-100">
-        <img src={course.thumbnailLink} className="card-img-top" alt="..." />
-        <div className="card-body course d-flex flex-column justify-content-around">
-          <p className="card-title fw-bold">{course.title}</p>
-          <div className="card-text">
-            <small>{course.instructorName}</small>
-            <br />
-            <div className="progress col-10 mx-auto mt-2">
-              <ProgressBar
-                className="w-100 mb-0"
-                variant="success"
-                now={courseProgress?.percentage || 0}
-                label={`${courseProgress?.percentage || 0}%`}
-              />
+    <>
+      {courseContentPublishDataLoading || courseProgressDataLoading ? (
+        <CourseCardSkeleton />
+      ) : (
+        <div className="col">
+          <div className="card h-100">
+            <img
+              src={course.thumbnailLink}
+              className="card-img-top"
+              alt="..."
+            />
+            <div className="card-body course d-flex flex-column justify-content-around">
+              <p className="card-title fw-bold">{course.title}</p>
+              <div className="card-text">
+                <small>{course.instructorName}</small>
+                <br />
+                <div className="progress col-10 mx-auto mt-2">
+                  <ProgressBar
+                    className="w-100 mb-0"
+                    variant="success"
+                    now={courseProgress?.percentage || 0}
+                    label={`${courseProgress?.percentage || 0}%`}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="card-footer ">
+              {isCourseContentPublished ? (
+                <>
+                  {isCourseStarted ? (
+                    <button
+                      onClick={handleContinueCourse}
+                      className="btn btn-success w-100"
+                    >
+                      Continue Course
+                      <FontAwesomeIcon className="ms-1" icon={faForward} />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleStartCourse}
+                      className="btn btn-outline-success w-100"
+                    >
+                      Start Course
+                      <FontAwesomeIcon className="ms-1" icon={faCirclePlay} />
+                    </button>
+                  )}
+                </>
+              ) : (
+                <>
+                  <button disabled className="btn btn-secondary w-100">
+                    Content Unavailable
+                    <FontAwesomeIcon className="ms-1" icon={faForward} />
+                  </button>
+                </>
+              )}
+              {}
             </div>
           </div>
         </div>
-        <div className="card-footer ">
-          {isCourseContentPublished ? (
-            <>
-              {isCourseStarted ? (
-                <button
-                  onClick={handleContinueCourse}
-                  className="btn btn-success w-100"
-                >
-                  Continue Course
-                  <FontAwesomeIcon className="ms-1" icon={faForward} />
-                </button>
-              ) : (
-                <button
-                  onClick={handleStartCourse}
-                  className="btn btn-outline-success w-100"
-                >
-                  Start Course
-                  <FontAwesomeIcon className="ms-1" icon={faCirclePlay} />
-                </button>
-              )}
-            </>
-          ) : (
-            <>
-              <button disabled className="btn btn-secondary w-100">
-                Content Unavailable
-                <FontAwesomeIcon className="ms-1" icon={faForward} />
-              </button>
-            </>
-          )}
-          {}
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

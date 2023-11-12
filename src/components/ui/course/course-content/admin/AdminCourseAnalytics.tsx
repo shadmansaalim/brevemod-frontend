@@ -8,7 +8,7 @@ import {
   faFile,
 } from "@fortawesome/free-solid-svg-icons";
 
-const AdminCourseContent = ({
+const AdminCourseAnalytics = ({
   studentsCount,
   modulesCount,
   contentsCount,
@@ -91,4 +91,4 @@ const AdminCourseContent = ({
   );
 };
 
-export default AdminCourseContent;
+export default AdminCourseAnalytics;

@@ -3,24 +3,30 @@ import { IModuleContent, ResponseSuccessType } from "@/types";
 import { Modal, Form, FloatingLabel } from "react-bootstrap";
 import { useState } from "react";
 import swal from "sweetalert";
-import { useAddContentToModuleMutation } from "@/redux/api/courseModuleApi";
+import { useUpdateContentInModuleMutation } from "@/redux/api/courseModuleApi";
+import { isObjectFieldValuesEqual } from "@/utils/common";
 
-type IAddContentModalProps = {
+type IEditContentModalProps = {
+  content: IModuleContent;
   moduleId: string;
   modalShow: boolean;
   setModalShow: (state: boolean) => void;
 };
 
-const AddContentModal = ({
+const EditContentModal = ({
+  content,
   moduleId,
   modalShow,
   setModalShow,
-}: IAddContentModalProps) => {
-  // Add Content Hook
-  const [addContent] = useAddContentToModuleMutation();
+}: IEditContentModalProps) => {
+  // Update Content Hook
+  const [updateContent] = useUpdateContentInModuleMutation();
 
   // States
-  const [contentData, setContentData] = useState<IModuleContent | null>(null);
+  const [contentData, setContentData] = useState<IModuleContent | null>({
+    ...content,
+  });
+  const [isChanged, setIsChanged] = useState<boolean>(false);
   const [contentUploading, setContentUploading] = useState<boolean>(false);
 
   const handleOnChange = (e: any) => {
@@ -32,17 +38,24 @@ const AddContentModal = ({
     }
     const newContentData = { ...contentData, [field]: value };
     setContentData(newContentData as IModuleContent);
+
+    if (isObjectFieldValuesEqual(newContentData, content)) {
+      setIsChanged(false);
+    } else {
+      setIsChanged(true);
+    }
   };
 
-  const handleAddContent = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdateContent = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setContentUploading(true);
     try {
       const payload = {
         moduleId,
+        contentId: content._id,
         contentData,
       };
-      const res: ResponseSuccessType = await addContent(payload).unwrap();
+      const res: ResponseSuccessType = await updateContent(payload).unwrap();
       if (res?.success) {
         swal(res.message, "", "success");
         setContentUploading(false);
@@ -59,10 +72,10 @@ const AddContentModal = ({
     <>
       <Modal show={modalShow} onHide={() => setModalShow(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Add New Content</Modal.Title>
+          <Modal.Title>Edit Content</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleAddContent}>
+          <Form onSubmit={handleUpdateContent}>
             <FloatingLabel
               controlId="title"
               label="Content Title"
@@ -74,6 +87,7 @@ const AddContentModal = ({
                 type="text"
                 onChange={handleOnChange}
                 placeholder="Content Title"
+                defaultValue={content?.title}
               />
             </FloatingLabel>
             <FloatingLabel
@@ -81,17 +95,16 @@ const AddContentModal = ({
               label="Content Type"
               className="mb-3"
             >
-              <Form.Select
-                name="type"
-                onChange={handleOnChange}
-                required
-                defaultValue=""
-              >
+              <Form.Select name="type" onChange={handleOnChange} required>
                 <option value="" disabled>
                   Select content type
                 </option>
-                <option value="video">Video</option>
-                <option value="quiz">Quiz</option>
+                <option value="video" selected={content?.type === "video"}>
+                  Video
+                </option>
+                <option value="quiz" selected={content?.type === "quiz"}>
+                  Quiz
+                </option>
               </Form.Select>
             </FloatingLabel>
             <FloatingLabel
@@ -105,6 +118,7 @@ const AddContentModal = ({
                 type="text"
                 onChange={handleOnChange}
                 placeholder="Content Link"
+                defaultValue={content?.link}
               />
             </FloatingLabel>
             <FloatingLabel
@@ -118,6 +132,7 @@ const AddContentModal = ({
                 type="number"
                 onChange={handleOnChange}
                 placeholder="Content Duration"
+                defaultValue={content?.duration}
               />
             </FloatingLabel>
             {contentUploading ? (
@@ -130,8 +145,12 @@ const AddContentModal = ({
                 Uploading...
               </button>
             ) : (
-              <button className="btn btn-success mt-3 w-100" type="submit">
-                Add Content
+              <button
+                disabled={isChanged ? false : true}
+                className="btn btn-success mt-3 w-100"
+                type="submit"
+              >
+                Update Content
               </button>
             )}
           </Form>
@@ -141,4 +160,4 @@ const AddContentModal = ({
   );
 };
 
-export default AddContentModal;
+export default EditContentModal;

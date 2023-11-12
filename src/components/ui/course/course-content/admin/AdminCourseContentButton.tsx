@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import EditContentModal from "./EditContentModal";
 
 // Props Type
 type IAdminCourseContentButtonProps = {
@@ -31,7 +32,10 @@ const AdminCourseContentButton = ({
   const currentModuleId = router?.query?.moduleId;
   const currentContentId = router?.query?.contentId;
 
+  // States
   const [isContentCurrent, setIsContentCurrent] = useState<boolean>(false);
+  const [editContentModalShow, setEditContentModalShow] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (
@@ -74,10 +78,16 @@ const AdminCourseContentButton = ({
             <span
               onClick={(event) => {
                 event.stopPropagation();
-                console.log("edit");
+                setEditContentModalShow(true);
               }}
             >
               <FontAwesomeIcon color="#6c757d" icon={faEdit} />
+              <EditContentModal
+                content={content}
+                moduleId={moduleId}
+                modalShow={editContentModalShow}
+                setModalShow={setEditContentModalShow}
+              />
             </span>
             <span
               className="ms-2"

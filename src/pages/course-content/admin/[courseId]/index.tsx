@@ -7,10 +7,10 @@ import { useRouter } from "next/router";
 import { useCourseModulesQuery } from "@/redux/api/courseModuleApi";
 import { ICourse, ICourseModule } from "@/types";
 import { useAppSelector } from "@/redux/hooks";
-import AdminCourseContent from "@/components/ui/course/course-content/admin/AdminCourseContent";
 import { useCourseQuery } from "@/redux/api/courseApi";
 import AdminCourseContentPageSkeleton from "@/components/ui/course/course-content/skeletons/AdminCourseContentPageSkeleton";
 import AdminContentSidebar from "@/components/ui/course/course-content/admin/AdminContentSidebar";
+import AdminCourseAnalytics from "@/components/ui/course/course-content/admin/AdminCourseAnalytics";
 
 const CourseModulePage = () => {
   const router = useRouter();
@@ -52,7 +52,7 @@ const CourseModulePage = () => {
                 <h3 className="fw-bold my-0">{course?.title}</h3>
               </div>
               <Row>
-                <AdminCourseContent
+                <AdminCourseAnalytics
                   studentsCount={studentsCount}
                   modulesCount={modulesCount}
                   contentsCount={contentsCount}

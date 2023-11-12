@@ -10,11 +10,11 @@ import { faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 
 // Props Type
 type IContentSidebarProps = {
-  courseProgress: IUserCourseProgress;
+  courseProgress?: IUserCourseProgress;
   modules: ICourseModule[];
   userRole: ENUM_USER_ROLES;
   courseId: string;
-  defaultActiveKey: string;
+  defaultActiveKey?: string;
 };
 
 const ContentSidebar = ({
@@ -30,15 +30,17 @@ const ContentSidebar = ({
 
   return (
     <Col className="col-12 col-lg-4">
-      <div className="d-flex justify-content-between align-items-start mb-3">
-        <h5 className="mb-0 fw-bold">Course Progress</h5>
-        <ProgressBar
-          className="w-50 mb-0"
-          variant="success"
-          now={progressPercentage}
-          label={`${progressPercentage}%`}
-        />
-      </div>
+      {userRole === ENUM_USER_ROLES.STUDENT && (
+        <div className="d-flex justify-content-between align-items-start mb-3">
+          <h5 className="mb-0 fw-bold">Course Progress</h5>
+          <ProgressBar
+            className="w-50 mb-0"
+            variant="success"
+            now={progressPercentage}
+            label={`${progressPercentage}%`}
+          />
+        </div>
+      )}
       <div className="moduleList">
         <input
           className="moduleSearchBar"
@@ -46,7 +48,7 @@ const ContentSidebar = ({
         ></input>
 
         <div className="modules">
-          <Accordion defaultActiveKey={defaultActiveKey}>
+          <Accordion defaultActiveKey={defaultActiveKey || ""}>
             {modules?.map((module: any) => (
               <CourseModuleItem
                 courseProgress={courseProgress}

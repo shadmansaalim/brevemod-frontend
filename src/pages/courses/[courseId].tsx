@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useCourseQuery } from "@/redux/api/courseApi";
 import { useRouter } from "next/router";
-import { ICourse, ICourseModule, ResponseSuccessType } from "@/types";
+import { ICourse, ResponseSuccessType } from "@/types";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useAddToCartMutation } from "@/redux/api/cartApi";
 import swal from "sweetalert";

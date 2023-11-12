@@ -119,7 +119,7 @@ const Header = () => {
 
                 <Modal show={modalShow} onHide={handleModalClose}>
                   <Modal.Header closeButton>
-                    <Modal.Title>Courses Added</Modal.Title>
+                    <Modal.Title>My Cart</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
                     {cart && cart?.courses?.length > 0 ? (

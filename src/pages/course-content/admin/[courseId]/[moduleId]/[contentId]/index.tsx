@@ -6,7 +6,12 @@ import { Row, Container } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useCourseModulesQuery } from "@/redux/api/courseModuleApi";
-import { IContentRouteData, ICourseModule, IModuleContent } from "@/types";
+import {
+  IContentRouteData,
+  ICourse,
+  ICourseModule,
+  IModuleContent,
+} from "@/types";
 import { useState } from "react";
 import { useAppSelector } from "@/redux/hooks";
 import ContentView from "@/components/ui/course/course-content/ContentView";
@@ -18,6 +23,7 @@ import CourseContentLayout from "@/components/Layouts/CourseContentLayout";
 import { ENUM_USER_ROLES } from "@/enums/user";
 import CourseModulePageSkeleton from "@/components/ui/course/course-content/skeletons/CourseModulePageSkeleton";
 import AdminContentSidebar from "@/components/ui/course/course-content/admin/AdminContentSidebar";
+import { useCourseQuery } from "@/redux/api/courseApi";
 
 const CourseModulePage = () => {
   const router = useRouter();
@@ -40,6 +46,11 @@ const CourseModulePage = () => {
   const { data: courseModulesData, isLoading: courseModulesDataLoading } =
     useCourseModulesQuery(courseId);
   const courseModules = courseModulesData?.data as ICourseModule[];
+
+  // Course Data
+  const { data: courseData, isLoading: courseDataLoading } =
+    useCourseQuery(courseId);
+  const course = courseData?.data as ICourse;
 
   // Current Module
   const currentModule = courseModules?.find(
@@ -96,14 +107,14 @@ const CourseModulePage = () => {
 
   return (
     <div>
-      {courseModulesDataLoading ? (
+      {courseModulesDataLoading || courseDataLoading ? (
         <CourseModulePageSkeleton />
       ) : (
         <div>
           <div className="text-start my-5">
             <Container>
               <div className="d-flex flex-column flex-md-row justify-content-between align-items-start mb-4">
-                <h2 className="fw-bold my-0">Backend Development Course</h2>
+                <h2 className="fw-bold my-0">{course.title}</h2>
               </div>
               <Row>
                 <ContentView

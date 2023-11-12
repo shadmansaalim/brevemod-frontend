@@ -31,7 +31,7 @@ const AdminCourseAnalytics = ({
             <span className="col-4 text-start">
               <FontAwesomeIcon
                 icon={faUserGraduate}
-                className="primary-text border rounded-full secondary-bg p-3 m-0"
+                className="rounded-circle bg-dark p-3 m-0"
               />
             </span>
           </div>
@@ -49,7 +49,7 @@ const AdminCourseAnalytics = ({
             <span className="col-4 text-start">
               <FontAwesomeIcon
                 icon={faFolder}
-                className="primary-text border rounded-full secondary-bg p-3 m-0"
+                className="rounded-circle bg-dark p-3 m-0"
               />
             </span>
           </div>
@@ -66,7 +66,7 @@ const AdminCourseAnalytics = ({
             <span className="col-4 text-start">
               <FontAwesomeIcon
                 icon={faFile}
-                className="primary-text border rounded-full secondary-bg p-3 m-0"
+                className="rounded-circle bg-dark p-3 m-0"
               />
             </span>
           </div>
@@ -81,7 +81,7 @@ const AdminCourseAnalytics = ({
             <span className="col-4 text-start">
               <FontAwesomeIcon
                 icon={faStar}
-                className="primary-text border rounded-full secondary-bg p-3 m-0"
+                className="rounded-circle bg-dark p-3 m-0"
               />
             </span>
           </div>

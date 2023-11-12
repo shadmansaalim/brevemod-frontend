@@ -14,8 +14,6 @@ import AdminCourseAnalytics from "@/components/ui/course/course-content/admin/Ad
 
 const CourseModulePage = () => {
   const router = useRouter();
-  // Current User
-  const { currentUser } = useAppSelector((state) => state.user);
 
   const courseId = router?.query?.courseId;
 

@@ -17,7 +17,6 @@ import { setCart } from "@/redux/slices/cartSlice";
 import { isLoggedIn } from "@/services/auth.service";
 import { ENUM_USER_ROLES } from "@/enums/user";
 import { faForward } from "@fortawesome/free-solid-svg-icons";
-import { useCourseModulesQuery } from "@/redux/api/courseModuleApi";
 
 const CourseDetailsPage = () => {
   const router = useRouter();
@@ -37,12 +36,6 @@ const CourseDetailsPage = () => {
     currentUser && currentUser.role === ENUM_USER_ROLES.STUDENT
       ? useIsCoursePurchasedQuery(courseId)
       : { data: null, isLoading: false };
-
-  const { data: courseModulesData, isLoading: courseModulesDataLoading } =
-    currentUser && currentUser.role === ENUM_USER_ROLES.ADMIN
-      ? useCourseModulesQuery(courseId)
-      : { data: null, isLoading: false };
-  const courseModules = courseModulesData?.data as ICourseModule[];
 
   const { cart } = useAppSelector((state) => state.cart);
 
@@ -68,7 +61,7 @@ const CourseDetailsPage = () => {
   };
 
   const handleMoveToCourseModulesPage = () => {
-    router.push(`/course-content/${courseId}/admin`);
+    router.push(`/course-content/admin/${courseId}`);
   };
 
   return (

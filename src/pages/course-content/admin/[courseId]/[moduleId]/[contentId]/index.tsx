@@ -6,30 +6,18 @@ import { Row, Container } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useCourseModulesQuery } from "@/redux/api/courseModuleApi";
-import {
-  useCourseProgressQuery,
-  useUpdateCourseProgressMutation,
-} from "@/redux/api/courseProgressApi";
-import {
-  IContentRouteData,
-  ICourseModule,
-  IModuleContent,
-  IUserCourseProgress,
-  ResponseSuccessType,
-} from "@/types";
-import swal from "sweetalert";
+import { IContentRouteData, ICourseModule, IModuleContent } from "@/types";
 import { useState } from "react";
 import { useAppSelector } from "@/redux/hooks";
 import ContentView from "@/components/ui/course/course-content/ContentView";
-import ContentSidebar from "@/components/ui/course/course-content/ContentSidebar";
 import {
   findNextContentRoute,
   findPreviousContentRoute,
-  isUserProgressUpdateRequired,
 } from "@/utils/course-content";
 import CourseContentLayout from "@/components/Layouts/CourseContentLayout";
 import { ENUM_USER_ROLES } from "@/enums/user";
 import CourseModulePageSkeleton from "@/components/ui/course/course-content/skeletons/CourseModulePageSkeleton";
+import AdminContentSidebar from "@/components/ui/course/course-content/admin/AdminContentSidebar";
 
 const CourseModulePage = () => {
   const router = useRouter();
@@ -47,23 +35,11 @@ const CourseModulePage = () => {
     useState<IContentRouteData | null>(null);
   const [previousContentRoute, setPreviousContentRoute] =
     useState<IContentRouteData | null>(null);
-  const [userProgressUpdateRequired, setUserProgressUpdateRequired] =
-    useState(false);
-
-  // User Course Progress Data
-  const { data: courseProgressData, isLoading: courseProgressDataLoading } =
-    currentUser && currentUser.role === ENUM_USER_ROLES.STUDENT
-      ? useCourseProgressQuery(courseId)
-      : { data: null, isLoading: false };
-  const courseProgress = courseProgressData?.data as IUserCourseProgress;
 
   // Course Modules
   const { data: courseModulesData, isLoading: courseModulesDataLoading } =
     useCourseModulesQuery(courseId);
   const courseModules = courseModulesData?.data as ICourseModule[];
-
-  // Update Course Progress Hook
-  const [updateCourseProgress] = useUpdateCourseProgressMutation();
 
   // Current Module
   const currentModule = courseModules?.find(
@@ -81,7 +57,7 @@ const CourseModulePage = () => {
         findNextContentRoute(
           currentUser?.role as ENUM_USER_ROLES,
           courseModules,
-          currentModule,
+          currentModule as ICourseModule,
           courseId as string,
           currentContent._id
         )
@@ -96,16 +72,7 @@ const CourseModulePage = () => {
         )
       );
     }
-    if (courseProgress && currentModule && currentContent) {
-      setUserProgressUpdateRequired(
-        isUserProgressUpdateRequired(
-          courseProgress,
-          currentModule._id,
-          currentContent._id
-        )
-      );
-    }
-  }, [courseModulesData, courseProgressData]);
+  }, [courseModulesData]);
 
   const handleNextContentClick = async () => {
     if (nextContentRoute) {
@@ -114,21 +81,7 @@ const CourseModulePage = () => {
       // Route actual URL
       const routeUrl = `${nextContentRoute.initial}/${nextContentRoute.courseId}/${nextContentRoute.moduleId}/${nextContentRoute.contentId}`;
 
-      // Checking if user progress update is required
-      if (userProgressUpdateRequired) {
-        try {
-          const res: ResponseSuccessType = await updateCourseProgress(
-            courseId
-          ).unwrap();
-          if (res?.success) {
-            router.push(routePattern, routeUrl);
-          }
-        } catch (err) {
-          swal(err.message, "", "error");
-        }
-      } else {
-        router.push(routePattern, routeUrl);
-      }
+      router.push(routePattern, routeUrl);
     }
   };
 
@@ -143,7 +96,7 @@ const CourseModulePage = () => {
 
   return (
     <div>
-      {courseModulesDataLoading || courseProgressDataLoading ? (
+      {courseModulesDataLoading ? (
         <CourseModulePageSkeleton />
       ) : (
         <div>
@@ -164,8 +117,7 @@ const CourseModulePage = () => {
                   }
                   handleNextContentClick={handleNextContentClick}
                 />
-                <ContentSidebar
-                  courseProgress={courseProgress}
+                <AdminContentSidebar
                   modules={courseModules}
                   courseId={courseId as string}
                   defaultActiveKey={currentModule?._id as string}
@@ -183,7 +135,7 @@ export default CourseModulePage;
 
 CourseModulePage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayout>
+    <AuthLayout onlyAdminAccess={true}>
       <RootLayout>
         <CourseContentLayout>{page}</CourseContentLayout>
       </RootLayout>

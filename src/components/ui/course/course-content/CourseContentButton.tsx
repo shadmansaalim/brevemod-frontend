@@ -5,14 +5,12 @@ import { faLock, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { IModuleContent } from "@/types";
 import { useEffect } from "react";
-import { ENUM_USER_ROLES } from "@/enums/user";
 import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
 import { IUserCourseProgress } from "@/types";
 
 // Props Type
 type ICourseContentButtonProps = {
-  courseProgress?: IUserCourseProgress;
-  userRole: ENUM_USER_ROLES;
+  courseProgress: IUserCourseProgress;
   courseId: string;
   moduleId: string;
   content: IModuleContent;
@@ -21,7 +19,6 @@ type ICourseContentButtonProps = {
 
 const CourseContentButton = ({
   courseProgress,
-  userRole,
   courseId,
   moduleId,
   content,
@@ -37,32 +34,26 @@ const CourseContentButton = ({
   const [isContentCurrent, setIsContentCurrent] = useState<boolean>(false);
 
   useEffect(() => {
-    if (userRole) {
-      if (
-        currentCourseId === courseId &&
-        currentModuleId === moduleId &&
-        currentContentId === content._id
-      ) {
-        setIsContentCurrent(true);
-      } else {
-        if (userRole === ENUM_USER_ROLES.ADMIN) {
-          setIsContentLocked(false);
-        } else {
-          if (courseProgress) {
-            courseProgress.completed.forEach((checkContent: any) => {
-              if (
-                checkContent.moduleId === moduleId &&
-                checkContent.contentId === content._id
-              ) {
-                setIsContentLocked(false);
-                return;
-              }
-            });
+    if (
+      currentCourseId === courseId &&
+      currentModuleId === moduleId &&
+      currentContentId === content._id
+    ) {
+      setIsContentCurrent(true);
+    } else {
+      if (courseProgress) {
+        courseProgress.completed.forEach((checkContent: any) => {
+          if (
+            checkContent.moduleId === moduleId &&
+            checkContent.contentId === content._id
+          ) {
+            setIsContentLocked(false);
+            return;
           }
-        }
+        });
       }
     }
-  }, [courseProgress, userRole]);
+  }, [router, courseProgress]);
 
   if (isContentCurrent) {
     return (

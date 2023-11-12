@@ -7,19 +7,21 @@ import {
   AccordionContext,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faMinus,
+  faFileArrowUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { ICourseModule } from "@/types";
-import CourseContentButton from "./CourseContentButton";
 import { useContext } from "react";
-import { IUserCourseProgress } from "@/types";
+import AdminCourseContentButton from "./AdminCourseContentButton";
+import AddContentModal from "./AddContentModal";
 
-const CourseModuleItem = ({
-  courseProgress,
+const AdminCourseModuleItem = ({
   courseId,
   module,
 }: {
-  courseProgress: IUserCourseProgress;
   courseId: string;
   module: ICourseModule;
 }) => {
@@ -35,8 +37,8 @@ const CourseModuleItem = ({
   const isCurrentEventKey = activeEventKey === module._id;
 
   const handleContentClick = (contentId: string) => {
-    const routePattern = `/course-content/${courseId}/[${module._id}]/[${contentId}]`;
-    const routeUrl = `/course-content/${courseId}/${module._id}/${contentId}`;
+    const routePattern = `/course-content/admin/${courseId}/[${module._id}]/[${contentId}]`;
+    const routeUrl = `/course-content/admin/${courseId}/${module._id}/${contentId}`;
     router.push(routePattern, routeUrl);
   };
 
@@ -58,19 +60,31 @@ const CourseModuleItem = ({
       <Accordion.Collapse eventKey={module._id}>
         <Card.Body>
           {module?.moduleContents?.map((content: any) => (
-            <CourseContentButton
+            <AdminCourseContentButton
               key={content._id}
-              courseProgress={courseProgress}
               courseId={courseId}
               moduleId={module._id}
               content={content}
               handleContentClick={handleContentClick}
             />
           ))}
+          <button
+            onClick={() => setAddContentModalShow(true)}
+            className="btn w-100"
+            style={{ backgroundColor: "#dae5e0" }}
+          >
+            Add Content
+            <FontAwesomeIcon className="ms-2" icon={faFileArrowUp} />
+          </button>
+          <AddContentModal
+            moduleId={module._id}
+            modalShow={addContentModalShow}
+            setModalShow={setAddContentModalShow}
+          />
         </Card.Body>
       </Accordion.Collapse>
     </Card>
   );
 };
 
-export default CourseModuleItem;
+export default AdminCourseModuleItem;

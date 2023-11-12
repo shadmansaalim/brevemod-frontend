@@ -24,7 +24,7 @@ const ContentView = ({
         width="100%"
         height="414"
         src={currentContent?.link}
-        title="YouTube video player"
+        title={currentContent?.title}
       />
       <div className="mt-3 d-flex flex-lg-row flex-column justify-content-between align-items-start">
         <h4 className=" mb-0">{currentContent?.title}</h4>

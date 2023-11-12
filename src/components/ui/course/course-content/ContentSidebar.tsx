@@ -4,15 +4,11 @@ import { useState } from "react";
 import { ICourseModule, IUserCourseProgress } from "@/types";
 import { ENUM_USER_ROLES } from "@/enums/user";
 import CourseModuleItem from "./CourseModuleItem";
-import AddModuleModal from "./AddModuleModal";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 
 // Props Type
 type IContentSidebarProps = {
-  courseProgress?: IUserCourseProgress;
+  courseProgress: IUserCourseProgress;
   modules: ICourseModule[];
-  userRole: ENUM_USER_ROLES;
   courseId: string;
   defaultActiveKey?: string;
 };
@@ -20,7 +16,6 @@ type IContentSidebarProps = {
 const ContentSidebar = ({
   courseProgress,
   modules,
-  userRole,
   courseId,
   defaultActiveKey,
 }: IContentSidebarProps) => {
@@ -30,17 +25,16 @@ const ContentSidebar = ({
 
   return (
     <Col className="col-12 col-lg-4">
-      {userRole === ENUM_USER_ROLES.STUDENT && (
-        <div className="d-flex justify-content-between align-items-start mb-3">
-          <h5 className="mb-0 fw-bold">Course Progress</h5>
-          <ProgressBar
-            className="w-50 mb-0"
-            variant="success"
-            now={progressPercentage}
-            label={`${progressPercentage}%`}
-          />
-        </div>
-      )}
+      <div className="d-flex justify-content-between align-items-start mb-3">
+        <h5 className="mb-0 fw-bold">Course Progress</h5>
+        <ProgressBar
+          className="w-50 mb-0"
+          variant="success"
+          now={progressPercentage}
+          label={`${progressPercentage}%`}
+        />
+      </div>
+
       <div className="moduleList">
         <input
           className="moduleSearchBar"
@@ -52,29 +46,11 @@ const ContentSidebar = ({
             {modules?.map((module: any) => (
               <CourseModuleItem
                 courseProgress={courseProgress}
-                userRole={userRole}
                 key={module._id}
                 courseId={courseId}
                 module={module}
               />
             ))}
-
-            {userRole === ENUM_USER_ROLES.ADMIN && (
-              <>
-                <button
-                  onClick={() => setAddModuleModalShow(true)}
-                  className="btn btn-dark w-100"
-                >
-                  Add Module
-                  <FontAwesomeIcon className="ms-2" icon={faFolderPlus} />
-                </button>
-                <AddModuleModal
-                  courseId={courseId}
-                  modalShow={addModuleModalShow}
-                  setModalShow={setAddModuleModalShow}
-                />
-              </>
-            )}
           </Accordion>
         </div>
       </div>

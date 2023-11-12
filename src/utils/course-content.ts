@@ -1,7 +1,9 @@
 // Imports
 import { IContentRouteData, ICourseModule, IUserCourseProgress } from "@/types";
+import { ENUM_USER_ROLES } from "@/enums/user";
 
 export const findNextContentRoute = (
+  userRole: ENUM_USER_ROLES,
   allModules: ICourseModule[],
   currentModule: ICourseModule,
   courseId: string,
@@ -9,14 +11,17 @@ export const findNextContentRoute = (
 ) => {
   // Initalizing route
   let route: IContentRouteData | null = {
-    initial: "/course-content",
+    initial:
+      userRole === ENUM_USER_ROLES.STUDENT
+        ? "/course-content"
+        : "/course-content/ADMIN",
     courseId: courseId,
     moduleId: "",
     contentId: "",
   };
 
   // Finding current content index
-  const currentContentIndex = currentModule.moduleContents.findIndex(
+  const currentContentIndex = currentModule?.moduleContents.findIndex(
     (content) => content._id === contentId
   );
 
@@ -46,6 +51,7 @@ export const findNextContentRoute = (
 };
 
 export const findPreviousContentRoute = (
+  userRole: ENUM_USER_ROLES,
   allModules: ICourseModule[],
   currentModule: ICourseModule,
   courseId: string,
@@ -59,7 +65,7 @@ export const findPreviousContentRoute = (
   };
 
   // Finding current content index
-  const currentContentIndex = currentModule.moduleContents.findIndex(
+  const currentContentIndex = currentModule?.moduleContents.findIndex(
     (content) => content._id === contentId
   );
 

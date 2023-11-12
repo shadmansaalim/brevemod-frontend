@@ -6,13 +6,11 @@ import { Row, Container } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useCourseModulesQuery } from "@/redux/api/courseModuleApi";
 import { ICourse, ICourseModule } from "@/types";
-import { useState } from "react";
 import { useAppSelector } from "@/redux/hooks";
-import { ENUM_USER_ROLES } from "@/enums/user";
-import ContentSidebar from "@/components/ui/course/course-content/ContentSidebar";
-import AdminCourseContent from "@/components/ui/course/course-content/AdminCourseContent";
+import AdminCourseContent from "@/components/ui/course/course-content/admin/AdminCourseContent";
 import { useCourseQuery } from "@/redux/api/courseApi";
 import AdminCourseContentPageSkeleton from "@/components/ui/course/course-content/skeletons/AdminCourseContentPageSkeleton";
+import AdminContentSidebar from "@/components/ui/course/course-content/admin/AdminContentSidebar";
 
 const CourseModulePage = () => {
   const router = useRouter();
@@ -60,9 +58,8 @@ const CourseModulePage = () => {
                   contentsCount={contentsCount}
                   avgRatingCount={avgRatingCount}
                 />
-                <ContentSidebar
+                <AdminContentSidebar
                   modules={courseModules}
-                  userRole={currentUser?.role as ENUM_USER_ROLES}
                   courseId={courseId as string}
                 />
               </Row>

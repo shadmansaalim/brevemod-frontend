@@ -27,7 +27,7 @@ const MyClassesPage = () => {
       {myCoursesDataLoading ? (
         <CoursesPageSkeleton />
       ) : (
-        <div className="my-5 text-center">
+        <div className="my-5">
           <Container>
             {courses?.length === 0 ? (
               <Row style={{ marginTop: "80px", marginBottom: "80px" }}>

@@ -16,8 +16,9 @@ import { useIsCoursePurchasedQuery } from "@/redux/api/purchaseApi";
 import { setCart } from "@/redux/slices/cartSlice";
 import { isLoggedIn } from "@/services/auth.service";
 import { ENUM_USER_ROLES } from "@/enums/user";
-import { faForward } from "@fortawesome/free-solid-svg-icons";
+import { faForward, faStar } from "@fortawesome/free-solid-svg-icons";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import Rating from "react-rating";
 
 const CourseDetailsPage = () => {
   const router = useRouter();
@@ -103,19 +104,35 @@ const CourseDetailsPage = () => {
                 </div>
                 <div className="col-lg-5 col-xl-6 mx-auto text-start mt-3 mt-lg-0">
                   <h3>{course?.title}</h3>
-                  <p className="mb-2">tagline</p>
-                  <small>
-                    <b>4.5</b>(53,134)
-                  </small>
-                  <br />
-                  <small>
-                    Created by <a href="!#">{course?.instructorName}</a>
-                  </small>
-                  <br />
+                  {course?.ratingCount !== 0 && (
+                    <div>
+                      <span className="me-2 rating">
+                        {course?.avgRating.toFixed(1)}
+                      </span>
+
+                      <Rating
+                        className="me-1"
+                        initialRating={course?.avgRating}
+                        emptySymbol={
+                          <FontAwesomeIcon icon={faStar} color="whitesmoke" />
+                        }
+                        fullSymbol={
+                          <FontAwesomeIcon icon={faStar} color="gold" />
+                        }
+                        readonly
+                      />
+
+                      <small>({course?.ratingCount})</small>
+                    </div>
+                  )}
+                  <p className="m-0 mt-1">
+                    Course Instructor :
+                    <strong className="ms-1">{course?.instructorName}</strong>
+                  </p>
                   {currentUser && currentUser.role === ENUM_USER_ROLES.ADMIN ? (
                     <button
                       onClick={handleMoveToCourseModulesPage}
-                      className="btn btn-success text-white mt-3"
+                      className="btn btn-success text-white mt-2"
                     >
                       Course Modules <FontAwesomeIcon icon={faForward} />
                     </button>

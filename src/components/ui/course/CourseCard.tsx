@@ -15,7 +15,7 @@ const CourseCard = (props: { course: ICourse }) => {
   };
 
   return (
-    <Col>
+    <Col className="text-center">
       <Card className="h-100">
         <Card.Img variant="top" src={course.thumbnailLink} />
         <Card.Body className="d-flex flex-column justify-content-around">

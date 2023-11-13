@@ -1,6 +1,5 @@
 // Imports
-import { Container, Row, Col } from "react-bootstrap";
-import CourseSkeleton from "./CourseCardSkeleton";
+import { Container, Row } from "react-bootstrap";
 import CourseCardSkeleton from "./CourseCardSkeleton";
 
 const CoursesPageSkeleton = () => {
@@ -16,7 +15,7 @@ const CoursesPageSkeleton = () => {
       <Container>
         <section>
           <div>
-            <Row xs={1} md={2} lg={4} className="g-4 mt-3 mb-5 text-center">
+            <Row xs={1} md={2} lg={4} className="g-4 mt-3 mb-5">
               {[...Array(8).keys()].map((index: number) => (
                 <CourseCardSkeleton key={index} />
               ))}

@@ -70,7 +70,7 @@ const MyCourseCard = ({ course }: { course: ICourse }) => {
       {courseContentPublishDataLoading || courseProgressDataLoading ? (
         <CourseCardSkeleton />
       ) : (
-        <div className="col">
+        <div className="col text-center">
           <div className="card h-100">
             <img
               src={course.thumbnailLink}

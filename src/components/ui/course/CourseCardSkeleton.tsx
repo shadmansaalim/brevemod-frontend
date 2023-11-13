@@ -2,7 +2,7 @@ import { Col } from "react-bootstrap";
 
 const CourseCardSkeleton = () => {
   return (
-    <Col>
+    <Col className="text-center">
       <div className="card" aria-hidden="true">
         <svg
           className="bd-placeholder-img card-img-top"

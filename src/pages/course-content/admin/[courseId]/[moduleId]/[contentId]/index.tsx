@@ -110,7 +110,7 @@ const CourseModulePage = () => {
       {courseModulesDataLoading || courseDataLoading ? (
         <CourseModulePageSkeleton />
       ) : (
-        <div>
+        <div className="pb-5">
           <div className="text-start my-5">
             <Container>
               <div className="d-flex flex-column flex-md-row justify-content-between align-items-start mb-4">

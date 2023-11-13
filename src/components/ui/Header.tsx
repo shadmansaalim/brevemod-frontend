@@ -175,7 +175,7 @@ const Header = () => {
               </>
             )}
           </Nav>
-          <Nav className="ms-auto">
+          <Nav className="ms-auto text-center">
             {currentUser ? (
               <NavDropdown
                 title={

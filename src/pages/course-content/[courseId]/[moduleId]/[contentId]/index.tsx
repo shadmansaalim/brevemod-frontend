@@ -57,8 +57,6 @@ const CourseModulePage = () => {
     useState<IContentRouteData | null>(null);
   const [previousContentRoute, setPreviousContentRoute] =
     useState<IContentRouteData | null>(null);
-  const [userProgressUpdateRequired, setUserProgressUpdateRequired] =
-    useState(false);
   const [rating, setRating] = useState<number>(0.0);
   const [ratingCompleted, setRatingCompleted] = useState(false);
 
@@ -119,39 +117,42 @@ const CourseModulePage = () => {
         )
       );
     }
-    if (courseProgress && currentModule && currentContent) {
-      setUserProgressUpdateRequired(
-        isUserProgressUpdateRequired(
-          courseProgress,
-          currentModule._id,
-          currentContent._id
-        )
-      );
-    }
   }, [courseModulesData, courseProgressData]);
 
   const handleNextContentClick = async () => {
-    if (nextContentRoute) {
-      // Route Pattern
-      const routePattern = `${nextContentRoute.initial}/${nextContentRoute.courseId}/[${nextContentRoute.moduleId}]/[${nextContentRoute.contentId}]`;
-      // Route actual URL
-      const routeUrl = `${nextContentRoute.initial}/${nextContentRoute.courseId}/${nextContentRoute.moduleId}/${nextContentRoute.contentId}`;
+    // Route Pattern
+    let routePattern = "";
+    // Route actual URL
+    let routeUrl = "";
 
-      // Checking if user progress update is required
-      if (userProgressUpdateRequired) {
-        try {
-          const res: ResponseSuccessType = await updateCourseProgress(
-            courseId
-          ).unwrap();
-          if (res?.success) {
-            router.push(routePattern, routeUrl);
+    // Checking if user progress update is required
+    if (courseProgress?.percentage !== 100) {
+      try {
+        const res: ResponseSuccessType = await updateCourseProgress(
+          courseId
+        ).unwrap();
+        if (res?.success) {
+          if (nextContentRoute) {
+            routePattern = `${nextContentRoute.initial}/${nextContentRoute.courseId}/[${nextContentRoute.moduleId}]/[${nextContentRoute.contentId}]`;
+            routeUrl = `${nextContentRoute.initial}/${nextContentRoute.courseId}/${nextContentRoute.moduleId}/${nextContentRoute.contentId}`;
+          } else {
+            routePattern = `/course-content/652babaabd146934ac0a1cbe/[next-content]`;
+            routeUrl = `/course-content/652babaabd146934ac0a1cbe/next-content`;
           }
-        } catch (err) {
-          swal(err.message, "", "error");
+          router.push(routePattern, routeUrl);
         }
-      } else {
-        router.push(routePattern, routeUrl);
+      } catch (err) {
+        swal(err.message, "", "error");
       }
+    } else {
+      if (nextContentRoute) {
+        routePattern = `${nextContentRoute.initial}/${nextContentRoute.courseId}/[${nextContentRoute.moduleId}]/[${nextContentRoute.contentId}]`;
+        routeUrl = `${nextContentRoute.initial}/${nextContentRoute.courseId}/${nextContentRoute.moduleId}/${nextContentRoute.contentId}`;
+      } else {
+        routePattern = `/course-content/652babaabd146934ac0a1cbe/[next-content]`;
+        routeUrl = `/course-content/652babaabd146934ac0a1cbe/next-content`;
+      }
+      router.push(routePattern, routeUrl);
     }
   };
 
@@ -196,7 +197,7 @@ const CourseModulePage = () => {
       courseDataLoading ? (
         <CourseModulePageSkeleton />
       ) : (
-        <div>
+        <div className="pb-5">
           <div className="text-start my-5">
             <Container>
               <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
@@ -228,9 +229,7 @@ const CourseModulePage = () => {
                     previousContentRoute === null ? true : false
                   }
                   handlePreviousContentClick={handlePreviousContentClick}
-                  isNextButtonDisabled={
-                    nextContentRoute === null ? true : false
-                  }
+                  isNextButtonDisabled={false}
                   handleNextContentClick={handleNextContentClick}
                 />
                 <ContentSidebar

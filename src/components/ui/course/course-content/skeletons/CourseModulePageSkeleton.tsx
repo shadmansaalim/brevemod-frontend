@@ -5,7 +5,7 @@ import ContentViewSkeleton from "./ContentViewSkeleton";
 
 const CourseModulePageSkeleton = () => {
   return (
-    <div>
+    <div className="pb-5">
       <div>
         <div className="text-start my-5">
           <Container>

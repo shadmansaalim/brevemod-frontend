@@ -57,13 +57,9 @@ const CourseContentButton = ({
 
   if (isContentCurrent) {
     return (
-      <button className="currentModuleContentBtn">
+      <button className="currentModuleContentBtn bg-success text-white">
         <span className="d-flex align-items-center">
-          <FontAwesomeIcon
-            color="#006B5A"
-            className="me-1"
-            icon={faCirclePlay}
-          />
+          <FontAwesomeIcon color="white" className="me-1" icon={faCirclePlay} />
           <p className="mb-0">{content?.title}</p>
         </span>
         <span>{content.duration}m</span>

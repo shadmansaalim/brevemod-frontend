@@ -36,9 +36,7 @@ const CourseContentLayout = ({ children }: { children: React.ReactNode }) => {
 
   // Finding did user purchased this course or not
   const { data: purchaseData, isLoading: purchaseDataLoading } =
-    currentUser && currentUser.role === ENUM_USER_ROLES.STUDENT
-      ? useIsCoursePurchasedQuery(courseId)
-      : { data: null, isLoading: false };
+    useIsCoursePurchasedQuery(courseId);
 
   useEffect(() => {
     if (

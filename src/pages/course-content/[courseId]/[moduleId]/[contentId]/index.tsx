@@ -39,8 +39,7 @@ import {
 } from "@/redux/api/courseApi";
 import Rating from "react-rating";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
-import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 const CourseModulePage = () => {
   const router = useRouter();
@@ -63,11 +62,15 @@ const CourseModulePage = () => {
   const [rating, setRating] = useState<number>(0.0);
   const [ratingCompleted, setRatingCompleted] = useState(false);
 
+  // Update Course Progress Hook
+  const [updateCourseProgress] = useUpdateCourseProgressMutation();
+
+  // Add User Rating hook
+  const [addRating] = useAddCourseRatingMutation();
+
   // User Course Progress Data
   const { data: courseProgressData, isLoading: courseProgressDataLoading } =
-    currentUser && currentUser.role === ENUM_USER_ROLES.STUDENT
-      ? useCourseProgressQuery(courseId)
-      : { data: null, isLoading: false };
+    useCourseProgressQuery(courseId);
   const courseProgress = courseProgressData?.data as IUserCourseProgress;
 
   // Course Modules
@@ -84,12 +87,6 @@ const CourseModulePage = () => {
   const { data: ratingData, isLoading: ratingDataLoading } =
     useUserCourseRatingQuery(courseId);
   const userRating = ratingData?.data as IUserCourseRating;
-
-  // Update Course Progress Hook
-  const [updateCourseProgress] = useUpdateCourseProgressMutation();
-
-  // Add User Rating hook
-  const [addRating] = useAddCourseRatingMutation();
 
   // Current Module
   const currentModule = courseModules?.find(

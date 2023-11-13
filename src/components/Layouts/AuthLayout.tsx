@@ -29,7 +29,7 @@ const AuthLayout = ({
     } else {
       setIsLoading(false);
     }
-  }, [router, isLoading]);
+  }, [currentUser, userSession, router]);
 
   if (isLoading) {
     return <LoadingSpinner />;

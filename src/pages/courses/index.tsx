@@ -1,15 +1,15 @@
 // Imports
 import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
-import { Row, Col, Container, InputGroup, Form } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { ICourse } from "@/types";
 import { useCoursesQuery } from "@/redux/api/courseApi";
 import { useDebounced } from "@/redux/hooks";
 import CoursesPageSkeleton from "@/components/ui/course/CoursesPageSkeleton";
 import CourseCard from "../../components/ui/course/CourseCard";
+import Pagination from "@/components/ui/Pagination";
+import SearchBar from "@/components/ui/SearchBar";
 
 const CoursesPage = () => {
   const [activePage, setActivePage] = useState<number>(1);
@@ -38,121 +38,50 @@ const CoursesPage = () => {
       {isLoading ? (
         <CoursesPageSkeleton />
       ) : (
-        <div>
-          <div className="col-lg-6 mx-auto mt-5">
-            <InputGroup
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setSearchTerm(e.target.value)
-              }
-              className="mb-3"
-            >
-              <Form.Control
-                value={searchTerm}
-                placeholder="Search courses"
-                aria-label="Search courses"
-                aria-describedby="basic-addon1"
+        <Container>
+          <div className="d-flex flex-column flex-lg-row align-items-center justify-content-lg-between mt-5 mb-3">
+            <div className="col-12 col-lg-6 me-auto">
+              <SearchBar
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
               />
-              {searchTerm.length > 0 && (
-                <InputGroup.Text
-                  id="basic-addon1"
-                  onClick={() => setSearchTerm("")}
-                  style={{ cursor: "pointer" }}
-                >
-                  Reset <FontAwesomeIcon icon={faRotateLeft} className="ms-2" />
-                </InputGroup.Text>
-              )}
-            </InputGroup>
+            </div>
+            {courses.length > 0 && (
+              <div className="mt-4 mt-lg-0">
+                <Pagination
+                  activePage={activePage}
+                  setActivePage={setActivePage}
+                  totalPage={meta?.totalPage as number}
+                />
+              </div>
+            )}
           </div>
-
-          <Container>
-            <section>
-              {searchTerm.length > 0 && courses.length === 0 ? (
-                <Row
-                  style={{ marginTop: "80px", marginBottom: "80px" }}
-                  className="text-center"
-                >
-                  <Col lg="6" className="mx-auto shadow-lg mb-5 p-5 rounded-3">
-                    <img
-                      src="/Empty.svg"
-                      className="img-fluid mb-3 col-6"
-                      alt="Empty Cart Image"
-                    />
-                    <p>No Courses found based on your search results.</p>
-                  </Col>
+          <section>
+            {searchTerm.length > 0 && courses.length === 0 ? (
+              <Row
+                style={{ marginTop: "80px", marginBottom: "80px" }}
+                className="text-center"
+              >
+                <Col lg="6" className="mx-auto shadow-lg mb-5 p-5 rounded-3">
+                  <img
+                    src="/Empty.svg"
+                    className="img-fluid mb-3 col-6"
+                    alt="Empty Cart Image"
+                  />
+                  <p>No Courses found based on your search results.</p>
+                </Col>
+              </Row>
+            ) : (
+              <div>
+                <Row xs={1} md={2} lg={4} className="g-4 mt-3 mb-5">
+                  {courses?.map((course: ICourse) => (
+                    <CourseCard key={course._id} course={course} />
+                  ))}
                 </Row>
-              ) : (
-                <div>
-                  <Row xs={1} md={2} lg={4} className="g-4 mt-3 mb-5">
-                    {courses?.map((course: ICourse) => (
-                      <CourseCard key={course._id} course={course} />
-                    ))}
-                  </Row>
-                  <div className="d-flex justify-content-end">
-                    <nav aria-label="...">
-                      <ul className="pagination">
-                        {
-                          <li
-                            className={
-                              activePage === 1
-                                ? "page-item disabled"
-                                : "page-item"
-                            }
-                          >
-                            <button
-                              onClick={() => setActivePage(activePage - 1)}
-                              className="page-link text-success"
-                              aria-label="Previous"
-                            >
-                              Previous
-                            </button>
-                          </li>
-                        }
-                        {[...Array(meta?.totalPage).keys()].map((number) => (
-                          <li
-                            key={number}
-                            className={
-                              number === activePage - 1
-                                ? "page-item active"
-                                : "page-item"
-                            }
-                          >
-                            <button
-                              onClick={() => setActivePage(number + 1)}
-                              className={
-                                number === activePage - 1
-                                  ? "page-link bg-success text-white border-success"
-                                  : "page-link text-success"
-                              }
-                            >
-                              {number + 1}
-                            </button>
-                          </li>
-                        ))}
-                        {
-                          <li
-                            className={
-                              activePage === meta?.totalPage
-                                ? "page-item disabled"
-                                : "page-item"
-                            }
-                          >
-                            <button
-                              onClick={() => setActivePage(activePage + 1)}
-                              className="page-link text-success"
-                              aria-label="Next"
-                            >
-                              Next
-                            </button>
-                          </li>
-                        }
-                      </ul>
-                    </nav>
-                  </div>
-                </div>
-              )}
-            </section>
-          </Container>
-        </div>
+              </div>
+            )}
+          </section>
+        </Container>
       )}
     </>
   );

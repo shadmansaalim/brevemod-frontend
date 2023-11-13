@@ -34,6 +34,11 @@ const CourseModulePage = () => {
     useCourseQuery(courseId);
   const course = courseData?.data as ICourse;
 
+  // Taking the user to home page if user progress is not 100%
+  if (courseProgress && courseProgress.percentage !== 100) {
+    router.push("/");
+  }
+
   return (
     <div>
       {courseModulesDataLoading ||

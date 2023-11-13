@@ -17,6 +17,7 @@ import { setCart } from "@/redux/slices/cartSlice";
 import { isLoggedIn } from "@/services/auth.service";
 import { ENUM_USER_ROLES } from "@/enums/user";
 import { faForward } from "@fortawesome/free-solid-svg-icons";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 const CourseDetailsPage = () => {
   const router = useRouter();
@@ -66,7 +67,9 @@ const CourseDetailsPage = () => {
 
   return (
     <div style={{ overflowX: "hidden" }}>
-      {!courseDataLoading && !purchaseDataLoading ? (
+      {courseDataLoading || purchaseDataLoading ? (
+        <LoadingSpinner />
+      ) : (
         <section>
           <div
             className="py-4 py-lg-5"
@@ -204,23 +207,7 @@ const CourseDetailsPage = () => {
               </div>
             </section>
           </div>
-          <div>
-            {/* {courseReviews?.length && (
-              <div
-                className=""
-                style={{
-                  backgroundColor: "#f5f7ff",
-                }}
-              >
-                <UserReviews reviews={courseReviews} />
-              </div>
-            )} */}
-          </div>
         </section>
-      ) : (
-        <div className="vh-100 d-flex justify-content-center align-items-center">
-          <div className="spinner"></div>
-        </div>
       )}
     </div>
   );

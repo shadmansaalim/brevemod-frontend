@@ -18,8 +18,8 @@ const ContentSidebarSkeleton = () => {
 
         <div className="modules">
           <Accordion defaultActiveKey="1">
-            {[...Array(5).keys()].map(() => (
-              <Card className="moduleCard  w-100">
+            {[...Array(5).keys()].map((index: number) => (
+              <Card key={index} className="moduleCard  w-100">
                 <Card.Header
                   className="d-flex justify-content-between align-items-start place-holder-glow"
                   style={{ height: "65px" }}

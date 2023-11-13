@@ -71,8 +71,8 @@ const AdminCourseModuleItem = ({
           if (res?.success) {
             swal(res.message, "", "success");
           }
-        } catch (err) {
-          swal(err.message, "", "error");
+        } catch (err: any) {
+          swal(err?.message, "", "error");
         }
       }
     });

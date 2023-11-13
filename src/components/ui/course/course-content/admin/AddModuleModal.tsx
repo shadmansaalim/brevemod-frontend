@@ -37,9 +37,9 @@ const AddModuleModal = ({
         setModuleName("");
         setModalShow(false);
       }
-    } catch (err) {
+    } catch (err: any) {
       setModuleCreating(false);
-      swal(err.message, "", "error");
+      swal(err?.message, "", "error");
     }
   };
 

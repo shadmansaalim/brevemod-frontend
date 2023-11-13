@@ -16,8 +16,8 @@ const AdminCourseContentPageSkeleton = () => {
             <Row>
               <Col className="col-12 col-lg-8">
                 <div className="row g-3 text-white h-100">
-                  {[...Array(4).keys()].map(() => (
-                    <div className="col-lg-6 ">
+                  {[...Array(4).keys()].map((index: number) => (
+                    <div key={index} className="col-lg-6">
                       <div className="p-4 shadow-sm d-flex justify-content-around align-items-center rounded h-100 bg-secondary placeholder">
                         <div className="col-8 placeholder-glow">
                           <h3 className="fw-bold fs-2 m-0"></h3>

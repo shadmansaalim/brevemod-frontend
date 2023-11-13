@@ -48,8 +48,8 @@ const LoginPage = () => {
         router.push("/");
         swal(res.message, "", "success");
       }
-    } catch (err) {
-      swal(err.message, "", "error");
+    } catch (err: any) {
+      swal(err?.message, "", "error");
     }
   };
 

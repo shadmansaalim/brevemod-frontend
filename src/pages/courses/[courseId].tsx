@@ -34,9 +34,7 @@ const CourseDetailsPage = () => {
   const course = courseData?.data as ICourse;
 
   const { data: purchaseData, isLoading: purchaseDataLoading } =
-    currentUser && currentUser.role === ENUM_USER_ROLES.STUDENT
-      ? useIsCoursePurchasedQuery(courseId)
-      : { data: null, isLoading: false };
+    useIsCoursePurchasedQuery(courseId);
 
   const { cart } = useAppSelector((state) => state.cart);
 
@@ -56,8 +54,8 @@ const CourseDetailsPage = () => {
         );
         router.push("/login");
       }
-    } catch (err) {
-      swal(err.message, "", "error");
+    } catch (err: any) {
+      swal(err?.message, "", "error");
     }
   };
 

@@ -17,8 +17,8 @@ const CoursesPageSkeleton = () => {
         <section>
           <div>
             <Row xs={1} md={2} lg={4} className="g-4 mt-3 mb-5">
-              {[...Array(8).keys()].map(() => (
-                <CourseCardSkeleton />
+              {[...Array(8).keys()].map((index: number) => (
+                <CourseCardSkeleton key={index} />
               ))}
             </Row>
             <div className="d-flex justify-content-end">

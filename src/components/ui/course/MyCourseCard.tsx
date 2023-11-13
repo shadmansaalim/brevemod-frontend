@@ -42,7 +42,7 @@ const MyCourseCard = ({ course }: { course: ICourse }) => {
     } else {
       setIsCourseStarted(false);
     }
-  }, [courseProgressData]);
+  }, [courseProgressData, courseProgress]);
 
   const handleStartCourse = async () => {
     try {
@@ -53,8 +53,8 @@ const MyCourseCard = ({ course }: { course: ICourse }) => {
         setIsCourseStarted(true);
         swal(res.message, "", "success");
       }
-    } catch (err) {
-      swal(err.message, "", "error");
+    } catch (err: any) {
+      swal(err?.message, "", "error");
     }
   };
 

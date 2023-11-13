@@ -141,8 +141,8 @@ const CourseModulePage = () => {
           }
           router.push(routePattern, routeUrl);
         }
-      } catch (err) {
-        swal(err.message, "", "error");
+      } catch (err: any) {
+        swal(err?.message, "", "error");
       }
     } else {
       if (nextContentRoute) {
@@ -184,8 +184,8 @@ const CourseModulePage = () => {
           "success"
         );
       }
-    } catch (err) {
-      swal(err.message, "", "error");
+    } catch (err: any) {
+      swal(err?.message, "", "error");
     }
   };
 

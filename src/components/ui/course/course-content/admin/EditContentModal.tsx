@@ -62,9 +62,9 @@ const EditContentModal = ({
         setContentData(null);
         setModalShow(false);
       }
-    } catch (err) {
+    } catch (err: any) {
       setContentUploading(false);
-      swal(err.message, "", "error");
+      swal(err?.message, "", "error");
     }
   };
 

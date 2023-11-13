@@ -47,7 +47,7 @@ const PaymentCheckoutForm = () => {
       if (res?.success) {
         setClientSecret(res.data.clientSecret);
       }
-    } catch (err) {
+    } catch (err: any) {
       swal("Something went wrong", "", "error");
     }
   };
@@ -61,15 +61,15 @@ const PaymentCheckoutForm = () => {
         router.push("/purchase-confirm");
       }
       setIsLoading(false);
-    } catch (err) {
-      swal(err.message, "", "error");
+    } catch (err: any) {
+      swal(err?.message, "", "error");
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
     handleCreatePaymentIntent();
-  }, [currentUser]);
+  }, [currentUser, handleCreatePaymentIntent]);
 
   const onSubmit = async (data: any) => {
     if (!stripe || !elements) {

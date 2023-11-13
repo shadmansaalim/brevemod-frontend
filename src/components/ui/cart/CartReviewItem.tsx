@@ -24,8 +24,8 @@ const CartReviewItem = ({ id }: { id: string }) => {
       if (res?.success) {
         dispatch(setCart(res?.data));
       }
-    } catch (err) {
-      swal(err.message, "", "error");
+    } catch (err: any) {
+      swal(err?.message, "", "error");
     }
   };
 

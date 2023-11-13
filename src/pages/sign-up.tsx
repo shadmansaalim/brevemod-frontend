@@ -34,8 +34,8 @@ const SignUpPage = () => {
         swal(res?.message, "Please login to continue", "success");
         router.push("/");
       }
-    } catch (err) {
-      swal(err.message, "", "error");
+    } catch (err: any) {
+      swal(err?.message, "", "error");
     }
   };
 

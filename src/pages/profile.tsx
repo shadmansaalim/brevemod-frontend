@@ -72,7 +72,7 @@ const ProfilePage = () => {
       }
 
       setUpdating(false);
-    } catch (err) {
+    } catch (err: any) {
       swal(err?.data?.message || err?.message, "", "error");
       setUpdating(false);
     }

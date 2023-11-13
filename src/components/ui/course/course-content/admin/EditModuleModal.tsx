@@ -47,9 +47,9 @@ const EditModuleModal = ({
         setModuleName("");
         setModalShow(false);
       }
-    } catch (err) {
+    } catch (err: any) {
       setModuleUpdating(false);
-      swal(err.message, "", "error");
+      swal(err?.message, "", "error");
     }
   };
 

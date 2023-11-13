@@ -30,6 +30,7 @@ import { useCartQuery } from "@/redux/api/cartApi";
 import { useEffect } from "react";
 import { setCart } from "@/redux/slices/cartSlice";
 import { ENUM_USER_ROLES } from "@/enums/user";
+import { ICart } from "@/types";
 
 const Header = () => {
   const { currentUser } = useAppSelector((state) => state.user);
@@ -38,26 +39,20 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const {
-    data: cartData,
-    refetch,
-    isLoading: cartDataLoading,
-  } = useCartQuery({});
+  const { data: cartData, isLoading: cartDataLoading } = useCartQuery({});
 
   useEffect(() => {
-    if (currentUser && currentUser.role === ENUM_USER_ROLES.STUDENT) {
-      refetch();
-    }
-  }, [currentUser]);
-
-  useEffect(() => {
-    if (currentUser) {
+    if (!cartDataLoading) {
       if (cartData && cartData.success) {
-        const cart = cartData.data;
-        dispatch(setCart(cart));
+        const userCart = cartData.data as ICart;
+        if (userCart.courses.length) {
+          dispatch(setCart(cart));
+        } else {
+          dispatch(setCart(null));
+        }
       }
     }
-  }, [currentUser, cartData]);
+  }, [currentUser, cartData, cartDataLoading, dispatch]);
 
   const [modalShow, setModalShow] = useState(false);
 

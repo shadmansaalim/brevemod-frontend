@@ -32,7 +32,7 @@ const CourseContentLayout = ({ children }: { children: React.ReactNode }) => {
         router.push("/404"); // Redirect to 404 page
       }
     }
-  }, [router, isValid, isValidityLoading]);
+  }, [router, isValid]);
 
   // Finding did user purchased this course or not
   const { data: purchaseData, isLoading: purchaseDataLoading } =
@@ -49,7 +49,7 @@ const CourseContentLayout = ({ children }: { children: React.ReactNode }) => {
         router.push("/"); // Redirect to home page
       }
     }
-  }, [router, purchaseData, currentUser, purchaseDataLoading]);
+  }, [router, purchaseData, currentUser]);
 
   if (isValidityLoading || purchaseDataLoading) {
     return <CourseModulePageSkeleton />;

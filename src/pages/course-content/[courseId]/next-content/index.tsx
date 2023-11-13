@@ -8,7 +8,6 @@ import { useCourseModulesQuery } from "@/redux/api/courseModuleApi";
 import { useCourseProgressQuery } from "@/redux/api/courseProgressApi";
 import { ICourse, ICourseModule, IUserCourseProgress } from "@/types";
 import ContentSidebar from "@/components/ui/course/course-content/ContentSidebar";
-import CourseContentLayout from "@/components/Layouts/CourseContentLayout";
 import CourseModulePageSkeleton from "@/components/ui/course/course-content/skeletons/CourseModulePageSkeleton";
 import { useCourseQuery } from "@/redux/api/courseApi";
 import ContentCookingView from "@/components/ui/course/course-content/ContentCookingView";
@@ -73,9 +72,7 @@ export default CourseModulePage;
 CourseModulePage.getLayout = function getLayout(page: ReactElement) {
   return (
     <AuthLayout onlyStudentAccess={true}>
-      <RootLayout>
-        <CourseContentLayout>{page}</CourseContentLayout>
-      </RootLayout>
+      <RootLayout>{page}</RootLayout>
     </AuthLayout>
   );
 };

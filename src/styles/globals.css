@@ -8,6 +8,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.main {
+  min-height: calc(100vh - 444.72px);
+}
+
 p {
   line-height: 24px;
 }

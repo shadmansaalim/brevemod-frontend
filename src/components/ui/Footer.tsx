@@ -1,138 +1,118 @@
 // Imports
+import Link from "next/link";
 
 const Footer = () => {
   return (
     <footer
-      className="text-center text-lg-start text-white"
-      style={{ backgroundColor: "#45526e" }}
+      className="text-center text-lg-start text-dark"
+      style={{ backgroundColor: "#ECEFF1" }}
     >
-      <div className="container p-4 pb-0">
-        <section>
-          <div className="row">
-            <div className="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-              <h6 className="text-uppercase mb-4 font-weight-bold">
-                BREVEMOD.
-              </h6>
+      <section className="bg-dark text-white p-5">
+        <div className="container text-center text-md-start ">
+          <div className="row ">
+            <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+              <h6 className="text-uppercase fw-bold">BREVEMOD.</h6>
+              <hr
+                className="mb-4 mt-0 d-inline-block mx-auto"
+                style={{
+                  width: "60px",
+                  backgroundColor: "rgb(33, 37, 41)",
+                  height: "2px",
+                }}
+              />
               <p>
-                Whether you want to learn or to share what you know, you’ve come
-                to the right place. As a global destination for online learning,
-                we connect people through knowledge.
+                A Full Stack application developed using technologies Next.js,
+                Redux Node, Mongoose, MongoDB and more.
               </p>
             </div>
 
-            <hr className="w-100 clearfix d-md-none" />
-
-            <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+            <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+              <h6 className="text-uppercase fw-bold">Membership</h6>
+              <hr
+                className="mb-4 mt-0 d-inline-block mx-auto"
+                style={{
+                  width: "60px",
+                  backgroundColor: "rgb(33, 37, 41)",
+                  height: "2px",
+                }}
+              />
               <p>
-                <small className="text-white">Brevemod Business</small>
+                <a href="#!" className="text-white">
+                  Fees & Terms
+                </a>
               </p>
               <p>
-                <small className="text-white">Teach on Brevemod</small>
+                <a href="#!" className="text-white">
+                  Student Stories
+                </a>
               </p>
-
               <p>
-                <small className="text-white">Get the app</small>
-              </p>
-
-              <p>
-                <small className="text-white">About us</small>
-              </p>
-
-              <p>
-                <small className="text-white">Contact us</small>
+                <a href="#!" className="text-white">
+                  Course FAQ
+                </a>
               </p>
             </div>
 
-            <hr className="w-100 clearfix d-md-none" />
-
-            <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+            <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+              <h6 className="text-uppercase fw-bold">Jobs</h6>
+              <hr
+                className="mb-4 mt-0 d-inline-block mx-auto"
+                style={{
+                  width: "60px",
+                  backgroundColor: "rgb(33, 37, 41)",
+                  height: "2px",
+                }}
+              />
               <p>
-                <small className="text-white">Careers</small>
+                <a href="#!" className="text-white">
+                  Become a tutor
+                </a>
               </p>
               <p>
-                <small className="text-white">Blog</small>
+                <a href="#!" className="text-white">
+                  Types of tutors
+                </a>
               </p>
-
               <p>
-                <small className="text-white">Help and Support</small>
-              </p>
-
-              <p>
-                <small className="text-white">Affiliate</small>
+                <a href="#!" className="text-white">
+                  Brevemodian Guidelines
+                </a>
               </p>
             </div>
 
-            <hr className="w-100 clearfix d-md-none" />
-
-            <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
-              <p>
-                <small className="text-white">Terms</small>
-              </p>
-              <p>
-                <small className="text-white">Privacy Policy</small>
-              </p>
-
-              <p>
-                <small className="text-white">Sitemap</small>
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <hr className="my-3"></hr>
-
-        <section className="p-3 pt-0">
-          <div className="row d-flex align-items-center">
-            <div className="col-md-7 col-lg-8 text-center text-md-start">
-              <p className="mb-0">
-                © {new Date().getFullYear()} Copyright : Application Developed
-                By Saalim Shadman
-              </p>
-            </div>
-
-            <div className="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://www.facebook.com/udemy/"
-                className="text-white btn btn-outline-dark btn-floating me-1"
-                role="button"
-              >
-                <i className="fab fa-facebook-f"></i>
-              </a>
-
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://twitter.com/udemy?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor"
-                className="text-white btn btn-outline-dark btn-floating m-1"
-                role="button"
-              >
-                <i className="fab fa-twitter"></i>
-              </a>
-
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://www.udemy.com/"
-                className="text-white btn btn-outline-dark btn-floating m-1"
-                role="button"
-              >
-                <i className="fab fa-google"></i>
-              </a>
-
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://www.instagram.com/udemy/"
-                className="text-white btn btn-outline-dark btn-floating m-1"
-                role="button"
-              >
-                <i className="fab fa-instagram"></i>
-              </a>
+            <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+              <h6 className="text-uppercase fw-bold">Community & Education</h6>
+              <hr
+                className="mb-4 mt-0 d-inline-block mx-auto"
+                style={{
+                  width: "60px",
+                  backgroundColor: "rgb(33, 37, 41)",
+                  height: "2px",
+                }}
+              />
+              <p>Community & Education</p>
+              <p>Community & Partnerships</p>
+              <p>Volunteers</p>
+              <p>Education</p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
+
+      <div
+        className="text-center text-white p-3"
+        style={{ backgroundColor: "#006b5a" }}
+      >
+        <small>
+          © {new Date().getFullYear()} Copyright Application Developed by{" "}
+          <Link
+            className="text-white"
+            href="https://www.linkedin.com/in/shadmansaalim/"
+            target="_blank"
+          >
+            Saalim Shadman
+          </Link>
+        </small>
       </div>
     </footer>
   );

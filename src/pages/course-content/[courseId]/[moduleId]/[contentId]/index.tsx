@@ -16,6 +16,7 @@ import {
   ICourseModule,
   IModuleContent,
   IUserCourseProgress,
+  IUserCourseRating,
   ResponseSuccessType,
 } from "@/types";
 import swal from "sweetalert";
@@ -31,7 +32,15 @@ import {
 import CourseContentLayout from "@/components/Layouts/CourseContentLayout";
 import { ENUM_USER_ROLES } from "@/enums/user";
 import CourseModulePageSkeleton from "@/components/ui/course/course-content/skeletons/CourseModulePageSkeleton";
-import { useCourseQuery } from "@/redux/api/courseApi";
+import {
+  useAddCourseRatingMutation,
+  useCourseQuery,
+  useUserCourseRatingQuery,
+} from "@/redux/api/courseApi";
+import Rating from "react-rating";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 
 const CourseModulePage = () => {
   const router = useRouter();
@@ -51,6 +60,8 @@ const CourseModulePage = () => {
     useState<IContentRouteData | null>(null);
   const [userProgressUpdateRequired, setUserProgressUpdateRequired] =
     useState(false);
+  const [rating, setRating] = useState<number>(0.0);
+  const [ratingCompleted, setRatingCompleted] = useState(false);
 
   // User Course Progress Data
   const { data: courseProgressData, isLoading: courseProgressDataLoading } =
@@ -69,8 +80,16 @@ const CourseModulePage = () => {
     useCourseQuery(courseId);
   const course = courseData?.data as ICourse;
 
+  // User Course Rating
+  const { data: ratingData, isLoading: ratingDataLoading } =
+    useUserCourseRatingQuery(courseId);
+  const userRating = ratingData?.data as IUserCourseRating;
+
   // Update Course Progress Hook
   const [updateCourseProgress] = useUpdateCourseProgressMutation();
+
+  // Add User Rating hook
+  const [addRating] = useAddCourseRatingMutation();
 
   // Current Module
   const currentModule = courseModules?.find(
@@ -148,18 +167,62 @@ const CourseModulePage = () => {
     }
   };
 
+  const handleAddUserRating = async (value: number) => {
+    setRating(value);
+    try {
+      const data = {
+        courseId,
+        rating: value,
+      };
+      const res: ResponseSuccessType = await addRating({
+        ...data,
+      }).unwrap();
+
+      if (res?.success) {
+        setRatingCompleted(true);
+        swal(
+          res?.message,
+          "You can now see in course card the average rating has changed.",
+          "success"
+        );
+      }
+    } catch (err) {
+      swal(err.message, "", "error");
+    }
+  };
+
   return (
     <div>
       {courseModulesDataLoading ||
       courseProgressDataLoading ||
+      ratingDataLoading ||
       courseDataLoading ? (
         <CourseModulePageSkeleton />
       ) : (
         <div>
           <div className="text-start my-5">
             <Container>
-              <div className="d-flex flex-column flex-md-row justify-content-between align-items-start mb-4">
-                <h2 className="fw-bold my-0">{course.title}</h2>
+              <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+                <h3 className="fw-bold my-0">{course?.title}</h3>
+                {userRating === null && !ratingCompleted && (
+                  <div className="d-flex align-items-center">
+                    <p className="m-0">Rate Course</p>
+                    <Rating
+                      className="fs-3 ms-2"
+                      initialRating={rating}
+                      fractions={2}
+                      emptySymbol={
+                        <FontAwesomeIcon icon={faStar} color="whitesmoke" />
+                      }
+                      fullSymbol={
+                        <FontAwesomeIcon icon={faStar} color="gold" />
+                      }
+                      value={rating}
+                      onChange={(value: number) => handleAddUserRating(value)}
+                      readonly={rating !== 0}
+                    ></Rating>
+                  </div>
+                )}
               </div>
               <Row>
                 <ContentView

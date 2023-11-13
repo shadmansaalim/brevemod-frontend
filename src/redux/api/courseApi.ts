@@ -32,7 +32,31 @@ const courseApi = baseApi.injectEndpoints({
       transformErrorResponse: genericErrorResponse,
       providesTags: [TAG_TYPES.course],
     }),
+    userCourseRating: build.query({
+      query: (id: string | string[] | undefined) => ({
+        url: `${ENDPOINT_BASE_URL}/rating/${id}`,
+        method: "GET",
+      }),
+      transformResponse: genericSuccessResponse,
+      transformErrorResponse: genericErrorResponse,
+      providesTags: [TAG_TYPES.course],
+    }),
+    addCourseRating: build.mutation({
+      query: (data) => ({
+        url: `${ENDPOINT_BASE_URL}/add-rating/${data.courseId}`,
+        method: "PATCH",
+        data: { rating: data.rating },
+      }),
+      transformResponse: genericSuccessResponse,
+      transformErrorResponse: genericErrorResponse,
+      invalidatesTags: [TAG_TYPES.course],
+    }),
   }),
 });
 
-export const { useCoursesQuery, useCourseQuery } = courseApi;
+export const {
+  useCoursesQuery,
+  useCourseQuery,
+  useUserCourseRatingQuery,
+  useAddCourseRatingMutation,
+} = courseApi;

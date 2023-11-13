@@ -46,6 +46,7 @@ const CourseModuleItem = ({
         <p className="m-0 module-title">
           Module {module?.moduleNumber}: {module?.moduleName}
         </p>
+
         <button className="btn btn-dark">
           {isCurrentEventKey ? (
             <FontAwesomeIcon icon={faMinus} />

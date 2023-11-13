@@ -92,25 +92,11 @@ export type IUser = {
   __v?: number;
 };
 
-export type ICourseReview = {
-  _id: string;
-  course: ICourse;
-  user: IUser;
-  rating: number;
-  words: string;
-};
-
 export type IUserUpdateData = {
   firstName: string;
   middleName?: string;
   lastName: string;
   role: string;
-};
-
-export type IFeedback = {
-  _id: string;
-  user: Pick<IUser, "_id" | "firstName" | "middleName" | "lastName" | "email">;
-  feedback: string;
 };
 
 export type ICourseAddUpdateData = {
@@ -163,4 +149,11 @@ export type IContentRouteData = {
   courseId: string;
   moduleId: string;
   contentId: string;
+};
+
+export type IUserCourseRating = {
+  _id: string;
+  courseId: string;
+  user: string;
+  rating: number;
 };

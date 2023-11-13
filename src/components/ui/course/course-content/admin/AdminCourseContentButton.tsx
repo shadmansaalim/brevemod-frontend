@@ -57,7 +57,7 @@ const AdminCourseContentButton = ({
               className="me-1"
               icon={faCirclePlay}
             />
-            <p className="mb-0">{content?.title}</p>
+            <p className="m-0">{content?.title}</p>
           </span>
           <span>{content.duration}m</span>
         </button>
@@ -72,9 +72,9 @@ const AdminCourseContentButton = ({
               className="me-1"
               icon={faCircleCheck}
             />
-            <p className="mb-0">{content?.title}</p>
+            <p className="m-0">{content?.title}</p>
           </span>
-          <div className="d-flex align-items-center">
+          <div className="d-flex align-items-start">
             <span
               onClick={(event) => {
                 event.stopPropagation();
@@ -82,12 +82,6 @@ const AdminCourseContentButton = ({
               }}
             >
               <FontAwesomeIcon color="#6c757d" icon={faEdit} />
-              <EditContentModal
-                content={content}
-                moduleId={moduleId}
-                modalShow={editContentModalShow}
-                setModalShow={setEditContentModalShow}
-              />
             </span>
             <span
               className="ms-2"
@@ -101,6 +95,12 @@ const AdminCourseContentButton = ({
           </div>
         </button>
       )}
+      <EditContentModal
+        content={content}
+        moduleId={moduleId}
+        modalShow={editContentModalShow}
+        setModalShow={setEditContentModalShow}
+      />
     </>
   );
 };

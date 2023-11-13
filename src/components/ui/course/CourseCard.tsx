@@ -23,7 +23,11 @@ const CourseCard = (props: { course: ICourse }) => {
           <Card.Text className="text-center">
             <small>{course.instructorName}</small>
             <div className="d-flex justify-content-center mt-1">
-              <span className="me-1 rating">{course.avgRating}</span>
+              {course.avgRating !== 0 && (
+                <span className="me-1 rating">
+                  {course.avgRating.toFixed(1)}
+                </span>
+              )}
               <Rating
                 className="me-1"
                 initialRating={course.avgRating}
@@ -33,7 +37,9 @@ const CourseCard = (props: { course: ICourse }) => {
                 fullSymbol={<FontAwesomeIcon icon={faStar} color="gold" />}
                 readonly
               ></Rating>
-              <small>(34345345)</small>
+              {course.ratingCount !== 0 && (
+                <small>({course.ratingCount})</small>
+              )}
             </div>
             <div className="d-flex justify-content-center mt-2">
               <span className="fw-bold fs-5">${course.price}</span>

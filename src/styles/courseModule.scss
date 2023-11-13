@@ -56,6 +56,7 @@
     font-size: 18px;
   }
   .moduleContentBtn {
+    text-align: start;
     border: none;
     border-radius: 14px;
     display: flex;
@@ -71,6 +72,7 @@
     outline: none !important;
   }
   .currentModuleContentBtn {
+    text-align: start;
     border: 1.5px solid #198754;
     border-radius: 14px;
     display: flex;

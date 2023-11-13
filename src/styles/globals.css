@@ -8,6 +8,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+p {
+  line-height: 24px;
+}
+
 /* Modifying bootstrap success color */
 .btn-success {
   background-color: #006b5a !important;

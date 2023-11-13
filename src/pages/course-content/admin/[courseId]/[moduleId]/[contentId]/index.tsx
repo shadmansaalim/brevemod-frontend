@@ -114,7 +114,7 @@ const CourseModulePage = () => {
           <div className="text-start my-5">
             <Container>
               <div className="d-flex flex-column flex-md-row justify-content-between align-items-start mb-4">
-                <h2 className="fw-bold my-0">{course.title}</h2>
+                <h3 className="fw-bold my-0">{course?.title}</h3>
               </div>
               <Row>
                 <ContentView

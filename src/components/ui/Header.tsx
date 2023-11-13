@@ -195,12 +195,6 @@ const Header = () => {
                 <NavDropdown.Item href="/profile" eventKey="4.1">
                   <FontAwesomeIcon className="me-2" icon={faUser} /> Profile
                 </NavDropdown.Item>
-                {currentUser && currentUser.role === ENUM_USER_ROLES.ADMIN && (
-                  <NavDropdown.Item href="/dashboard" eventKey="4.3">
-                    <FontAwesomeIcon className="me-2" icon={faDashboard} />{" "}
-                    Dashboard
-                  </NavDropdown.Item>
-                )}
                 <NavDropdown.Item onClick={logoutUser} eventKey="4.2">
                   <FontAwesomeIcon className="me-2" icon={faRightFromBracket} />{" "}
                   Logout

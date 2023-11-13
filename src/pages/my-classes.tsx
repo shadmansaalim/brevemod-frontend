@@ -11,8 +11,6 @@ import MyCourseCard from "../components/ui/course/MyCourseCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { useEffect } from "react";
 
 const MyClassesPage = () => {
   const { currentUser } = useAppSelector((state) => state.user);
@@ -27,7 +25,7 @@ const MyClassesPage = () => {
       {myCoursesDataLoading ? (
         <CoursesPageSkeleton />
       ) : (
-        <div className="my-5">
+        <div className="my-5 text-center">
           <Container>
             {courses?.length === 0 ? (
               <Row style={{ marginTop: "80px", marginBottom: "80px" }}>

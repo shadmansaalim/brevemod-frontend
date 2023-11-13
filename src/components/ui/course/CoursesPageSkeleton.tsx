@@ -16,7 +16,7 @@ const CoursesPageSkeleton = () => {
       <Container>
         <section>
           <div>
-            <Row xs={1} md={2} lg={4} className="g-4 mt-3 mb-5">
+            <Row xs={1} md={2} lg={4} className="g-4 mt-3 mb-5 text-center">
               {[...Array(8).keys()].map((index: number) => (
                 <CourseCardSkeleton key={index} />
               ))}

@@ -32,6 +32,16 @@ const courseApi = baseApi.injectEndpoints({
       transformErrorResponse: genericErrorResponse,
       providesTags: [TAG_TYPES.course],
     }),
+    createCourse: build.mutation({
+      query: (data) => ({
+        url: ENDPOINT_BASE_URL,
+        method: "POST",
+        data,
+      }),
+      transformResponse: genericSuccessResponse,
+      transformErrorResponse: genericErrorResponse,
+      invalidatesTags: [TAG_TYPES.course],
+    }),
     userCourseRating: build.query({
       query: (id: string | string[] | undefined) => ({
         url: `${ENDPOINT_BASE_URL}/rating/${id}`,
@@ -57,6 +67,7 @@ const courseApi = baseApi.injectEndpoints({
 export const {
   useCoursesQuery,
   useCourseQuery,
+  useCreateCourseMutation,
   useUserCourseRatingQuery,
   useAddCourseRatingMutation,
 } = courseApi;

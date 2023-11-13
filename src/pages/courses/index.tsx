@@ -3,15 +3,20 @@ import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import { useState } from "react";
-import { ICourse } from "@/types";
+import { ICourse, IMeta } from "@/types";
 import { useCoursesQuery } from "@/redux/api/courseApi";
-import { useDebounced } from "@/redux/hooks";
+import { useAppSelector, useDebounced } from "@/redux/hooks";
 import CoursesPageSkeleton from "@/components/ui/course/CoursesPageSkeleton";
 import CourseCard from "../../components/ui/course/CourseCard";
 import Pagination from "@/components/ui/Pagination";
 import SearchBar from "@/components/ui/SearchBar";
+import AdminCreateCourseCard from "@/components/ui/course/AdminCreateCourseCard";
+import { calcPaginationTotalPage } from "@/utils/common";
+import { ENUM_USER_ROLES } from "@/enums/user";
 
 const CoursesPage = () => {
+  const { currentUser } = useAppSelector((state) => state.user);
+
   const [activePage, setActivePage] = useState<number>(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -31,7 +36,8 @@ const CoursesPage = () => {
 
   const { data, isLoading } = useCoursesQuery({ ...query });
   const courses = data?.data as ICourse[];
-  const meta = data?.meta;
+  const meta = data?.meta as IMeta;
+  const totalPage = calcPaginationTotalPage(meta, currentUser?.role);
 
   return (
     <>
@@ -46,12 +52,12 @@ const CoursesPage = () => {
                 setSearchTerm={setSearchTerm}
               />
             </div>
-            {courses.length > 0 && (
+            {(courses.length > 0 || totalPage === activePage) && (
               <div className="mt-4 mt-lg-0">
                 <Pagination
                   activePage={activePage}
                   setActivePage={setActivePage}
-                  totalPage={meta?.totalPage as number}
+                  totalPage={totalPage}
                 />
               </div>
             )}
@@ -77,6 +83,11 @@ const CoursesPage = () => {
                   {courses?.map((course: ICourse) => (
                     <CourseCard key={course._id} course={course} />
                   ))}
+                  {totalPage === activePage &&
+                    currentUser &&
+                    currentUser.role === ENUM_USER_ROLES.ADMIN && (
+                      <AdminCreateCourseCard />
+                    )}
                 </Row>
               </div>
             )}

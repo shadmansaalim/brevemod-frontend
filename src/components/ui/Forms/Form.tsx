@@ -6,6 +6,7 @@ import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 type FormConfig = {
   defaultValues?: Record<string, any>;
   resolver?: any;
+  resetOptions?: any;
 };
 
 type FormProps = {
@@ -19,7 +20,12 @@ const Form = ({
   defaultValues,
   resolver,
 }: FormProps) => {
-  const formConfig: FormConfig = {};
+  const formConfig: FormConfig = {
+    resetOptions: {
+      keepDirtyValues: true, // user-interacted input will be retained
+      keepErrors: true, // input errors will be retained with value update
+    },
+  };
 
   if (!!defaultValues) formConfig["defaultValues"] = defaultValues;
 

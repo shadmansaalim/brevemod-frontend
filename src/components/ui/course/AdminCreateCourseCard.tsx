@@ -1,11 +1,16 @@
 // Imports
-import { Card, Col, Button, Modal, Form, FloatingLabel } from "react-bootstrap";
+import { Card, Col, Button, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { ICourse, ResponseSuccessType } from "@/types";
 import { useCreateCourseMutation } from "@/redux/api/courseApi";
 import swal from "sweetalert";
+import Form from "@/components/ui/Forms/Form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import FormInput from "@/components/ui/Forms/FormInput";
+import { SubmitHandler } from "react-hook-form";
+import { CourseSchema } from "@/schemas/course";
 
 const AdminCreateCourseCard = () => {
   const [modalShow, setModalShow] = useState<boolean>(false);
@@ -14,26 +19,20 @@ const AdminCreateCourseCard = () => {
   const [createCourse] = useCreateCourseMutation();
 
   // States
-  const [courseData, setCourseData] = useState<ICourse | null>(null);
   const [courseCreating, setCourseCreating] = useState<boolean>(false);
 
-  const handleOnChange = (e: any) => {
-    const field = e.target.name as keyof ICourse;
-    let value: string | number | undefined = e.target.value;
+  const handleCreateCourse: SubmitHandler<ICourse> = async (
+    courseData: ICourse
+  ) => {
+    // Modifying text input data to number
+    courseData.price = parseFloat(courseData.price as unknown as string);
+    courseData.projectsCount = parseInt(
+      courseData.projectsCount as unknown as string
+    );
+    courseData.lecturesCount = parseInt(
+      courseData.lecturesCount as unknown as string
+    );
 
-    if (field === "price") {
-      value = e.target.value !== "" ? parseFloat(e.target.value) : undefined;
-    }
-
-    if (field === "lecturesCount" || field === "projectsCount") {
-      value = e.target.value !== "" ? parseInt(e.target.value) : undefined;
-    }
-    const newCourseData = { ...courseData, [field]: value };
-    setCourseData(newCourseData as ICourse);
-  };
-
-  const handleCreateCourse = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
     setCourseCreating(true);
     try {
       const res: ResponseSuccessType = await createCourse({
@@ -42,7 +41,6 @@ const AdminCreateCourseCard = () => {
       if (res?.success) {
         swal(res.message, "", "success");
         setCourseCreating(false);
-        setCourseData(null);
         setModalShow(false);
       }
     } catch (err: any) {
@@ -78,111 +76,74 @@ const AdminCreateCourseCard = () => {
                 <Modal.Title>New Course</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <Form onSubmit={handleCreateCourse}>
-                  <FloatingLabel
-                    controlId="title"
-                    label="Course Title"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      required
+                <Form
+                  submitHandler={handleCreateCourse}
+                  resolver={zodResolver(CourseSchema.createAndUpdate)}
+                >
+                  <div className="mb-3">
+                    <FormInput
                       name="title"
                       type="text"
-                      onChange={handleOnChange}
-                      placeholder="Course Title"
-                    />
-                  </FloatingLabel>
-                  <FloatingLabel
-                    controlId="description"
-                    label="Course Description"
-                    className="mb-3"
-                  >
-                    <Form.Control
+                      label="Course Title"
                       required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <FormInput
                       name="description"
                       type="text"
-                      onChange={handleOnChange}
-                      placeholder="Course Description"
-                    />
-                  </FloatingLabel>
-                  <FloatingLabel
-                    controlId="instructorName"
-                    label="Instructor Name"
-                    className="mb-3"
-                  >
-                    <Form.Control
+                      label="Course Description"
                       required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <FormInput
                       name="instructorName"
                       type="text"
-                      onChange={handleOnChange}
-                      placeholder="Instructor Name"
-                    />
-                  </FloatingLabel>
-                  <FloatingLabel
-                    controlId="price"
-                    label="Course Price"
-                    className="mb-3"
-                  >
-                    <Form.Control
+                      label="Instructor Name"
                       required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <FormInput
                       name="price"
                       type="text"
-                      onChange={handleOnChange}
-                      placeholder="Course Price"
-                    />
-                  </FloatingLabel>
-                  <FloatingLabel
-                    controlId="thumbnailLink"
-                    label="Thumbnail Link"
-                    className="mb-3"
-                  >
-                    <Form.Control
+                      label="Course Price"
                       required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <FormInput
                       name="thumbnailLink"
                       type="text"
-                      onChange={handleOnChange}
-                      placeholder="Thumbnail Link"
-                    />
-                  </FloatingLabel>
-                  <FloatingLabel
-                    controlId="introVideoLink"
-                    label="Intro Video Link"
-                    className="mb-3"
-                  >
-                    <Form.Control
+                      label="Thumbnail Link"
                       required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <FormInput
                       name="introVideoLink"
                       type="text"
-                      onChange={handleOnChange}
-                      placeholder="Intro Video Link"
-                    />
-                  </FloatingLabel>
-                  <FloatingLabel
-                    controlId="lecturesCount"
-                    label="Total Lectures"
-                    className="mb-3"
-                  >
-                    <Form.Control
+                      label="Intro Video Link"
                       required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <FormInput
                       name="lecturesCount"
                       type="text"
-                      onChange={handleOnChange}
-                      placeholder="Total Lectures"
-                    />
-                  </FloatingLabel>
-                  <FloatingLabel
-                    controlId="projectsCount"
-                    label="Total Projects"
-                    className="mb-3"
-                  >
-                    <Form.Control
+                      label="Total Lectures"
                       required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <FormInput
                       name="projectsCount"
                       type="text"
-                      onChange={handleOnChange}
-                      placeholder="Total Projects"
+                      label="Total Projects"
+                      required
                     />
-                  </FloatingLabel>
+                  </div>
                   {courseCreating ? (
                     <button className="btn btn-success w-100 mt-3" disabled>
                       <span

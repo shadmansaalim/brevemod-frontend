@@ -1,9 +1,14 @@
 // Imports
 import { useCreateModuleMutation } from "@/redux/api/courseModuleApi";
-import { ResponseSuccessType } from "@/types";
-import { Modal, Form, FloatingLabel } from "react-bootstrap";
+import { ICourseModule, ResponseSuccessType } from "@/types";
+import { Modal } from "react-bootstrap";
 import { useState } from "react";
 import swal from "sweetalert";
+import Form from "@/components/ui/Forms/Form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import FormInput from "@/components/ui/Forms/FormInput";
+import { SubmitHandler } from "react-hook-form";
+import { CourseModelSchema } from "@/schemas/courseModel";
 
 type IAddModuleModalProps = {
   courseId: string;
@@ -19,14 +24,14 @@ const AddModuleModal = ({
   // Create Module hook
   const [createModule] = useCreateModuleMutation();
   // States
-  const [moduleName, setModuleName] = useState<string>("");
   const [moduleCreating, setModuleCreating] = useState<boolean>(false);
 
-  const handleCreateModule = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleCreateModule: SubmitHandler<ICourseModule> = async (
+    moduleData: ICourseModule
+  ) => {
     setModuleCreating(true);
     try {
-      const moduleCreateData = { courseId, moduleName };
+      const moduleCreateData = { courseId, moduleName: moduleData.moduleName };
       const res: ResponseSuccessType = await createModule({
         ...moduleCreateData,
       }).unwrap();
@@ -34,7 +39,6 @@ const AddModuleModal = ({
       if (res?.success) {
         swal(res.message, "", "success");
         setModuleCreating(false);
-        setModuleName("");
         setModalShow(false);
       }
     } catch (err: any) {
@@ -50,19 +54,19 @@ const AddModuleModal = ({
           <Modal.Title>Create New Module</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleCreateModule}>
-            <FloatingLabel
-              controlId="moduleName"
-              label="Name of module"
-              className="mb-3"
-            >
-              <Form.Control
-                required
+          <Form
+            submitHandler={handleCreateModule}
+            resolver={zodResolver(CourseModelSchema.createAndUpdate)}
+          >
+            <div className="mb-3">
+              <FormInput
                 name="moduleName"
                 type="text"
-                onChange={(e) => setModuleName(e.target.value)}
+                label="Name of module"
+                required
+                placeholder="Introduction to Node.js"
               />
-            </FloatingLabel>
+            </div>
 
             {moduleCreating ? (
               <button className="btn btn-success w-100 mt-3" disabled>

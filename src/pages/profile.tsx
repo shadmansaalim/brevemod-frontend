@@ -35,7 +35,7 @@ const ProfilePage = () => {
   // States
   const [editable, setEditable] = useState(false);
   const [updating, setUpdating] = useState(false);
-  const defaultData = {
+  const defaultValues = {
     firstName: currentUser?.firstName || "",
     middleName: currentUser?.middleName || "",
     lastName: currentUser?.lastName || "",
@@ -46,7 +46,7 @@ const ProfilePage = () => {
   ) => {
     setUpdating(true);
 
-    if (isObjectFieldValuesEqual(profileData, defaultData)) {
+    if (isObjectFieldValuesEqual(profileData, defaultValues)) {
       swal(
         "Nothing to update",
         "You didn't make any changes in your profile.",
@@ -96,7 +96,7 @@ const ProfilePage = () => {
             <Form
               submitHandler={handleUpdateUserProfile}
               resolver={zodResolver(UserSchema.profileUpdate)}
-              defaultValues={defaultData}
+              defaultValues={defaultValues}
             >
               <div className="mt-3 text-start">
                 <div className="mb-4">

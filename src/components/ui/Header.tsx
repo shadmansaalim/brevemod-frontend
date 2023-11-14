@@ -31,6 +31,7 @@ import { useEffect } from "react";
 import { setCart } from "@/redux/slices/cartSlice";
 import { ENUM_USER_ROLES } from "@/enums/user";
 import { ICart } from "@/types";
+import { setClientSecret } from "@/redux/slices/userSlice";
 
 const Header = () => {
   const { currentUser } = useAppSelector((state) => state.user);
@@ -61,8 +62,11 @@ const Header = () => {
 
   const logoutUser = () => {
     removeUserInfo(authKey);
+
+    // Resetting all state values
     dispatch(setCurrentUser(null));
     dispatch(setCart(null));
+    dispatch(setClientSecret(""));
     router.push("/");
   };
 

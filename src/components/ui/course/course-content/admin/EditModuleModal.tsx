@@ -1,12 +1,15 @@
 // Imports
-import {
-  useCreateModuleMutation,
-  useUpdateModuleMutation,
-} from "@/redux/api/courseModuleApi";
+import { useUpdateModuleMutation } from "@/redux/api/courseModuleApi";
 import { ICourseModule, ResponseSuccessType } from "@/types";
-import { Modal, Form, FloatingLabel } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { useState } from "react";
 import swal from "sweetalert";
+import Form from "@/components/ui/Forms/Form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import FormInput from "@/components/ui/Forms/FormInput";
+import { SubmitHandler } from "react-hook-form";
+import { CourseModelSchema } from "@/schemas/courseModel";
+import { isObjectFieldValuesEqual } from "@/utils/common";
 
 type IEditModuleModalProps = {
   module: ICourseModule;
@@ -24,32 +27,43 @@ const EditModuleModal = ({
   // Create Module hook
   const [updateModule] = useUpdateModuleMutation();
   // States
-  const [moduleName, setModuleName] = useState<string>(
-    module?.moduleName || ""
-  );
   const [moduleUpdating, setModuleUpdating] = useState<boolean>(false);
 
-  const handleCreateModule = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setModuleUpdating(true);
-    try {
-      const payload = {
-        moduleName,
-        moduleId: module._id,
-      };
-      const res: ResponseSuccessType = await updateModule({
-        ...payload,
-      }).unwrap();
+  // Form default values
+  const defaultValues = {
+    moduleName: module?.moduleName || "",
+  };
 
-      if (res?.success) {
-        swal(res.message, "", "success");
-        setModuleUpdating(false);
-        setModuleName("");
-        setModalShow(false);
-      }
-    } catch (err: any) {
+  const handleUpdateModule: SubmitHandler<ICourseModule> = async (
+    moduleData: ICourseModule
+  ) => {
+    setModuleUpdating(true);
+    if (isObjectFieldValuesEqual(moduleData, defaultValues)) {
+      swal(
+        "Nothing to update",
+        "You didn't make any changes in your content.",
+        "warning"
+      );
       setModuleUpdating(false);
-      swal(err?.message, "", "error");
+    } else {
+      try {
+        const payload = {
+          moduleName: moduleData.moduleName,
+          moduleId: module._id,
+        };
+        const res: ResponseSuccessType = await updateModule({
+          ...payload,
+        }).unwrap();
+
+        if (res?.success) {
+          swal(res.message, "", "success");
+          setModuleUpdating(false);
+          setModalShow(false);
+        }
+      } catch (err: any) {
+        setModuleUpdating(false);
+        swal(err?.message, "", "error");
+      }
     }
   };
 
@@ -60,20 +74,19 @@ const EditModuleModal = ({
           <Modal.Title>Edit Module {module?.moduleNumber}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleCreateModule}>
-            <FloatingLabel
-              controlId="moduleName"
-              label="Name of module"
-              className="mb-3"
-            >
-              <Form.Control
-                required
+          <Form
+            submitHandler={handleUpdateModule}
+            resolver={zodResolver(CourseModelSchema.createAndUpdate)}
+            defaultValues={defaultValues}
+          >
+            <div className="mb-3">
+              <FormInput
                 name="moduleName"
                 type="text"
-                onChange={(e) => setModuleName(e.target.value)}
-                defaultValue={module?.moduleName}
+                label="Name of module"
+                required
               />
-            </FloatingLabel>
+            </div>
 
             {moduleUpdating ? (
               <button className="btn btn-success w-100 mt-3" disabled>
@@ -85,11 +98,7 @@ const EditModuleModal = ({
                 Updating...
               </button>
             ) : (
-              <button
-                disabled={moduleName === module?.moduleName}
-                className="btn btn-success mt-3 w-100"
-                type="submit"
-              >
+              <button className="btn btn-success mt-3 w-100" type="submit">
                 Update Module
               </button>
             )}

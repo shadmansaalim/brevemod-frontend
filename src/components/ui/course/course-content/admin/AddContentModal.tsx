@@ -1,9 +1,16 @@
 // Imports
 import { IModuleContent, ResponseSuccessType } from "@/types";
-import { Modal, Form, FloatingLabel } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { useState } from "react";
 import swal from "sweetalert";
 import { useAddContentToModuleMutation } from "@/redux/api/courseModuleApi";
+import Form from "@/components/ui/Forms/Form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import FormInput from "@/components/ui/Forms/FormInput";
+import { SubmitHandler } from "react-hook-form";
+import { CourseContentSchema } from "@/schemas/courseContent";
+import FormSelectField from "@/components/ui/Forms/FormSelectField";
+import { contentTypesOptions } from "@/constants/common";
 
 type IAddContentModalProps = {
   moduleId: string;
@@ -20,22 +27,16 @@ const AddContentModal = ({
   const [addContent] = useAddContentToModuleMutation();
 
   // States
-  const [contentData, setContentData] = useState<IModuleContent | null>(null);
   const [contentUploading, setContentUploading] = useState<boolean>(false);
 
-  const handleOnChange = (e: any) => {
-    const field = e.target.name as keyof IModuleContent;
-    let value: string | number | undefined = e.target.value;
-
-    if (field === "duration") {
-      value = e.target.value !== "" ? parseInt(e.target.value) : undefined;
+  const handleAddContent: SubmitHandler<IModuleContent> = async (
+    contentData: IModuleContent
+  ) => {
+    if (contentData?.duration) {
+      contentData.duration = parseInt(
+        contentData.duration as unknown as string
+      );
     }
-    const newContentData = { ...contentData, [field]: value };
-    setContentData(newContentData as IModuleContent);
-  };
-
-  const handleAddContent = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
     setContentUploading(true);
     try {
       const payload = {
@@ -46,7 +47,6 @@ const AddContentModal = ({
       if (res?.success) {
         swal(res.message, "", "success");
         setContentUploading(false);
-        setContentData(null);
         setModalShow(false);
       }
     } catch (err: any) {
@@ -62,64 +62,39 @@ const AddContentModal = ({
           <Modal.Title>Add New Content</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleAddContent}>
-            <FloatingLabel
-              controlId="title"
-              label="Content Title"
-              className="mb-3"
-            >
-              <Form.Control
-                required
+          <Form
+            submitHandler={handleAddContent}
+            resolver={zodResolver(CourseContentSchema.createAndUpdate)}
+          >
+            <div className="mb-3">
+              <FormInput
                 name="title"
                 type="text"
-                onChange={handleOnChange}
-                placeholder="Content Title"
+                label="Content Title"
+                required
               />
-            </FloatingLabel>
-            <FloatingLabel
-              controlId="type"
-              label="Content Type"
-              className="mb-3"
-            >
-              <Form.Select
+            </div>
+
+            <div className="mb-3">
+              <FormSelectField
                 name="type"
-                onChange={handleOnChange}
+                label="Select content type"
                 required
-                defaultValue=""
-              >
-                <option value="" disabled>
-                  Select content type
-                </option>
-                <option value="video">Video</option>
-                <option value="quiz">Quiz</option>
-              </Form.Select>
-            </FloatingLabel>
-            <FloatingLabel
-              controlId="link"
-              label="Content Link"
-              className="mb-3"
-            >
-              <Form.Control
-                required
+                options={contentTypesOptions}
+              />
+            </div>
+            <div className="mb-3">
+              <FormInput
                 name="link"
                 type="text"
-                onChange={handleOnChange}
-                placeholder="Content Link"
-              />
-            </FloatingLabel>
-            <FloatingLabel
-              controlId="duration"
-              label="Content Duration"
-              className="mb-3"
-            >
-              <Form.Control
+                label="Content Link"
                 required
-                name="duration"
-                type="number"
-                onChange={handleOnChange}
-                placeholder="Content Duration"
               />
-            </FloatingLabel>
+            </div>
+            <div className="mb-3">
+              <FormInput name="duration" type="text" label="Content Duration" />
+            </div>
+
             {contentUploading ? (
               <button className="btn btn-success w-100 mt-3" disabled>
                 <span

@@ -1,10 +1,17 @@
 // Imports
 import { IModuleContent, ResponseSuccessType } from "@/types";
-import { Modal, Form, FloatingLabel } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { useState } from "react";
 import swal from "sweetalert";
 import { useUpdateContentInModuleMutation } from "@/redux/api/courseModuleApi";
 import { isObjectFieldValuesEqual } from "@/utils/common";
+import Form from "@/components/ui/Forms/Form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import FormInput from "@/components/ui/Forms/FormInput";
+import { SubmitHandler } from "react-hook-form";
+import { CourseContentSchema } from "@/schemas/courseContent";
+import FormSelectField from "@/components/ui/Forms/FormSelectField";
+import { contentTypesOptions } from "@/constants/common";
 
 type IEditContentModalProps = {
   content: IModuleContent;
@@ -23,48 +30,49 @@ const EditContentModal = ({
   const [updateContent] = useUpdateContentInModuleMutation();
 
   // States
-  const [contentData, setContentData] = useState<IModuleContent | null>({
-    ...content,
-  });
-  const [isChanged, setIsChanged] = useState<boolean>(false);
   const [contentUploading, setContentUploading] = useState<boolean>(false);
 
-  const handleOnChange = (e: any) => {
-    const field = e.target.name as keyof IModuleContent;
-    let value: string | number | undefined = e.target.value;
-
-    if (field === "duration") {
-      value = e.target.value !== "" ? parseInt(e.target.value) : undefined;
-    }
-    const newContentData = { ...contentData, [field]: value };
-    setContentData(newContentData as IModuleContent);
-
-    if (isObjectFieldValuesEqual(newContentData, content)) {
-      setIsChanged(false);
-    } else {
-      setIsChanged(true);
-    }
+  // Form default values
+  const defaultValues = {
+    title: content?.title || "",
+    type: content?.type,
+    link: content?.link || "",
+    duration: content?.duration?.toString() || "",
   };
 
-  const handleUpdateContent = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleUpdateContent: SubmitHandler<IModuleContent> = async (
+    contentData: IModuleContent
+  ) => {
     setContentUploading(true);
-    try {
-      const payload = {
-        moduleId,
-        contentId: content._id,
-        contentData,
-      };
-      const res: ResponseSuccessType = await updateContent(payload).unwrap();
-      if (res?.success) {
-        swal(res.message, "", "success");
-        setContentUploading(false);
-        setContentData(null);
-        setModalShow(false);
-      }
-    } catch (err: any) {
+    if (isObjectFieldValuesEqual(contentData, defaultValues)) {
+      swal(
+        "Nothing to update",
+        "You didn't make any changes in your content.",
+        "warning"
+      );
       setContentUploading(false);
-      swal(err?.message, "", "error");
+    } else {
+      if (contentData?.duration) {
+        contentData.duration = parseInt(
+          contentData.duration as unknown as string
+        );
+      }
+      try {
+        const payload = {
+          moduleId,
+          contentId: content._id,
+          contentData,
+        };
+        const res: ResponseSuccessType = await updateContent(payload).unwrap();
+        if (res?.success) {
+          swal(res.message, "", "success");
+          setContentUploading(false);
+          setModalShow(false);
+        }
+      } catch (err: any) {
+        setContentUploading(false);
+        swal(err?.message, "", "error");
+      }
     }
   };
 
@@ -75,66 +83,40 @@ const EditContentModal = ({
           <Modal.Title>Edit Content</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleUpdateContent}>
-            <FloatingLabel
-              controlId="title"
-              label="Content Title"
-              className="mb-3"
-            >
-              <Form.Control
-                required
+          <Form
+            submitHandler={handleUpdateContent}
+            resolver={zodResolver(CourseContentSchema.createAndUpdate)}
+            defaultValues={defaultValues}
+          >
+            <div className="mb-3">
+              <FormInput
                 name="title"
                 type="text"
-                onChange={handleOnChange}
-                placeholder="Content Title"
-                defaultValue={content?.title}
-              />
-            </FloatingLabel>
-            <FloatingLabel
-              controlId="type"
-              label="Content Type"
-              className="mb-3"
-            >
-              <Form.Select name="type" onChange={handleOnChange} required>
-                <option value="" disabled>
-                  Select content type
-                </option>
-                <option value="video" selected={content?.type === "video"}>
-                  Video
-                </option>
-                <option value="quiz" selected={content?.type === "quiz"}>
-                  Quiz
-                </option>
-              </Form.Select>
-            </FloatingLabel>
-            <FloatingLabel
-              controlId="link"
-              label="Content Link"
-              className="mb-3"
-            >
-              <Form.Control
+                label="Content Title"
                 required
+              />
+            </div>
+
+            <div className="mb-3">
+              <FormSelectField
+                name="type"
+                label="Select content type"
+                required
+                options={contentTypesOptions}
+              />
+            </div>
+            <div className="mb-3">
+              <FormInput
                 name="link"
                 type="text"
-                onChange={handleOnChange}
-                placeholder="Content Link"
-                defaultValue={content?.link}
-              />
-            </FloatingLabel>
-            <FloatingLabel
-              controlId="duration"
-              label="Content Duration"
-              className="mb-3"
-            >
-              <Form.Control
+                label="Content Link"
                 required
-                name="duration"
-                type="number"
-                onChange={handleOnChange}
-                placeholder="Content Duration"
-                defaultValue={content?.duration}
               />
-            </FloatingLabel>
+            </div>
+            <div className="mb-3">
+              <FormInput name="duration" type="text" label="Content Duration" />
+            </div>
+
             {contentUploading ? (
               <button className="btn btn-success w-100 mt-3" disabled>
                 <span
@@ -145,11 +127,7 @@ const EditContentModal = ({
                 Uploading...
               </button>
             ) : (
-              <button
-                disabled={isChanged ? false : true}
-                className="btn btn-success mt-3 w-100"
-                type="submit"
-              >
+              <button className="btn btn-success mt-3 w-100" type="submit">
                 Update Content
               </button>
             )}

@@ -12,6 +12,8 @@ import AuthLayout from "@/components/Layouts/AuthLayout";
 import { useUpdateUserProfileMutation } from "@/redux/api/profileApi";
 import { ResponseSuccessType } from "@/types";
 import { setCurrentUser } from "@/redux/slices/userSlice";
+import styles from "../styles/profilePage.module.css";
+import { isObjectFieldValuesEqual } from "@/utils/common";
 
 type IUserProfileData = {
   firstName: string;
@@ -25,6 +27,7 @@ const ProfilePage = () => {
 
   const [updateUserProfile] = useUpdateUserProfileMutation();
 
+  // States
   const [editable, setEditable] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [profileData, setProfileData] = useState<IUserProfileData>({
@@ -32,26 +35,22 @@ const ProfilePage = () => {
     middleName: currentUser?.middleName || "",
     lastName: currentUser?.lastName || "",
   });
-  const [errors, setErrors] = useState<IUserProfileData>({
-    firstName: "",
-    middleName: "",
-    lastName: "",
-  });
+
+  const [isChanged, setIsChanged] = useState<boolean>(false);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newErrors = { ...errors };
     const field = e.target.name as keyof IUserProfileData;
     const value = e.target.value;
 
-    if (value.length < 4 && field !== "middleName") {
-      newErrors[field] = "Name should contain at least 4 characters";
+    const newProfileData = { ...profileData };
+    newProfileData[field] = value;
+    setProfileData(newProfileData);
+
+    if (isObjectFieldValuesEqual(newProfileData, profileData)) {
+      setIsChanged(false);
     } else {
-      const newProfileData = { ...profileData };
-      newProfileData[field] = value;
-      setProfileData(newProfileData);
-      newErrors[field] = "";
+      setIsChanged(true);
     }
-    setErrors(newErrors);
   };
 
   const handleUpdateUserProfile = async () => {
@@ -69,6 +68,7 @@ const ProfilePage = () => {
           lastName: res?.data?.lastName || "",
         });
         swal(res?.message, "", "success");
+        setEditable(false);
       }
 
       setUpdating(false);
@@ -81,7 +81,7 @@ const ProfilePage = () => {
   return (
     <div className="my-5">
       <Container className="d-flex justify-content-center">
-        <div className="mx-auto col-12 col-lg-9 profile-wrapper">
+        <div className={`mx-auto col-12 col-lg-9 ${styles.profileWrapper}`}>
           <div className="text-center">
             <Image
               src="/ProfileIcon.png"
@@ -106,17 +106,14 @@ const ProfilePage = () => {
                     name="firstName"
                     onChange={handleOnChange}
                     type="text"
-                    className="rounded-3 w-100"
+                    className={`rounded-3 w-100 ${styles.profileInput}`}
                     defaultValue={currentUser?.firstName}
                   />
-                  {errors.firstName.length > 0 && (
-                    <div className="mt-1">
-                      <small className="text-danger">{errors.firstName}</small>
-                    </div>
-                  )}
                 </div>
               ) : (
-                <span className="p-2 rounded-3 w-100 user-details d-flex align-items-center">
+                <span
+                  className={`p-2 rounded-3 w-100 d-flex align-items-center ${styles.profileData}`}
+                >
                   {currentUser?.firstName}
                 </span>
               )}
@@ -129,17 +126,14 @@ const ProfilePage = () => {
                     name="middleName"
                     onChange={handleOnChange}
                     type="text"
-                    className="rounded-3 w-100"
+                    className={`rounded-3 w-100 ${styles.profileInput}`}
                     defaultValue={currentUser?.middleName}
                   />
-                  {errors.middleName.length > 0 && (
-                    <div className="mt-1">
-                      <small className="text-danger">{errors.middleName}</small>
-                    </div>
-                  )}
                 </div>
               ) : (
-                <span className="p-2 rounded-3 w-100 user-details d-flex align-items-center">
+                <span
+                  className={`p-2 rounded-3 w-100 d-flex align-items-center ${styles.profileData}`}
+                >
                   {currentUser?.middleName}
                 </span>
               )}
@@ -152,17 +146,14 @@ const ProfilePage = () => {
                     name="lastName"
                     onChange={handleOnChange}
                     type="text"
-                    className="w-100 rounded-3"
+                    className={`rounded-3 w-100 ${styles.profileInput}`}
                     defaultValue={currentUser?.lastName}
                   />
-                  {errors.lastName.length > 0 && (
-                    <div className="mt-1">
-                      <small className="text-danger">{errors.lastName}</small>
-                    </div>
-                  )}
                 </div>
               ) : (
-                <span className="rounded-3 w-100 user-details d-flex align-items-center">
+                <span
+                  className={`p-2 rounded-3 w-100 d-flex align-items-center ${styles.profileData}`}
+                >
                   {currentUser?.lastName}
                 </span>
               )}
@@ -182,13 +173,7 @@ const ProfilePage = () => {
                   ) : (
                     <button
                       onClick={handleUpdateUserProfile}
-                      disabled={
-                        errors.firstName.length > 0 ||
-                        errors.middleName.length > 0 ||
-                        errors.lastName.length > 0
-                          ? true
-                          : false
-                      }
+                      disabled={isChanged ? false : true}
                       className="btn btn-success me-md-3 w-100"
                     >
                       Save Changes <FontAwesomeIcon icon={faEdit} />

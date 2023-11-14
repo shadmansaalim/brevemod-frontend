@@ -5,9 +5,18 @@ import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
 import { useState } from "react";
 import { useUserSignUpMutation } from "@/redux/api/authApi";
-import { ISignUpUser, ResponseSuccessType } from "@/types";
+import { ResponseSuccessType } from "@/types";
 import { useRouter } from "next/router";
 import swal from "sweetalert";
+
+type ISignUpUser = {
+  firstName: string;
+  middleName?: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role?: string;
+};
 
 const SignUpPage = () => {
   const [signUpData, setSignUpData] = useState<ISignUpUser | null>(null);

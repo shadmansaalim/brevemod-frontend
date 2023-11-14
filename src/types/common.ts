@@ -27,20 +27,6 @@ export type IGenericErrorResponse = {
   errorMessages: IGenericErrorMessage[];
 };
 
-export type ISignUpUser = {
-  firstName: string;
-  middleName?: string;
-  lastName: string;
-  email: string;
-  password: string;
-  role?: string;
-};
-
-export type ILoginUser = {
-  email: string;
-  password: string;
-};
-
 export type IUserDecodedTokenData = {
   id: string;
   role: string;
@@ -90,24 +76,6 @@ export type IUser = {
   updatedAt?: string;
   passwordChangedAt: string;
   __v?: number;
-};
-
-export type IUserUpdateData = {
-  firstName: string;
-  middleName?: string;
-  lastName: string;
-  role: string;
-};
-
-export type ICourseAddUpdateData = {
-  title: string;
-  description: string;
-  instructorName: string;
-  price: number;
-  thumbnailLink: string;
-  introVideoLink: string;
-  lecturesCount: number;
-  projectsCount: number;
 };
 
 export type IModuleContent = {

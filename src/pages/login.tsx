@@ -8,13 +8,18 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { ILoginUser, ResponseSuccessType } from "@/types";
+import { ResponseSuccessType } from "@/types";
 import { useUserLoginMutation } from "@/redux/api/authApi";
 import { storeUserInfo } from "@/services/auth.service";
 import { useRouter } from "next/router";
 import swal from "sweetalert";
 import { useAppDispatch } from "@/redux/hooks";
 import { setCurrentUser } from "@/redux/slices/userSlice";
+
+type ILoginUser = {
+  email: string;
+  password: string;
+};
 
 const LoginPage = () => {
   const [loginData, setLoginData] = useState<ILoginUser | null>(null);

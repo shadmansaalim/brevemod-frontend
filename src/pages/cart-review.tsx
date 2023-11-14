@@ -45,7 +45,7 @@ const CartReviewPage = () => {
     <div className="container my-5">
       {cart && cart.courses.length ? (
         <div className="row g-5 mt-3">
-          <div className="col-md-7 col-lg-8">
+          <div className="col-lg-8">
             <p className="text-center bg-dark text-white p-2 rounded-3">
               You added the following courses
               <FontAwesomeIcon className="mx-1" icon={faShoppingBag} />
@@ -55,7 +55,7 @@ const CartReviewPage = () => {
             ))}
           </div>
 
-          <div className="col-md-5 col-lg-4 order-md-last">
+          <div className="col-lg-4 order-md-last">
             <h4 className="d-flex justify-content-between align-items-center mb-3">
               <span className="text-dark">Your cart</span>
               <span className="badge bg-dark rounded-pill">
@@ -119,7 +119,7 @@ export default CartReviewPage;
 
 CartReviewPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayout>
+    <AuthLayout onlyStudentAccess={true}>
       <RootLayout>{page}</RootLayout>
     </AuthLayout>
   );

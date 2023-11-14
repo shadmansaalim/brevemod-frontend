@@ -70,7 +70,7 @@ const CartReviewItem = ({ id }: { id: string }) => {
             </p>
             <a
               href="#"
-              className="btn btn-danger disabled placeholder col-3 mt-2"
+              className="btn btn-danger disabled placeholder col-8 col-md-3 mx-auto mt-2"
             ></a>
           </div>
         </div>

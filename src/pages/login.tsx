@@ -7,7 +7,6 @@ import type { ReactElement } from "react";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
 import { ResponseSuccessType } from "@/types";
 import { useUserLoginMutation } from "@/redux/api/authApi";
 import { storeUserInfo } from "@/services/auth.service";
@@ -15,6 +14,11 @@ import { useRouter } from "next/router";
 import swal from "sweetalert";
 import { useAppDispatch } from "@/redux/hooks";
 import { setCurrentUser } from "@/redux/slices/userSlice";
+import { SubmitHandler } from "react-hook-form";
+import Form from "@/components/ui/Forms/Form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { UserSchema } from "@/schemas/user";
+import FormInput from "@/components/ui/Forms/FormInput";
 
 type ILoginUser = {
   email: string;
@@ -22,22 +26,14 @@ type ILoginUser = {
 };
 
 const LoginPage = () => {
-  const [loginData, setLoginData] = useState<ILoginUser | null>(null);
   const [userLogin] = useUserLoginMutation();
-
-  const handleOnBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const field = e.target.name as keyof ILoginUser;
-    const value = e.target.value;
-    const newLoginData = { ...loginData };
-    newLoginData[field] = value;
-    setLoginData(newLoginData as ILoginUser);
-  };
 
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleLoginSubmit: SubmitHandler<ILoginUser> = async (
+    loginData: ILoginUser
+  ) => {
     try {
       const res: ResponseSuccessType = await userLogin({
         ...loginData,
@@ -66,32 +62,28 @@ const LoginPage = () => {
             <img src="/Login.svg" className="img-fluid" alt="Login Image" />
           </div>
           <div className="col-md-8 col-lg-5 col-xl-4 offset-xl-1 shadow-lg p-5 rounded-3 mx-auto">
-            <form onSubmit={handleLoginSubmit}>
-              <div className="form-floating mb-3">
-                <input
-                  onBlur={handleOnBlur}
+            <Form
+              submitHandler={handleLoginSubmit}
+              resolver={zodResolver(UserSchema.login)}
+            >
+              <div className="mb-3">
+                <FormInput
                   name="email"
                   type="email"
-                  className="form-control"
-                  id="floatingLoginEmail"
-                  placeholder="name@example.com"
+                  label="Email Address"
+                  placeholder="email321@example.com"
                   required
                 />
-                <label htmlFor="floatingLoginEmail">Email address</label>
               </div>
-              <div className="form-floating mb-4">
-                <input
-                  onBlur={handleOnBlur}
+              <div className="mb-4">
+                <FormInput
                   name="password"
                   type="password"
-                  className="form-control"
-                  id="floatingLoginPassword"
-                  placeholder="Password"
+                  label="Password"
+                  placeholder="nxid392@!7"
                   required
                 />
-                <label htmlFor="floatingLoginPassword">Password</label>
               </div>
-
               <div className="text-center text-lg-start mt-4 pt-2">
                 <Button className="w-100" type="submit" variant="success">
                   Login <FontAwesomeIcon icon={faSignInAlt} />
@@ -103,7 +95,7 @@ const LoginPage = () => {
                   </Link>
                 </p>
               </div>
-            </form>
+            </Form>
           </div>
         </div>
       </div>

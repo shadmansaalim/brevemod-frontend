@@ -14,6 +14,11 @@ import { ResponseSuccessType } from "@/types";
 import { setCurrentUser } from "@/redux/slices/userSlice";
 import styles from "../styles/profilePage.module.css";
 import { isObjectFieldValuesEqual } from "@/utils/common";
+import Form from "@/components/ui/Forms/Form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { UserSchema } from "@/schemas/user";
+import FormInput from "@/components/ui/Forms/FormInput";
+import { SubmitHandler } from "react-hook-form";
 
 type IUserProfileData = {
   firstName: string;
@@ -30,51 +35,41 @@ const ProfilePage = () => {
   // States
   const [editable, setEditable] = useState(false);
   const [updating, setUpdating] = useState(false);
-  const [profileData, setProfileData] = useState<IUserProfileData>({
+  const defaultData = {
     firstName: currentUser?.firstName || "",
     middleName: currentUser?.middleName || "",
     lastName: currentUser?.lastName || "",
-  });
-
-  const [isChanged, setIsChanged] = useState<boolean>(false);
-
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const field = e.target.name as keyof IUserProfileData;
-    const value = e.target.value;
-
-    const newProfileData = { ...profileData };
-    newProfileData[field] = value;
-    setProfileData(newProfileData);
-
-    if (isObjectFieldValuesEqual(newProfileData, profileData)) {
-      setIsChanged(false);
-    } else {
-      setIsChanged(true);
-    }
   };
 
-  const handleUpdateUserProfile = async () => {
+  const handleUpdateUserProfile: SubmitHandler<IUserProfileData> = async (
+    profileData: IUserProfileData
+  ) => {
     setUpdating(true);
-    try {
-      const res: ResponseSuccessType = await updateUserProfile({
-        ...profileData,
-      }).unwrap();
 
-      if (res?.success) {
-        dispatch(setCurrentUser(res?.data));
-        setProfileData({
-          firstName: res?.data?.firstName || "",
-          middleName: res?.data?.middleName || "",
-          lastName: res?.data?.lastName || "",
-        });
-        swal(res?.message, "", "success");
-        setEditable(false);
+    if (isObjectFieldValuesEqual(profileData, defaultData)) {
+      swal(
+        "Nothing to update",
+        "You didn't make any changes in your profile.",
+        "warning"
+      );
+      setUpdating(false);
+    } else {
+      try {
+        const res: ResponseSuccessType = await updateUserProfile({
+          ...profileData,
+        }).unwrap();
+
+        if (res?.success) {
+          dispatch(setCurrentUser(res?.data));
+          swal(res?.message, "", "success");
+          setEditable(false);
+        }
+
+        setUpdating(false);
+      } catch (err: any) {
+        swal(err?.data?.message || err?.message, "", "error");
+        setUpdating(false);
       }
-
-      setUpdating(false);
-    } catch (err: any) {
-      swal(err?.data?.message || err?.message, "", "error");
-      setUpdating(false);
     }
   };
 
@@ -97,72 +92,39 @@ const ProfilePage = () => {
             <span>{currentUser?.email}</span>
             <hr />
           </div>
-          <div className="mt-3 text-start">
-            <div className="mb-4">
-              <div className="mb-2">First Name</div>
-              {editable ? (
-                <div>
-                  <input
+          {editable ? (
+            <Form
+              submitHandler={handleUpdateUserProfile}
+              resolver={zodResolver(UserSchema.profileUpdate)}
+              defaultValues={defaultData}
+            >
+              <div className="mt-3 text-start">
+                <div className="mb-4">
+                  <FormInput
                     name="firstName"
-                    onChange={handleOnChange}
                     type="text"
-                    className={`rounded-3 w-100 ${styles.profileInput}`}
-                    defaultValue={currentUser?.firstName}
+                    label="First Name"
+                    required
                   />
                 </div>
-              ) : (
-                <span
-                  className={`p-2 rounded-3 w-100 d-flex align-items-center ${styles.profileData}`}
-                >
-                  {currentUser?.firstName}
-                </span>
-              )}
-            </div>
-            <div className="mb-4">
-              <div className="mb-2">Middle Name</div>
-              {editable ? (
-                <div>
-                  <input
+                <div className="mb-4">
+                  <FormInput
                     name="middleName"
-                    onChange={handleOnChange}
                     type="text"
-                    className={`rounded-3 w-100 ${styles.profileInput}`}
-                    defaultValue={currentUser?.middleName}
+                    label="Middle Name"
                   />
                 </div>
-              ) : (
-                <span
-                  className={`p-2 rounded-3 w-100 d-flex align-items-center ${styles.profileData}`}
-                >
-                  {currentUser?.middleName}
-                </span>
-              )}
-            </div>
-            <div className="mb-4">
-              <div className="mb-2">LastName</div>
-              {editable ? (
-                <div>
-                  <input
+                <div className="mb-4">
+                  <FormInput
                     name="lastName"
-                    onChange={handleOnChange}
                     type="text"
-                    className={`rounded-3 w-100 ${styles.profileInput}`}
-                    defaultValue={currentUser?.lastName}
+                    label="Last Name"
+                    required
                   />
                 </div>
-              ) : (
-                <span
-                  className={`p-2 rounded-3 w-100 d-flex align-items-center ${styles.profileData}`}
-                >
-                  {currentUser?.lastName}
-                </span>
-              )}
-            </div>
-            <div className="d-flex flex-column flex-md-row align-items-center justify-content-center col-12 col-md-7 mx-auto">
-              {editable ? (
-                <>
+                <div className="d-flex flex-column flex-lg-row align-items-center justify-content-center">
                   {updating ? (
-                    <button className="btn btn-success me-md-3 w-100 disabled">
+                    <button className="btn btn-success w-100 disabled">
                       <span className="m-0">Loading</span>
                       <Spinner
                         className="m-0 ms-2"
@@ -171,25 +133,55 @@ const ProfilePage = () => {
                       />
                     </button>
                   ) : (
-                    <button
-                      onClick={handleUpdateUserProfile}
-                      disabled={isChanged ? false : true}
-                      className="btn btn-success me-md-3 w-100"
-                    >
+                    <button type="submit" className="btn btn-success w-100">
                       Save Changes <FontAwesomeIcon icon={faEdit} />
                     </button>
                   )}
-                </>
-              ) : (
+                  <button
+                    onClick={() => setEditable(false)}
+                    className="btn btn-secondary ms-lg-2 w-100"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </Form>
+          ) : (
+            <div className="mt-3 text-start">
+              <div className="mb-4">
+                <div className="mb-2">First Name</div>
+                <span
+                  className={`p-2 rounded-3 w-100 d-flex align-items-center ${styles.profileData}`}
+                >
+                  {currentUser?.firstName}
+                </span>
+              </div>
+              <div className="mb-4">
+                <div className="mb-2">Middle Name</div>
+                <span
+                  className={`p-2 rounded-3 w-100 d-flex align-items-center ${styles.profileData}`}
+                >
+                  {currentUser?.middleName}
+                </span>
+              </div>
+              <div className="mb-4">
+                <div className="mb-2">LastName</div>
+                <span
+                  className={`p-2 rounded-3 w-100 d-flex align-items-center ${styles.profileData}`}
+                >
+                  {currentUser?.lastName}
+                </span>
+              </div>
+              <div>
                 <button
                   className="btn btn-secondary me-md-3 w-100"
                   onClick={() => setEditable(true)}
                 >
-                  Edit Account <FontAwesomeIcon icon={faEdit} />
+                  Update Profile <FontAwesomeIcon icon={faEdit} />
                 </button>
-              )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </Container>
     </div>

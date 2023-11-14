@@ -3,11 +3,18 @@ import React from "react";
 import Link from "next/link";
 import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
-import { useState } from "react";
 import { useUserSignUpMutation } from "@/redux/api/authApi";
 import { ResponseSuccessType } from "@/types";
 import { useRouter } from "next/router";
 import swal from "sweetalert";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { UserSchema } from "@/schemas/user";
+import Form from "@/components/ui/Forms/Form";
+import FormInput from "@/components/ui/Forms/FormInput";
+import { Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { SubmitHandler } from "react-hook-form";
 
 type ISignUpUser = {
   firstName: string;
@@ -19,21 +26,13 @@ type ISignUpUser = {
 };
 
 const SignUpPage = () => {
-  const [signUpData, setSignUpData] = useState<ISignUpUser | null>(null);
   const [userSignUp] = useUserSignUpMutation();
 
   const router = useRouter();
 
-  const handleOnBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const field = e.target.name as keyof ISignUpUser;
-    const value = e.target.value;
-    const newSignUpData = { ...signUpData };
-    newSignUpData[field] = value;
-    setSignUpData(newSignUpData as ISignUpUser);
-  };
-
-  const handleSignUpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSignUpSubmit: SubmitHandler<ISignUpUser> = async (
+    signUpData: ISignUpUser
+  ) => {
     try {
       const res: ResponseSuccessType = await userSignUp({
         ...signUpData,
@@ -60,69 +59,60 @@ const SignUpPage = () => {
                     <p className="text-center fw-bold mb-4 mb-lg-5 mx-1 mx-md-4 mt-4 mt-lg-0">
                       Sign Up and Start Learning from Today!
                     </p>
-
-                    <form
-                      className="mx-1 mx-md-4"
-                      onSubmit={handleSignUpSubmit}
+                    <Form
+                      submitHandler={handleSignUpSubmit}
+                      resolver={zodResolver(UserSchema.signUp)}
                     >
-                      <div className="form-outline flex-fill mb-4">
-                        <input
-                          onBlur={handleOnBlur}
+                      <div className="mb-3">
+                        <FormInput
                           name="firstName"
                           type="text"
-                          className="form-control"
-                          placeholder="First Name"
+                          label="First Name"
                           required
                         />
                       </div>
-
-                      <div className="form-outline flex-fill mb-4">
-                        <input
-                          onBlur={handleOnBlur}
+                      <div className="mb-3">
+                        <FormInput
                           name="middleName"
                           type="text"
-                          className="form-control"
-                          placeholder="Middle Name"
+                          label="Middle Name"
                         />
                       </div>
 
-                      <div className="form-outline flex-fill mb-4">
-                        <input
-                          onBlur={handleOnBlur}
+                      <div className="mb-3">
+                        <FormInput
                           name="lastName"
                           type="text"
-                          className="form-control"
-                          placeholder="Last Name"
+                          label="Last Name"
                           required
                         />
                       </div>
 
-                      <div className="form-outline flex-fill mb-4">
-                        <input
-                          onBlur={handleOnBlur}
+                      <div className="mb-3">
+                        <FormInput
                           name="email"
                           type="email"
-                          className="form-control"
-                          placeholder="Email"
+                          label="Email Address"
                           required
                         />
                       </div>
-
-                      <div className="form-outline flex-fill mb-4">
-                        <input
-                          onBlur={handleOnBlur}
+                      <div className="mb-3">
+                        <FormInput
                           name="password"
                           type="password"
-                          className="form-control"
-                          placeholder="Password"
+                          label="Password"
                           required
                         />
                       </div>
 
                       <div className="d-flex justify-content-center mb-3 mb-lg-4">
-                        <button type="submit" className="btn btn-success w-100">
-                          Sign Up
-                        </button>
+                        <Button
+                          className="w-100"
+                          type="submit"
+                          variant="success"
+                        >
+                          Sign Up <FontAwesomeIcon icon={faUserPlus} />
+                        </Button>
                       </div>
 
                       <div className="text-center">
@@ -131,7 +121,7 @@ const SignUpPage = () => {
                           Login
                         </Link>
                       </div>
-                    </form>
+                    </Form>
                   </div>
                   <div className="col-md-10 col-lg-6 col-xl-6 d-flex align-items-center order-1 order-lg-2 mx-auto">
                     <img

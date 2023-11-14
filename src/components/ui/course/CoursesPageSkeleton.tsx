@@ -15,7 +15,7 @@ const CoursesPageSkeleton = () => {
         </div>
         <div className="d-flex">
           <nav aria-label="...">
-            <ul className="pagination m-0">
+            <ul className="pagination m-0 mt-4 mt-lg-0">
               {
                 <li className="page-item disabled">
                   <button

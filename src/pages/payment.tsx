@@ -4,7 +4,7 @@ import AuthLayout from "@/components/Layouts/AuthLayout";
 import type { ReactElement } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import PaymentCheckoutForm from "../components/ui/payment/PaymentCheckoutForm";
+import PaymentCheckoutForm from "@/components/ui/Forms/PaymentCheckoutForm";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string

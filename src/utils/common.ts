@@ -1,6 +1,7 @@
 // Imports
 import { ENUM_USER_ROLES } from "@/enums/user";
 import { IMeta } from "@/types";
+import { IUser } from "@/types";
 
 export const isObjectFieldValuesEqual = (obj1: any, obj2: any) => {
   const keys1 = Object.keys(obj1);
@@ -37,4 +38,18 @@ export const calcPaginationTotalPage = (
   const result = pageRequiredForData === totalPage ? totalPage + 1 : totalPage;
 
   return result;
+};
+
+export const getUserFullName = (user: IUser | null) => {
+  if (user === null) {
+    return "";
+  }
+
+  const { firstName, middleName, lastName } = user;
+
+  if (middleName && middleName.length > 0) {
+    return firstName + " " + middleName + " " + lastName;
+  }
+
+  return firstName + " " + lastName;
 };

@@ -8,14 +8,38 @@ import {
   faAngleDoubleRight,
 } from "@fortawesome/free-solid-svg-icons";
 import CartReviewItem from "@/components/ui/cart/CartReviewItem";
-
 import Cart from "../components/ui/cart/Cart";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import AuthLayout from "@/components/Layouts/AuthLayout";
+import { useCreatePaymentIntentMutation } from "@/redux/api/purchaseApi";
+import { setClientSecret } from "@/redux/slices/userSlice";
+import swal from "sweetalert";
+import { useState } from "react";
+
 const CartReviewPage = () => {
   const { cart } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
+
+  const [createPaymentIntent] = useCreatePaymentIntentMutation();
 
   const router = useRouter();
+
+  const [checkoutLoading, setCheckoutLoading] = useState<boolean>(false);
+
+  const handleCheckout = async () => {
+    setCheckoutLoading(true);
+    try {
+      const res = await createPaymentIntent({}).unwrap();
+      if (res?.success) {
+        dispatch(setClientSecret(res.data.clientSecret));
+        router.push("/payment");
+        setCheckoutLoading(false);
+      }
+    } catch (err: any) {
+      setCheckoutLoading(false);
+      swal("Something went wrong", "", "error");
+    }
+  };
 
   return (
     <div className="container my-5">
@@ -42,12 +66,20 @@ const CartReviewPage = () => {
             <Cart cart={cart} />
 
             <div className="card p-2">
-              <button
-                onClick={() => router.push("/payment")}
-                className="btn btn-success"
-              >
-                Checkout <FontAwesomeIcon icon={faAngleDoubleRight} />
-              </button>
+              {checkoutLoading ? (
+                <button className="btn btn-success" type="button" disabled>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Redirecting ...
+                </button>
+              ) : (
+                <button onClick={handleCheckout} className="btn btn-success">
+                  Checkout <FontAwesomeIcon icon={faAngleDoubleRight} />
+                </button>
+              )}
             </div>
           </div>
         </div>

@@ -74,8 +74,9 @@ const MyCourseCard = ({ course }: { course: ICourse }) => {
           <div className="card h-100">
             <img
               src={course.thumbnailLink}
-              className="card-img-top"
+              className="card-img-top img-fluid"
               alt="..."
+              style={{ height: "200px" }}
             />
             <div className="card-body course d-flex flex-column justify-content-around">
               <p className="card-title fw-bold">{course.title}</p>

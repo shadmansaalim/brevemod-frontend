@@ -11,7 +11,7 @@ export const convertToEmbedLink = (inputLink: string) => {
 
   // Check if the input link is a Google Form link
   const googleFormRegex =
-    /(?:https?:\/\/)?(?:www\.)?docs\.google\.com\/forms\/d\/([a-zA-Z0-9_-]+)\/?/;
+    /(?:https?:\/\/)?(?:www\.)?docs\.google\.com\/forms\/d\/e\/([a-zA-Z0-9_-]+)\/viewform/;
   const googleFormMatch = inputLink.match(googleFormRegex);
 
   // Handle YouTube video link

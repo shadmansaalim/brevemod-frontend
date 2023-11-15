@@ -11,16 +11,13 @@ import {
   faPlus,
   faMinus,
   faFileArrowUp,
-  faPencil,
   faFilePen,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
-import { ICourseModule, ResponseSuccessType } from "@/types";
+import { ICourseModule } from "@/types";
 import { useContext } from "react";
 import AdminCourseContentButton from "./AdminCourseContentButton";
 import AddContentModal from "./AddContentModal";
-import { useRemoveContentFromModuleMutation } from "@/redux/api/courseModuleApi";
-import swal from "sweetalert";
 import EditModuleModal from "./EditModuleModal";
 
 const AdminCourseModuleItem = ({
@@ -32,9 +29,6 @@ const AdminCourseModuleItem = ({
 }) => {
   // Router
   const router = useRouter();
-
-  // Remove content hook
-  const [removeContent] = useRemoveContentFromModuleMutation();
 
   //States
   const [addContentModalShow, setAddContentModalShow] =
@@ -51,31 +45,6 @@ const AdminCourseModuleItem = ({
     const routePattern = `/course-content/admin/${courseId}/[${module._id}]/[${contentId}]`;
     const routeUrl = `/course-content/admin/${courseId}/${module._id}/${contentId}`;
     router.push(routePattern, routeUrl);
-  };
-
-  const handleRemoveContent = (contentId: string, title: string) => {
-    swal({
-      title: "Are you sure ?",
-      text: `The content "${title}" from Module ${module.moduleNumber} will be removed permanently.`,
-      icon: "warning",
-      buttons: ["Cancel", "Ok"],
-      dangerMode: true,
-    }).then(async (willDelete) => {
-      if (willDelete) {
-        try {
-          const payload = { moduleId: module._id, contentId };
-          const res: ResponseSuccessType = await removeContent({
-            ...payload,
-          }).unwrap();
-          console.log(res);
-          if (res?.success) {
-            swal(res.message, "", "success");
-          }
-        } catch (err: any) {
-          swal(err?.message, "", "error");
-        }
-      }
-    });
   };
 
   return (
@@ -113,10 +82,9 @@ const AdminCourseModuleItem = ({
             <AdminCourseContentButton
               key={content._id}
               courseId={courseId}
-              moduleId={module._id}
+              module={module}
               content={content}
               handleContentClick={handleContentClick}
-              handleRemoveContent={handleRemoveContent}
             />
           ))}
           <button

@@ -12,6 +12,7 @@ import { SubmitHandler } from "react-hook-form";
 import { CourseSchema } from "@/schemas/course";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { isObjectFieldValuesEqual } from "@/utils/common";
+import { convertToEmbedLink } from "@/utils/course";
 
 const AdminEditCourseModal = ({ course }: { course: ICourse }) => {
   const [modalShow, setModalShow] = useState<boolean>(false);
@@ -45,6 +46,9 @@ const AdminEditCourseModal = ({ course }: { course: ICourse }) => {
       );
       setCourseUpdating(false);
     } else {
+      // Converting link to embedded if not
+      courseData.introVideoLink = convertToEmbedLink(courseData.introVideoLink);
+
       // Modifying text input data to number
       courseData.price = parseFloat(courseData.price as unknown as string);
       courseData.projectsCount = parseInt(

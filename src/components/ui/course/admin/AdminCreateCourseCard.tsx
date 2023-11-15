@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import FormInput from "@/components/ui/Forms/FormInput";
 import { SubmitHandler } from "react-hook-form";
 import { CourseSchema } from "@/schemas/course";
+import { convertToEmbedLink } from "@/utils/course";
 
 const AdminCreateCourseCard = () => {
   const [modalShow, setModalShow] = useState<boolean>(false);
@@ -24,6 +25,9 @@ const AdminCreateCourseCard = () => {
   const handleCreateCourse: SubmitHandler<ICourse> = async (
     courseData: ICourse
   ) => {
+    // Converting link to embedded if not
+    courseData.introVideoLink = convertToEmbedLink(courseData.introVideoLink);
+
     // Modifying text input data to number
     courseData.price = parseFloat(courseData.price as unknown as string);
     courseData.projectsCount = parseInt(

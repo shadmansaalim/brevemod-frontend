@@ -11,6 +11,7 @@ import { SubmitHandler } from "react-hook-form";
 import { CourseContentSchema } from "@/schemas/courseContent";
 import FormSelectField from "@/components/ui/Forms/FormSelectField";
 import { contentTypesOptions } from "@/constants/common";
+import { convertToEmbedLink } from "@/utils/course";
 
 type IAddContentModalProps = {
   moduleId: string;
@@ -32,6 +33,9 @@ const AddContentModal = ({
   const handleAddContent: SubmitHandler<IModuleContent> = async (
     contentData: IModuleContent
   ) => {
+    // Converting link to embedded if not
+    contentData.link = convertToEmbedLink(contentData.link);
+
     if (contentData?.duration) {
       contentData.duration = parseInt(
         contentData.duration as unknown as string

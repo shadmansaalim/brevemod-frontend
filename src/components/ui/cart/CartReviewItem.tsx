@@ -95,17 +95,23 @@ const CartReviewItem = ({ id }: { id: string }) => {
             <h6 className="m-0">{course?.title}</h6>
             <small>{course?.instructorName}</small>
             <div className="d-flex justify-content-center mt-1">
-              <span className="me-1 rating">{course?.avgRating}</span>
+              {course.avgRating !== 0 && (
+                <span className="me-1 rating">
+                  {course.avgRating.toFixed(1)}
+                </span>
+              )}
               <Rating
                 className="me-1"
-                initialRating={course?.avgRating}
+                initialRating={course.avgRating}
                 emptySymbol={
                   <FontAwesomeIcon icon={faStar} color="whitesmoke" />
                 }
                 fullSymbol={<FontAwesomeIcon icon={faStar} color="gold" />}
                 readonly
               ></Rating>
-              <small>(54,543)</small>
+              {course.ratingCount !== 0 && (
+                <small>({course.ratingCount})</small>
+              )}
             </div>
             <div className="d-flex justify-content-center mt-2">
               <h5 className="fw-bold">${course?.price}</h5>

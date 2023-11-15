@@ -11,7 +11,14 @@ import CourseSkeleton from "@/components/ui/course/CourseCardSkeleton";
 import InfoSection from "@/components/ui/InfoSection";
 
 const HomePage: NextPageWithLayout = () => {
-  const { data, isLoading } = useCoursesQuery({ limit: 4 });
+  const topFourHighestAvgRatedCoursesQuery = {
+    sortBy: "avgRating",
+    sortOrder: "desc",
+    limit: 4,
+  };
+  const { data, isLoading } = useCoursesQuery(
+    topFourHighestAvgRatedCoursesQuery
+  );
   const courses = data?.data as ICourse[];
 
   return (

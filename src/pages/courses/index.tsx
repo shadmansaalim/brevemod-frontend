@@ -20,7 +20,14 @@ const CoursesPage = () => {
   const [activePage, setActivePage] = useState<number>(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const query: Record<string, any> = {};
+  const getHighestAvgRatedCoursesQuery = {
+    sortBy: "avgRating",
+    sortOrder: "desc",
+  };
+
+  const query: Record<string, any> = {
+    ...getHighestAvgRatedCoursesQuery,
+  };
 
   query["page"] = activePage;
 

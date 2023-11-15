@@ -53,3 +53,18 @@ export const getUserFullName = (user: IUser | null) => {
 
   return firstName + " " + lastName;
 };
+
+export const handleCopyClick = (inputValue: string) => {
+  // Create a temporary input element
+  const tempInput = document.createElement("input");
+  // Set its value to the current input value
+  tempInput.value = inputValue;
+  // Append it to the DOM
+  document.body.appendChild(tempInput);
+  // Select the text inside the input
+  tempInput.select();
+  // Execute the copy command
+  document.execCommand("copy");
+  // Remove the temporary input element
+  document.body.removeChild(tempInput);
+};

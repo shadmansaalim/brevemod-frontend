@@ -5,8 +5,12 @@ import { Container } from "react-bootstrap";
 import CountUp from "react-countup";
 import VisibilitySensor from "react-visibility-sensor";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { useCourseQuery } from "@/redux/api/courseApi";
+import {
+  faShoppingCart,
+  faCheck,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+import { useCourseQuery, useRemoveCourseMutation } from "@/redux/api/courseApi";
 import { useRouter } from "next/router";
 import { ICourse, ResponseSuccessType } from "@/types";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -19,6 +23,7 @@ import { ENUM_USER_ROLES } from "@/enums/user";
 import { faForward, faStar } from "@fortawesome/free-solid-svg-icons";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import Rating from "react-rating";
+import AdminEditCourseModal from "@/components/ui/course/admin/AdminEditCourseModal";
 
 const CourseDetailsPage = () => {
   const router = useRouter();
@@ -29,6 +34,7 @@ const CourseDetailsPage = () => {
   const { currentUser } = useAppSelector((state) => state.user);
 
   const [addToCart] = useAddToCartMutation();
+  const [removeCourse] = useRemoveCourseMutation();
 
   const { data: courseData, isLoading: courseDataLoading } =
     useCourseQuery(courseId);
@@ -64,6 +70,30 @@ const CourseDetailsPage = () => {
     router.push(`/course-content/admin/${courseId}`);
   };
 
+  const handleRemoveCourse = () => {
+    swal({
+      title: "Are you sure ?",
+      text: `${course?.title} course will be removed permanently.`,
+      icon: "warning",
+      buttons: ["Cancel", "Ok"],
+      dangerMode: true,
+    }).then(async (willDelete) => {
+      if (willDelete) {
+        try {
+          const res: ResponseSuccessType = await removeCourse(
+            courseId
+          ).unwrap();
+          if (res?.success) {
+            swal(res.message, "", "success");
+            router.push("/courses");
+          }
+        } catch (err: any) {
+          swal(err?.message, "", "error");
+        }
+      }
+    });
+  };
+
   return (
     <div style={{ overflowX: "hidden" }}>
       {courseDataLoading || purchaseDataLoading ? (
@@ -78,7 +108,7 @@ const CourseDetailsPage = () => {
           >
             <Container>
               <section className="row mb-5 d-flex mt-lg-4">
-                <div className="col-lg-6 col-xl-5 mx-auto">
+                <div className="col-xl-5 mx-auto">
                   <div
                     className="video"
                     style={{
@@ -102,7 +132,7 @@ const CourseDetailsPage = () => {
                     />
                   </div>
                 </div>
-                <div className="col-lg-5 col-xl-6 mx-auto text-start mt-3 mt-lg-0">
+                <div className="col-xl-6 mx-auto text-start mt-3 mt-xl-0">
                   <h3>{course?.title}</h3>
                   {course?.ratingCount !== 0 && (
                     <div>
@@ -129,13 +159,24 @@ const CourseDetailsPage = () => {
                     Course Instructor :
                     <strong className="ms-1">{course?.instructorName}</strong>
                   </p>
-                  {currentUser && currentUser.role === ENUM_USER_ROLES.ADMIN ? (
-                    <button
-                      onClick={handleMoveToCourseModulesPage}
-                      className="btn btn-success text-white mt-2"
-                    >
-                      Course Modules <FontAwesomeIcon icon={faForward} />
-                    </button>
+                  {course &&
+                  currentUser &&
+                  currentUser.role === ENUM_USER_ROLES.ADMIN ? (
+                    <div className="d-flex flex-column flex-md-row align-items-center mt-2">
+                      <button
+                        onClick={handleMoveToCourseModulesPage}
+                        className="btn btn-success text-white me-md-2 w-100"
+                      >
+                        Course Modules <FontAwesomeIcon icon={faForward} />
+                      </button>
+                      <AdminEditCourseModal course={course} />
+                      <button
+                        onClick={handleRemoveCourse}
+                        className="btn btn-danger text-white mt-2 mt-md-0 w-100"
+                      >
+                        Remove Course <FontAwesomeIcon icon={faTrash} />
+                      </button>
+                    </div>
                   ) : (
                     <button
                       onClick={handleAddToCart}
@@ -166,8 +207,8 @@ const CourseDetailsPage = () => {
               </section>
             </Container>
           </div>
-          <div className="p-3 px-lg-0 py-lg-5">
-            <section className="col-lg-9 mb-5 mt-lg-4 mx-auto">
+          <div className="p-3 px-xl-0 py-xl-5">
+            <section className="col-xl-9 mb-5 mt-xl-4 mx-auto">
               <h3 className="text-start mb-3 fw-light">Description</h3>
               <p className="text-start">{course?.description}</p>
               <div className="mt-4 mt-md-5 mb-4 row d-flex align-items-center justify-content-center col-xl-8 mx-auto text-white">

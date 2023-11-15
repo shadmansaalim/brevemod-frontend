@@ -5,7 +5,7 @@ import type { ReactElement } from "react";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import { ICourse } from "@/types";
 import { useAppSelector } from "@/redux/hooks";
-import CoursesPageSkeleton from "@/components/ui/course/CoursesPageSkeleton";
+import CoursesPageSkeleton from "@/components/ui/course/skeleton/CoursesPageSkeleton";
 import { useMyCoursesQuery } from "@/redux/api/purchaseApi";
 import MyCourseCard from "../components/ui/course/MyCourseCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

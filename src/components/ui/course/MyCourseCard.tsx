@@ -12,7 +12,7 @@ import { useIsCourseContentPublishedQuery } from "@/redux/api/courseModuleApi";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { ProgressBar } from "react-bootstrap";
-import CourseCardSkeleton from "./CourseCardSkeleton";
+import CourseCardSkeleton from "./skeleton/CourseCardSkeleton";
 
 const MyCourseCard = ({ course }: { course: ICourse }) => {
   const {

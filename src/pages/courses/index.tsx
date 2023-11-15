@@ -6,11 +6,11 @@ import { useState } from "react";
 import { ICourse, IMeta } from "@/types";
 import { useCoursesQuery } from "@/redux/api/courseApi";
 import { useAppSelector, useDebounced } from "@/redux/hooks";
-import CoursesPageSkeleton from "@/components/ui/course/CoursesPageSkeleton";
+import CoursesPageSkeleton from "@/components/ui/course/skeleton/CoursesPageSkeleton";
 import CourseCard from "../../components/ui/course/CourseCard";
 import Pagination from "@/components/ui/Pagination";
 import SearchBar from "@/components/ui/SearchBar";
-import AdminCreateCourseCard from "@/components/ui/course/AdminCreateCourseCard";
+import AdminCreateCourseCard from "@/components/ui/course/admin/AdminCreateCourseCard";
 import { calcPaginationTotalPage } from "@/utils/common";
 import { ENUM_USER_ROLES } from "@/enums/user";
 

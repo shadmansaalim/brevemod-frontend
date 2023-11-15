@@ -2,13 +2,13 @@
 import RootLayout from "@/components/Layouts/RootLayout";
 import type { ReactElement } from "react";
 import type { NextPageWithLayout } from "./_app";
-import { Row, Col, Accordion, Container } from "react-bootstrap";
-import HeroSection from "@/components/ui/HeroSection";
+import { Row, Container } from "react-bootstrap";
+import HeroSection from "@/components/ui/page-sections/HeroSection";
 import { useCoursesQuery } from "@/redux/api/courseApi";
 import { ICourse } from "@/types";
 import CourseCard from "@/components/ui/course/CourseCard";
-import CourseSkeleton from "@/components/ui/course/CourseCardSkeleton";
-import InfoSection from "@/components/ui/InfoSection";
+import CourseSkeleton from "@/components/ui/course/skeleton/CourseCardSkeleton";
+import InfoSection from "@/components/ui/page-sections/InfoSection";
 
 const HomePage: NextPageWithLayout = () => {
   const topFourHighestAvgRatedCoursesQuery = {

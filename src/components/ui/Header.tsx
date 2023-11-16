@@ -6,8 +6,6 @@ import {
   Nav,
   Button,
   Modal,
-  InputGroup,
-  Form,
 } from "react-bootstrap";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,25 +16,18 @@ import {
   faUser,
   faRightFromBracket,
   faForward,
-  faUnlock,
-  faCopy,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Cart from "./cart/Cart";
 import Image from "next/image";
-import { removeUserInfo } from "@/services/auth.service";
-import { authKey } from "@/constants/storageKey";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setCurrentUser } from "@/redux/slices/userSlice";
 import { useCartQuery } from "@/redux/api/cartApi";
 import { useEffect } from "react";
 import { setCart } from "@/redux/slices/cartSlice";
 import { ENUM_USER_ROLES } from "@/enums/user";
 import { ICart } from "@/types";
-import { setClientSecret } from "@/redux/slices/userSlice";
-import { handleCopyClick } from "@/utils/common";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { logoutUser } from "@/utils/user";
 
 const Header = () => {
   const { currentUser } = useAppSelector((state) => state.user);
@@ -61,19 +52,6 @@ const Header = () => {
   }, [currentUser, cartData, cartDataLoading, dispatch]);
 
   const [cartModalShow, setCartModalShow] = useState(false);
-  const [adminFeaturesModalShow, setAdminFeaturesModalShow] = useState(false);
-  const [isEmailCopied, setIsEmailCopied] = useState(false);
-  const [isPasswordCopied, setIsPasswordCopied] = useState(false);
-
-  const logoutUser = (route?: string) => {
-    removeUserInfo(authKey);
-
-    // Resetting all state values
-    dispatch(setCurrentUser(null));
-    dispatch(setCart(null));
-    dispatch(setClientSecret(""));
-    router.push(route || "/");
-  };
 
   return (
     <Navbar className="shadow-sm w-100" expand="lg">
@@ -187,177 +165,32 @@ const Header = () => {
           </Nav>
           <Nav className="ms-auto text-center">
             {currentUser ? (
-              <div className="d-flex flex-column flex-lg-row mt-2 mt-lg-0">
-                {currentUser.role === ENUM_USER_ROLES.STUDENT && (
-                  <div className="d-flex justify-content-center align-items-center me-lg-3">
-                    <Button
-                      onClick={() => setAdminFeaturesModalShow(true)}
-                      variant="secondary"
-                    >
-                      Want to see admin features?
-                      <FontAwesomeIcon className="ms-2" icon={faUnlock} />
-                    </Button>
-
-                    <Modal
-                      show={adminFeaturesModalShow}
-                      onHide={() => setAdminFeaturesModalShow(false)}
-                    >
-                      <Modal.Header closeButton>
-                        <Modal.Title>Admin Credentials</Modal.Title>
-                      </Modal.Header>
-                      <Modal.Body>
-                        <div>
-                          <p className="light-font">
-                            Are you done exploring the student features of this
-                            application? If not, I would like to suggest you
-                            first explore the student features, such as adding
-                            courses to your cart, purchasing courses, viewing
-                            courses from my classes, starting courses, viewing
-                            course modules and contents, etc.
-                          </p>
-                          <p>
-                            If you have experienced student features, you are
-                            welcome to view admin features such as creating,
-                            updating, and removing course, creating course
-                            modules, adding content to course, removing unwanted
-                            content, etc.
-                          </p>
-                        </div>
-                        <div>
-                          <p>
-                            Copy the below email address and password to login
-                            as an admin and explore admin powerful features 💪
-                          </p>
-                          <hr />
-                          <InputGroup>
-                            <Form.Control
-                              value="admin@gmail.com"
-                              aria-label="Search courses"
-                              aria-describedby="basic-addon1"
-                            />
-
-                            {isEmailCopied ? (
-                              <InputGroup.Text
-                                id="basic-addon1"
-                                style={{ cursor: "pointer" }}
-                                className="text-success"
-                              >
-                                <FontAwesomeIcon
-                                  className="fw-bold"
-                                  icon={faCheck}
-                                />
-                              </InputGroup.Text>
-                            ) : (
-                              <InputGroup.Text
-                                id="basic-addon1"
-                                style={{ cursor: "pointer" }}
-                                onClick={() => {
-                                  handleCopyClick("admin@gmail.com");
-
-                                  setIsEmailCopied(true);
-                                  // Resetting after 3 seconds
-                                  setTimeout(() => {
-                                    setIsEmailCopied(false);
-                                  }, 2000);
-                                }}
-                              >
-                                <FontAwesomeIcon
-                                  className="fw-bold"
-                                  icon={faCopy}
-                                />
-                              </InputGroup.Text>
-                            )}
-                          </InputGroup>
-                        </div>
-                        <div className="mt-2">
-                          <InputGroup>
-                            <Form.Control
-                              value="123456"
-                              aria-label="Search courses"
-                              aria-describedby="basic-addon1"
-                            />
-
-                            {isPasswordCopied ? (
-                              <InputGroup.Text
-                                id="basic-addon1"
-                                style={{ cursor: "pointer" }}
-                                className="text-success"
-                              >
-                                <FontAwesomeIcon
-                                  className="fw-bold"
-                                  icon={faCheck}
-                                />
-                              </InputGroup.Text>
-                            ) : (
-                              <InputGroup.Text
-                                id="basic-addon1"
-                                style={{ cursor: "pointer" }}
-                                onClick={() => {
-                                  handleCopyClick("123456");
-
-                                  setIsPasswordCopied(true);
-                                  // Resetting after 3 seconds
-                                  setTimeout(() => {
-                                    setIsPasswordCopied(false);
-                                  }, 2000);
-                                }}
-                              >
-                                <FontAwesomeIcon
-                                  className="fw-bold"
-                                  icon={faCopy}
-                                />
-                              </InputGroup.Text>
-                            )}
-                          </InputGroup>
-                        </div>
-                      </Modal.Body>
-                      <Modal.Footer>
-                        <Button
-                          onClick={() => {
-                            setAdminFeaturesModalShow(false);
-                            logoutUser("/login");
-                          }}
-                          className="w-100"
-                          variant="secondary"
-                        >
-                          Logout and Redirect to Login
-                          <FontAwesomeIcon
-                            className="ms-2"
-                            icon={faRightFromBracket}
-                          />
-                        </Button>
-                      </Modal.Footer>
-                    </Modal>
-                  </div>
-                )}
-
-                <NavDropdown
-                  title={
-                    <Image
-                      src="/ProfileIcon.png"
-                      className="img-fluid"
-                      width={40}
-                      height={40}
-                      id="profile-dropdown"
-                      alt="Profile Icon"
-                    />
-                  }
+              <NavDropdown
+                title={
+                  <Image
+                    src="/ProfileIcon.png"
+                    className="img-fluid"
+                    width={40}
+                    height={40}
+                    id="profile-dropdown"
+                    alt="Profile Icon"
+                  />
+                }
+              >
+                <NavDropdown.Item eventKey="4.0" disabled>
+                  {currentUser?.firstName}
+                </NavDropdown.Item>
+                <NavDropdown.Item href="/profile" eventKey="4.1">
+                  <FontAwesomeIcon className="me-2" icon={faUser} /> Profile
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  onClick={() => logoutUser(dispatch, router)}
+                  eventKey="4.2"
                 >
-                  <NavDropdown.Item eventKey="4.0" disabled>
-                    {currentUser?.firstName}
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="/profile" eventKey="4.1">
-                    <FontAwesomeIcon className="me-2" icon={faUser} /> Profile
-                  </NavDropdown.Item>
-                  <NavDropdown.Item onClick={() => logoutUser()} eventKey="4.2">
-                    <FontAwesomeIcon
-                      className="me-2"
-                      icon={faRightFromBracket}
-                    />
-                    Logout
-                  </NavDropdown.Item>
-                </NavDropdown>
-              </div>
+                  <FontAwesomeIcon className="me-2" icon={faRightFromBracket} />
+                  Logout
+                </NavDropdown.Item>
+              </NavDropdown>
             ) : (
               <div className="d-flex flex-column flex-lg-row mt-2 mt-lg-0">
                 <Button

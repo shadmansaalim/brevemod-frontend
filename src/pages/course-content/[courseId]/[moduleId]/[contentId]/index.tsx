@@ -40,6 +40,8 @@ import {
 import Rating from "react-rating";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import AdminFeaturesInformation from "@/components/ui/AdminFeaturesInformation";
+import AOS from "aos";
 
 const CourseModulePage = () => {
   const router = useRouter();
@@ -59,6 +61,8 @@ const CourseModulePage = () => {
     useState<IContentRouteData | null>(null);
   const [rating, setRating] = useState<number>(0.0);
   const [ratingCompleted, setRatingCompleted] = useState(false);
+  const [userProgressUpdateRequired, setUserProgressUpdateRequired] =
+    useState(false);
 
   // Update Course Progress Hook
   const [updateCourseProgress] = useUpdateCourseProgressMutation();
@@ -116,6 +120,15 @@ const CourseModulePage = () => {
           currentContent._id
         )
       );
+      if (courseProgress && currentModule && currentContent) {
+        setUserProgressUpdateRequired(
+          isUserProgressUpdateRequired(
+            courseProgress,
+            currentModule._id,
+            currentContent._id
+          )
+        );
+      }
     }
   }, [courseModulesData, courseProgressData]);
 
@@ -126,7 +139,7 @@ const CourseModulePage = () => {
     let routeUrl = "";
 
     // Checking if user progress update is required
-    if (courseProgress?.percentage !== 100) {
+    if (userProgressUpdateRequired) {
       try {
         const res: ResponseSuccessType = await updateCourseProgress(
           courseId
@@ -189,6 +202,14 @@ const CourseModulePage = () => {
     }
   };
 
+  useEffect(() => {
+    AOS.init({
+      duration: 2500,
+      once: false,
+    });
+    AOS.refresh();
+  }, []);
+
   return (
     <div>
       {courseModulesDataLoading ||
@@ -200,6 +221,11 @@ const CourseModulePage = () => {
         <div className="pb-5">
           <div className="text-start my-5">
             <Container>
+              {courseProgress.completedContentCount >= 2 && (
+                <div className="mb-1" data-aos="fade-right">
+                  <AdminFeaturesInformation />
+                </div>
+              )}
               <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
                 <h3 className="fw-bold my-0">{course?.title}</h3>
                 {userRating === null && !ratingCompleted && (

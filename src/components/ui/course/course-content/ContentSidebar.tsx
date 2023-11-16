@@ -1,8 +1,7 @@
 // Imports
 import { Col, ProgressBar, Accordion } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ICourseModule, IUserCourseProgress } from "@/types";
-import { ENUM_USER_ROLES } from "@/enums/user";
 import CourseModuleItem from "./CourseModuleItem";
 
 // Props Type

@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "@/styles/courseModule.scss";
 import "@/styles/globals.css";
+import "aos/dist/aos.css";
 
 import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";

@@ -1,5 +1,5 @@
 // Imports
-import { Button, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { ICourse, ResponseSuccessType } from "@/types";
@@ -47,30 +47,41 @@ const AdminEditCourseModal = ({ course }: { course: ICourse }) => {
       setCourseUpdating(false);
     } else {
       // Converting link to embedded if not
-      courseData.introVideoLink = convertToEmbedLink(courseData.introVideoLink);
+      const introVideoLink = convertToEmbedLink(courseData.introVideoLink);
 
-      // Modifying text input data to number
-      courseData.price = parseFloat(courseData.price as unknown as string);
-      courseData.projectsCount = parseInt(
-        courseData.projectsCount as unknown as string
-      );
-      courseData.lecturesCount = parseInt(
-        courseData.lecturesCount as unknown as string
-      );
-
-      try {
-        const res: ResponseSuccessType = await updateCourse({
-          courseId: course._id,
-          courseData,
-        }).unwrap();
-        if (res?.success) {
-          swal(res.message, "", "success");
-          setCourseUpdating(false);
-          setModalShow(false);
-        }
-      } catch (err: any) {
+      if (!introVideoLink) {
         setCourseUpdating(false);
-        swal(err?.message, "", "error");
+        swal(
+          "Invalid Intro Video Link",
+          "Please upload a valid YouTube video link. You can either upload YouTube video link or embedded link.",
+          "error"
+        );
+      } else {
+        courseData.introVideoLink = introVideoLink;
+
+        // Modifying text input data to number
+        courseData.price = parseFloat(courseData.price as unknown as string);
+        courseData.projectsCount = parseInt(
+          courseData.projectsCount as unknown as string
+        );
+        courseData.lecturesCount = parseInt(
+          courseData.lecturesCount as unknown as string
+        );
+
+        try {
+          const res: ResponseSuccessType = await updateCourse({
+            courseId: course._id,
+            courseData,
+          }).unwrap();
+          if (res?.success) {
+            swal(res.message, "", "success");
+            setCourseUpdating(false);
+            setModalShow(false);
+          }
+        } catch (err: any) {
+          setCourseUpdating(false);
+          swal(err?.message, "", "error");
+        }
       }
     }
   };

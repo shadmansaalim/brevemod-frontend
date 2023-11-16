@@ -54,28 +54,43 @@ const EditContentModal = ({
       setContentUploading(false);
     } else {
       // Converting link to embedded if not
-      contentData.link = convertToEmbedLink(contentData.link);
+      const contentLink = convertToEmbedLink(contentData.link);
 
-      if (contentData?.duration) {
-        contentData.duration = parseInt(
-          contentData.duration as unknown as string
-        );
-      }
-      try {
-        const payload = {
-          moduleId,
-          contentId: content._id,
-          contentData,
-        };
-        const res: ResponseSuccessType = await updateContent(payload).unwrap();
-        if (res?.success) {
-          swal(res.message, "", "success");
-          setContentUploading(false);
-          setModalShow(false);
-        }
-      } catch (err: any) {
+      if (!contentLink) {
         setContentUploading(false);
-        swal(err?.message, "", "error");
+        swal(
+          "Invalid Content Link",
+          contentData.type === "video"
+            ? "Please upload a valid YouTube Video link. You can either upload YouTube Video link or embedded link."
+            : "Please upload a valid Google Form link. You can either upload Google Form link or embedded link.",
+          "error"
+        );
+      } else {
+        contentData.link = contentLink;
+
+        if (contentData?.duration) {
+          contentData.duration = parseInt(
+            contentData.duration as unknown as string
+          );
+        }
+        try {
+          const payload = {
+            moduleId,
+            contentId: content._id,
+            contentData,
+          };
+          const res: ResponseSuccessType = await updateContent(
+            payload
+          ).unwrap();
+          if (res?.success) {
+            swal(res.message, "", "success");
+            setContentUploading(false);
+            setModalShow(false);
+          }
+        } catch (err: any) {
+          setContentUploading(false);
+          swal(err?.message, "", "error");
+        }
       }
     }
   };

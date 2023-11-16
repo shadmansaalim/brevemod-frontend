@@ -25,31 +25,41 @@ const AdminCreateCourseCard = () => {
   const handleCreateCourse: SubmitHandler<ICourse> = async (
     courseData: ICourse
   ) => {
-    // Converting link to embedded if not
-    courseData.introVideoLink = convertToEmbedLink(courseData.introVideoLink);
-
-    // Modifying text input data to number
-    courseData.price = parseFloat(courseData.price as unknown as string);
-    courseData.projectsCount = parseInt(
-      courseData.projectsCount as unknown as string
-    );
-    courseData.lecturesCount = parseInt(
-      courseData.lecturesCount as unknown as string
-    );
-
     setCourseCreating(true);
-    try {
-      const res: ResponseSuccessType = await createCourse({
-        ...courseData,
-      }).unwrap();
-      if (res?.success) {
-        swal(res.message, "", "success");
-        setCourseCreating(false);
-        setModalShow(false);
-      }
-    } catch (err: any) {
+
+    // Converting link to embedded if not
+    const introVideoLink = convertToEmbedLink(courseData.introVideoLink);
+
+    if (!introVideoLink) {
       setCourseCreating(false);
-      swal(err?.message, "", "error");
+      swal(
+        "Invalid Intro Video Link",
+        "Please upload a valid YouTube video link. You can either upload YouTube video link or embedded link.",
+        "error"
+      );
+    } else {
+      courseData.introVideoLink = introVideoLink;
+      // Modifying text input data to number
+      courseData.price = parseFloat(courseData.price as unknown as string);
+      courseData.projectsCount = parseInt(
+        courseData.projectsCount as unknown as string
+      );
+      courseData.lecturesCount = parseInt(
+        courseData.lecturesCount as unknown as string
+      );
+      try {
+        const res: ResponseSuccessType = await createCourse({
+          ...courseData,
+        }).unwrap();
+        if (res?.success) {
+          swal(res.message, "", "success");
+          setCourseCreating(false);
+          setModalShow(false);
+        }
+      } catch (err: any) {
+        setCourseCreating(false);
+        swal(err?.message, "", "error");
+      }
     }
   };
 

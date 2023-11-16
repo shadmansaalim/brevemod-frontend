@@ -1,4 +1,4 @@
-export const convertToEmbedLink = (inputLink: string) => {
+export const convertToEmbedLink = (inputLink: string): string | null => {
   // Check if the input link is already an embedded link
   if (inputLink.includes("/embed/") || inputLink.includes("embedded=true")) {
     return inputLink;
@@ -26,6 +26,6 @@ export const convertToEmbedLink = (inputLink: string) => {
       "/viewform?embedded=true"
     );
   } else {
-    return inputLink;
+    return null;
   }
 };

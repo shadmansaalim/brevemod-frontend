@@ -221,7 +221,7 @@ const CourseModulePage = () => {
         <div className="pb-5">
           <div className="text-start my-5">
             <Container>
-              {courseProgress.completedContentCount >= 2 && (
+              {courseProgress.completedContentCount >= 1 && (
                 <div className="mb-1" data-aos="fade-right">
                   <AdminFeaturesInformation />
                 </div>

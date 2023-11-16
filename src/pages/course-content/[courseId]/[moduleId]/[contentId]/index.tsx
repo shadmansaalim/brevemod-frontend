@@ -136,8 +136,8 @@ const CourseModulePage = () => {
             routePattern = `${nextContentRoute.initial}/${nextContentRoute.courseId}/[${nextContentRoute.moduleId}]/[${nextContentRoute.contentId}]`;
             routeUrl = `${nextContentRoute.initial}/${nextContentRoute.courseId}/${nextContentRoute.moduleId}/${nextContentRoute.contentId}`;
           } else {
-            routePattern = `/course-content/652babaabd146934ac0a1cbe/[next-content]`;
-            routeUrl = `/course-content/652babaabd146934ac0a1cbe/next-content`;
+            routePattern = `/course-content/${courseId}/[next-content]`;
+            routeUrl = `/course-content/${courseId}/next-content`;
           }
           router.push(routePattern, routeUrl);
         }
@@ -149,8 +149,8 @@ const CourseModulePage = () => {
         routePattern = `${nextContentRoute.initial}/${nextContentRoute.courseId}/[${nextContentRoute.moduleId}]/[${nextContentRoute.contentId}]`;
         routeUrl = `${nextContentRoute.initial}/${nextContentRoute.courseId}/${nextContentRoute.moduleId}/${nextContentRoute.contentId}`;
       } else {
-        routePattern = `/course-content/652babaabd146934ac0a1cbe/[next-content]`;
-        routeUrl = `/course-content/652babaabd146934ac0a1cbe/next-content`;
+        routePattern = `/course-content/${courseId}/[next-content]`;
+        routeUrl = `/course-content/${courseId}/next-content`;
       }
       router.push(routePattern, routeUrl);
     }

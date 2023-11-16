@@ -38,6 +38,8 @@ const CourseModulePage = () => {
     router.push("/");
   }
 
+  console.log(courseId, courseProgressData, courseModulesData);
+
   return (
     <div>
       {courseModulesDataLoading ||

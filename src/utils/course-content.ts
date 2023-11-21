@@ -104,6 +104,7 @@ export const isUserProgressUpdateRequired = (
   contentId: string
 ) => {
   return (
+    progress.percentage != 100 &&
     progress.current.moduleId === moduleId &&
     progress.current.contentId === contentId
   );

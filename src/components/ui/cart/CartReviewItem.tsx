@@ -40,7 +40,7 @@ const CartReviewItem = ({ id }: { id: string }) => {
           <div>
             <svg
               className="bd-placeholder-img card-img-top rounded-3"
-              width="100%"
+              width="250"
               height="130"
               xmlns="http://www.w3.org/2000/svg"
               role="img"
@@ -85,7 +85,7 @@ const CartReviewItem = ({ id }: { id: string }) => {
               className="img-fluid rounded-3"
               src={course?.thumbnailLink}
               alt=""
-              style={{ height: 130 }}
+              style={{ width: 250, height: 130 }}
             />
           </div>
           <div

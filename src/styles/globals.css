@@ -95,3 +95,39 @@ p {
 .slick-next:before {
   display: none;
 }
+
+.btn-close {
+  background-color: lightgray;
+  border-radius: 50%;
+  padding: 10px !important;
+}
+.popover {
+  inset: auto auto -14px 0px !important;
+  margin-left: -10px;
+}
+.popover-arrow {
+  display: none !important;
+}
+.popover-body {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px !important;
+}
+.popover-body div:first-child {
+  background-color: #006b5a;
+}
+.popover-body div:nth-child(2) {
+  background-color: #dc3545;
+}
+.popover-body div:nth-child(3) {
+  background-color: rgb(233, 113, 15);
+}
+.popover-body div:nth-child(4) {
+  background-color: rgb(247, 177, 37);
+}
+.popover-body div {
+  font-size: 12px;
+  font-weight: bold !important;
+  padding: 4px 8px;
+  cursor: pointer;
+}

@@ -1,3 +1,4 @@
+import { ENUM_POST_REACTIONS } from "@/enums/post";
 import { ENUM_USER_ROLES } from "@/enums/user";
 
 export interface IMeta {
@@ -124,4 +125,19 @@ export type IUserCourseRating = {
   courseId: string;
   user: string;
   rating: number;
+};
+
+export type IReaction = {
+  react: ENUM_POST_REACTIONS;
+  user: string;
+};
+
+export type IPost = {
+  _id: string;
+  content: string;
+  author: IUser;
+  published: boolean;
+  createdAt: number;
+  updatedAt: number;
+  reactions: IReaction[];
 };

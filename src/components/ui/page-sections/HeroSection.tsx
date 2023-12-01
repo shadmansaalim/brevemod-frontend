@@ -14,7 +14,7 @@ const HeroSection = () => {
           className="text-center text-xl-start mx-auto order-2 order-xl-1 mt-4 mt-xl-0"
         >
           <div>
-            <h1>Want to learn consistently?</h1>
+            <h2>Want to learn consistently?</h2>
             <p>
               Explore our courses and get into our module based ecosystem where
               we will take care of your consistency in learning.
@@ -28,9 +28,9 @@ const HeroSection = () => {
             </Button>
           </div>
         </Col>
-        <Col xl="6" className="mx-auto order-1 order-xl-2">
+        <Col md="9" lg="8" xl="5" className="mx-auto order-1 order-xl-2">
           <div className="text-center">
-            <img className="img-fluid" src="./HeroSection.svg" alt="" />
+            <img className="img-fluid" src="./HeroSection2.png" alt="" />
           </div>
         </Col>
       </Row>

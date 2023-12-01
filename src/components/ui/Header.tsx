@@ -85,6 +85,15 @@ const Header = () => {
                 My Classes
               </Link>
             )}
+            {currentUser && (
+              <Link
+                className="text-decoration-none me-lg-3"
+                href="/community-post"
+                style={{ color: "#161c2d" }}
+              >
+                Community Posts
+              </Link>
+            )}
 
             {currentUser && currentUser.role === ENUM_USER_ROLES.STUDENT && (
               <>

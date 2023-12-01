@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "@/styles/courseModule.scss";
 import "@/styles/globals.css";
 import "aos/dist/aos.css";
+import "react-toastify/dist/ReactToastify.css";
 
 import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
@@ -16,6 +17,15 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  ApolloClientOptions,
+  NormalizedCacheObject,
+} from "@apollo/client";
+import { LocalStorageUtils } from "@/utils/local-storage";
+import { authKey } from "@/constants/storageKey";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;

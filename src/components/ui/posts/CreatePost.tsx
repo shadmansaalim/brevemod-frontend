@@ -89,7 +89,7 @@ const CreatePost = ({
     <>
       <button
         onClick={() => setPostModalShow(true)}
-        className={`${styles.createPostBtn} rounded-pill`}
+        className={`${styles.createPostBtn} rounded-pill mt-2 mt-md-0`}
       >
         <span className="ms-2">
           What's on your mind, {currentUser.firstName} ?

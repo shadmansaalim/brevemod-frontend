@@ -10,15 +10,15 @@ const CommunityPostsPageSkeleton = () => {
         <div
           className={`${styles.createPost} placeholder w-100 shadow-lg rounded-3 p-3 mx-auto`}
         >
-          <div className="d-flex align-items-center">
+          <div className="d-flex flex-column flex-md-row align-items-center">
             <img src="/ProfileIcon.png" width="40px" height="40px" />
             <a
               href="#"
-              className="btn btn-secondary rounded-pill ms-2 disabled placeholder w-100"
+              className="btn btn-secondary rounded-pill ms-2 disabled placeholder w-100 mt-2 mt-md-0"
             ></a>
           </div>
         </div>
-        <div className="d-flex align-items-start my-3">
+        <div className="d-flex flex-column flex-md-row align-items-start my-3">
           <a
             href="#"
             className="btn btn-success rounded-pill me-2 disabled placeholder col-2"
@@ -26,12 +26,12 @@ const CommunityPostsPageSkeleton = () => {
 
           <a
             href="#"
-            className="btn btn-success rounded-pill me-2 disabled placeholder col-3"
+            className="btn btn-success rounded-pill me-2 disabled placeholder col-3 mt-2 mt-md-0"
           ></a>
 
           <a
             href="#"
-            className="btn btn-success rounded-pill disabled placeholder col-2"
+            className="btn btn-success rounded-pill disabled placeholder col-2 mt-2 mt-md-0"
           ></a>
         </div>
 

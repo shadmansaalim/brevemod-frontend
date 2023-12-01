@@ -12,6 +12,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { useState } from "react";
 import LoadingSpinner from "../ui/LoadingSpinner";
 import { useEffect } from "react";
+import { getApolloClientUri } from "@/helpers/config/env.config";
 
 const ApolloLayout = ({ children }: { children: React.ReactNode }) => {
   const { currentUser } = useAppSelector((state) => state.user);
@@ -19,7 +20,7 @@ const ApolloLayout = ({ children }: { children: React.ReactNode }) => {
   const [apolloClientArgs, setApolloClientArgs] = useState<
     ApolloClientOptions<NormalizedCacheObject>
   >({
-    uri: "https://brevemod-backend.vercel.app/graphql",
+    uri: `${getApolloClientUri()}/graphql`,
     cache: new InMemoryCache(),
   });
 

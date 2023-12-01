@@ -52,7 +52,7 @@ const CommunityPostsPage = () => {
               <div
                 className={`${styles.createPost} shadow-lg rounded-3 p-3 mx-auto`}
               >
-                <div className="d-flex align-items-center">
+                <div className="d-flex flex-column flex-md-row align-items-center">
                   <div className={styles.postUserImg}>
                     <img src="/ProfileIcon.png" width="40px" height="40px" />
                   </div>
@@ -63,7 +63,7 @@ const CommunityPostsPage = () => {
                 </div>
               </div>
             )}
-            <div className="d-flex align-items-start my-3">
+            <div className="d-flex flex-column flex-md-row align-items-start my-3">
               <button
                 onClick={() =>
                   handleFilterPosts(ENUM_POST_FILTERS.PUBLIC_POSTS)
@@ -79,7 +79,7 @@ const CommunityPostsPage = () => {
               </button>
               <button
                 onClick={() => handleFilterPosts(ENUM_POST_FILTERS.ADMIN_POSTS)}
-                className={`btn rounded-pill me-2 ${
+                className={`btn rounded-pill me-2 mt-2 mt-md-0 ${
                   postsFiltered === ENUM_POST_FILTERS.ADMIN_POSTS
                     ? `btn-success`
                     : `btn-outline-success`
@@ -90,7 +90,7 @@ const CommunityPostsPage = () => {
               </button>
               <button
                 onClick={() => handleFilterPosts(ENUM_POST_FILTERS.MY_POSTS)}
-                className={`btn rounded-pill ${
+                className={`btn rounded-pill mt-2 mt-md-0 ${
                   postsFiltered === ENUM_POST_FILTERS.MY_POSTS
                     ? `btn-success`
                     : `btn-outline-success`

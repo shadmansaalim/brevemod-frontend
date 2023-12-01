@@ -19,7 +19,7 @@ const ApolloLayout = ({ children }: { children: React.ReactNode }) => {
   const [apolloClientArgs, setApolloClientArgs] = useState<
     ApolloClientOptions<NormalizedCacheObject>
   >({
-    uri: "http://localhost:8080/graphql",
+    uri: "https://brevemod-backend.vercel.app/graphql",
     cache: new InMemoryCache(),
   });
 

@@ -124,7 +124,7 @@ const AISuggestionsModal = ({ show, onClose }: AISuggestionsModalProps) => {
       else swal("Something went wrong", res.message, "error");
     } catch (error) {
       console.log({ error });
-      swal("AI suggestion error:", "", "error");
+      swal("Something went wrong", "", "error");
     } finally {
       setIsLoading(false);
       setLoadingStep(0);

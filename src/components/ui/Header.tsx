@@ -16,6 +16,7 @@ import {
   faUser,
   faRightFromBracket,
   faForward,
+  faMessage,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -28,6 +29,7 @@ import { setCart } from "@/redux/slices/cartSlice";
 import { ENUM_USER_ROLES } from "@/enums/user";
 import { ICart } from "@/types";
 import { logoutUser } from "@/utils/user";
+import AISuggestionsModal from "./AISuggestionsModal";
 
 const Header = () => {
   const { currentUser } = useAppSelector((state) => state.user);
@@ -52,6 +54,7 @@ const Header = () => {
   }, [currentUser, cartData, cartDataLoading, dispatch]);
 
   const [cartModalShow, setCartModalShow] = useState(false);
+  const [aiSuggestionsModalShow, setAiSuggestionsModalShow] = useState(false);
 
   return (
     <Navbar className="shadow-sm w-100" expand="lg">
@@ -171,6 +174,67 @@ const Header = () => {
                 </Modal>
               </>
             )}
+          </Nav>
+          <Nav className="mx-auto text-center">
+            <button
+              onClick={() => setAiSuggestionsModalShow(true)}
+              className="mt-1 mt-lg-0 "
+              style={{
+                background: "linear-gradient(135deg, #006b5a 0%, #161c2d 100%)",
+                border: "none",
+                borderRadius: "8px",
+                color: "#ffffff",
+                fontWeight: "600",
+                fontSize: "0.875rem",
+                padding: "8px 18px",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                cursor: "pointer",
+                position: "relative",
+                overflow: "hidden",
+                boxShadow: "0 0 0 0 rgba(0, 107, 90, 0.5)",
+                animation: "pulse-glow 2s infinite",
+                letterSpacing: "0.3px",
+                transition: "opacity 0.2s ease",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+            >
+              {/* Shimmer overlay */}
+              <span
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%)",
+                  animation: "shimmer 2.5s infinite",
+                  pointerEvents: "none",
+                }}
+              />
+              {/* Sparkling star badge */}
+              <span
+                style={{
+                  background: "rgba(255,255,255,0.18)",
+                  borderRadius: "50%",
+                  width: "22px",
+                  height: "22px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "13px",
+                  flexShrink: 0,
+                }}
+              >
+                ✦
+              </span>
+              AI Course Suggestion
+            </button>
+
+            <AISuggestionsModal
+              show={aiSuggestionsModalShow}
+              onClose={() => setAiSuggestionsModalShow(false)}
+            />
           </Nav>
           <Nav className="ms-auto text-center">
             {currentUser ? (

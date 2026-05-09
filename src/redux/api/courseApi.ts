@@ -42,6 +42,7 @@ const courseApi = baseApi.injectEndpoints({
       transformErrorResponse: genericErrorResponse,
       invalidatesTags: [TAG_TYPES.course],
     }),
+
     updateCourse: build.mutation({
       query: (data) => ({
         url: `${ENDPOINT_BASE_URL}/${data.courseId}`,
@@ -80,6 +81,16 @@ const courseApi = baseApi.injectEndpoints({
       transformErrorResponse: genericErrorResponse,
       invalidatesTags: [TAG_TYPES.course],
     }),
+    getAICourseSuggestions: build.mutation({
+      query: (data) => ({
+        url: `${ENDPOINT_BASE_URL}/suggestion`,
+        method: "POST",
+        data,
+      }),
+      transformResponse: genericSuccessResponse,
+      transformErrorResponse: genericErrorResponse,
+      invalidatesTags: [TAG_TYPES.course],
+    }),
   }),
 });
 
@@ -91,4 +102,5 @@ export const {
   useRemoveCourseMutation,
   useUserCourseRatingQuery,
   useAddCourseRatingMutation,
+  useGetAICourseSuggestionsMutation,
 } = courseApi;

@@ -28,7 +28,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useGetAICourseSuggestionsMutation } from "@/redux/api/courseApi";
 import { useRouter } from "next/router";
-import { IGenericErrorResponse, ResponseSuccessType } from "@/types";
+import { ResponseSuccessType } from "@/types";
 import swal from "sweetalert";
 
 interface AISuggestionsModalProps {
@@ -53,6 +53,8 @@ export interface CourseSuggestion {
   studentsCount: number;
   reason: string;
 }
+
+const MAX_CHAR_LENGTH = 500;
 
 const loadingPhases = [
   {
@@ -89,6 +91,9 @@ const AISuggestionsModal = ({ show, onClose }: AISuggestionsModalProps) => {
 
   const [getAICourseSuggestions] = useGetAICourseSuggestionsMutation();
 
+  // Character count state
+  const [charCount, setCharCount] = useState(0);
+
   const router = useRouter();
 
   // Manage sequential multi-phase progress to entertain user during slow backend inference
@@ -107,6 +112,11 @@ const AISuggestionsModal = ({ show, onClose }: AISuggestionsModalProps) => {
     }
     return () => clearInterval(interval);
   }, [isLoading]);
+
+  // Update character count when job description changes
+  useEffect(() => {
+    setCharCount(jobDescription.length);
+  }, [jobDescription]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -139,10 +149,18 @@ const AISuggestionsModal = ({ show, onClose }: AISuggestionsModalProps) => {
     setJobDescription("");
     setSuggestions([]);
     setLoadingStep(0);
+    setCharCount(0);
   };
 
   const navigateToCoursePage = (courseId: string) => {
     window.open(`/courses/${courseId}`, "_blank", "noopener,noreferrer");
+  };
+
+  // Determine character count color based on proximity to limit
+  const getCharCountColor = () => {
+    if (charCount >= MAX_CHAR_LENGTH) return "text-danger fw-bold";
+    if (charCount >= MAX_CHAR_LENGTH * 0.8) return "text-warning fw-semibold";
+    return "text-muted";
   };
 
   return (
@@ -171,10 +189,22 @@ const AISuggestionsModal = ({ show, onClose }: AISuggestionsModalProps) => {
 
             <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3" controlId="aiJobInput">
-                <Form.Label className="fw-semibold text-dark">
-                  Job Description / Competency Input
-                </Form.Label>
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <Form.Label className="fw-semibold text-dark mb-0">
+                    Job Description / Competency Input
+                  </Form.Label>
+                  {/* Character Count Display */}
+                  <span className={`small ${getCharCountColor()}`}>
+                    <FontAwesomeIcon
+                      icon={faRobot}
+                      className="me-1"
+                      size="xs"
+                    />
+                    {charCount} / {MAX_CHAR_LENGTH} characters
+                  </span>
+                </div>
                 <Form.Control
+                  maxLength={MAX_CHAR_LENGTH}
                   as="textarea"
                   rows={4}
                   placeholder="e.g. Seeking a Web Developer with experience in Typescript and Next.js"

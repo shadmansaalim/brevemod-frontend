@@ -286,7 +286,7 @@ const AISuggestionsModal = ({ show, onClose }: AISuggestionsModalProps) => {
                   className="me-2"
                 />
                 <em>
-                  Note: Using Free AI model which takes 1-2 minutes. Thank you
+                  Note: Using Free AI model which takes 2-3 minutes. Thank you
                   for your patience!
                 </em>
               </div>
